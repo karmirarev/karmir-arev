@@ -1,28 +1,74 @@
 <!DOCTYPE html>
-<html> 
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      background-color: rgb(229, 228, 221);
+      background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22><rect x=%229%22 y=%229%22 width=%222%22 height=%222%22 fill=%22%235CD0E6%22/></svg>');
+      margin: 0;
+      padding: 20px;
+      font-family: sans-serif;
+    }
+    .container {
+      display: flex;
+      gap: 20px;
+      min-height: calc(100vh - 40px);
+    }
+    .panel {
+      flex: 1;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.5);
+      border-radius: 8px;
+    }
+    .panel-left {
+      /* most recent post */
+    }
+    .panel-middle {
+      /* intro & main content */
+    }
+    .panel-right {
+      /* links */
+    }
+    .panel-right a {
+      display: block;
+      margin: 10px 0;
+    }
+  </style>
 </head>
-<body style="background-color: rgb(229, 228, 221); background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22><rect x=%229%22 y=%229%22 width=%222%22 height=%222%22 fill=%22%235CD0E6%22/></svg>');">
+<body>
 
-<p>բարեւ, անունս մարիտա/կարմիրարեւ է <br> hi, my name is marita/karmirarev</p>
-<p>i do game dev, arts and crafts, etc for now</p>
+<div class="container">
+  <div class="panel panel-left">
+    <h3>most recent post</h3>
+    <!-- leave blank for now -->
+  </div>
 
-<img src="walkin.gif" alt="Description of the animation">
+  <div class="panel panel-middle">
+    <p>բdelays, delays delays/delays է <br> hi, my name is marita/karmirarev</p>
+    <p>i do game dev, arts and crafts, etc for now</p>
 
-<a href="ձեռքիցեկած.html">կարմիրարեւ/ձեռքիցեկած</a>
-<!-- papercraft -->
-<!-- clay -->
-<!-- mixed media -->
-<!-- photography -->
-<!-- other, steam, fav tarot card-->
-<p>thinking out loud</p>
-<p>music player</p>
+    <img src="walkin.gif" alt="Description of the animation">
 
-<p>links</p> <!-- to itch io, letterboxd, goodreads, art IG page, soptify, anime? -->
+    <p><a href=" delays delays.html">delays/delays</a></p>
 
-<audio controls>
-  <source src="codemamemosquito_leftyfish.mp3" type="audio/mpeg">
-Your browser does not support the audio element.
-</audio>
+    <p>thinking out loud</p>
+
+    <audio controls>
+      <source src="codemamemosquito_leftyfish.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+
+  <div class="panel panel-right">
+    <h3>links</h3>
+    <a href="#">instagram</a>
+    <a href="#">letterboxd</a>
+    <a href="#">goodreads</a>
+    <a href="#">itch.io</a>
+    <a href="#">spotify</a>
+  </div>
+</div>
 
 </body>
 </html>
