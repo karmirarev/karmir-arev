@@ -16,19 +16,35 @@
       text-decoration: none;
       color: #0000EE;
     }
-    .media-item {
+    .event-text {
+      max-width: 250px;
+      margin-bottom: 20px;
+    }
+    .media-row {
       display: flex;
       align-items: flex-start;
-      margin-bottom: 30px;
-      gap: 20px;
+      gap: 10px;
     }
-    .media-text {
-      min-width: 200px;
-      max-width: 300px;
+    .main-photo {
+      height: 400px;
+      width: auto;
     }
-    .media-item img, .media-item video {
-      max-width: 400px;
-      height: auto;
+    .gifs-column {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      height: 400px;
+    }
+    .gifs-column img {
+      flex: 1;
+      height: 0;
+      min-height: 0;
+      width: auto;
+      object-fit: contain;
+    }
+    .media-row video {
+      height: 400px;
+      width: auto;
     }
   </style>
 </head>
@@ -38,37 +54,17 @@
 <p>events-markets-exhibits</p>
 <br>
 
-<div class="media-item">
-  <div class="media-text">
-    <p>nov 7, 2025 <br> took part in BYOB (bring your own beamer) organized by hosq.co. looking back at these drawings i find them too depressing, i remember drawing them right after i moved out and missing our old village house.</p>
-  </div>
-  <img src="ikindalookcoolhere.jpg" alt="">
+<div class="event-text">
+  <p>nov 7, 2025</p>
+  <p>took part in BYOB (bring your own beamer) organized by hosq.co. looking back at these drawings i find them too depressing, i remember drawing them right after i moved out and missing our old village house.</p>
 </div>
 
-<div class="media-item">
-  <div class="media-text">
-    <p>your text here</p>
-  </div>
-  <img src="1.gif" alt="">
-</div>
-
-<div class="media-item">
-  <div class="media-text">
-    <p>your text here</p>
-  </div>
-  <img src="2.gif" alt="">
-</div>
-
-<div class="media-item">
-  <div class="media-text">
-    <p>your text here</p>
-  </div>
-  <img src="3.gif" alt="">
-</div>
-
-<div class="media-item">
-  <div class="media-text">
-    <p>your text here</p>
+<div class="media-row">
+  <img src="ikindalookcoolhere.jpg" alt="" class="main-photo">
+  <div class="gifs-column">
+    <img src="1.gif" alt="">
+    <img src="2.gif" alt="">
+    <img src="3.gif" alt="">
   </div>
   <video src="cringe.MOV" controls></video>
 </div>
