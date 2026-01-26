@@ -10,20 +10,7 @@
       background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22><rect x=%229%22 y=%229%22 width=%222%22 height=%222%22 fill=%22%235CD0E6%22/></svg>');
       margin: 0;
       padding: 20px;
-      font-family: sans-serif;
-    }
-
-    header {
-      margin-bottom: 20px;
-    }
-
-    header a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    header a:hover {
-      text-decoration: underline;
+      font-family: 'Courier New', monospace;
     }
 
     .gallery {
@@ -54,12 +41,6 @@
       display: block;
     }
 
-    .loading {
-      text-align: center;
-      padding: 40px;
-      color: #666;
-    }
-
     /* Lightbox */
     .lightbox {
       display: none;
@@ -88,17 +69,14 @@
       top: 20px;
       right: 30px;
       color: white;
-      font-size: 30px;
       cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-<header>
-  <a href="../">&larr; back</a>
-  <h1>arts and crafts</h1>
-</header>
+<p><a href="../">back</a></p>
+<p>arts and crafts</p>
 
 <div class="gallery" id="gallery">
   <div class="gallery-item"><img src="astral.png" alt="astral"></div>
@@ -118,7 +96,7 @@
 </div>
 
 <div class="lightbox" id="lightbox">
-  <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+  <span class="lightbox-close" onclick="closeLightbox()">x</span>
   <img id="lightbox-img" src="" alt="">
 </div>
 
