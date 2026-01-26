@@ -27,34 +27,31 @@
     }
 
     .gallery {
-      column-count: 3;
-      column-gap: 15px;
+      column-count: 5;
+      column-gap: 10px;
+    }
+
+    @media (max-width: 1200px) {
+      .gallery { column-count: 4; }
     }
 
     @media (max-width: 900px) {
-      .gallery { column-count: 2; }
+      .gallery { column-count: 3; }
     }
 
-    @media (max-width: 500px) {
-      .gallery { column-count: 1; }
+    @media (max-width: 600px) {
+      .gallery { column-count: 2; }
     }
 
     .gallery-item {
       break-inside: avoid;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .gallery-item:hover {
-      transform: scale(1.02);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
     .gallery-item img {
       width: 100%;
       display: block;
-      border-radius: 8px;
     }
 
     .loading {
@@ -84,7 +81,6 @@
     .lightbox img {
       max-width: 90%;
       max-height: 90%;
-      border-radius: 8px;
     }
 
     .lightbox-close {
@@ -100,12 +96,25 @@
 <body>
 
 <header>
-  <a href="../index.html">&larr; back</a>
+  <a href="../">&larr; back</a>
   <h1>arts and crafts</h1>
 </header>
 
 <div class="gallery" id="gallery">
-  <p class="loading">loading...</p>
+  <div class="gallery-item"><img src="astral.png" alt="astral"></div>
+  <div class="gallery-item"><img src="ballladies.png" alt="ballladies"></div>
+  <div class="gallery-item"><img src="blob.png" alt="blob"></div>
+  <div class="gallery-item"><img src="boyfriend.png" alt="boyfriend"></div>
+  <div class="gallery-item"><img src="horselady.png" alt="horselady"></div>
+  <div class="gallery-item"><img src="howmybfseesme.png" alt="howmybfseesme"></div>
+  <div class="gallery-item"><img src="icanseeyourface.png" alt="icanseeyourface"></div>
+  <div class="gallery-item"><img src="knightlady.png" alt="knightlady"></div>
+  <div class="gallery-item"><img src="pilote.png" alt="pilote"></div>
+  <div class="gallery-item"><img src="prettylady.png" alt="prettylady"></div>
+  <div class="gallery-item"><img src="sakura.png" alt="sakura"></div>
+  <div class="gallery-item"><img src="spaceseal.png" alt="spaceseal"></div>
+  <div class="gallery-item"><img src="theboyandtheheron.png" alt="theboyandtheheron"></div>
+  <div class="gallery-item"><img src="theyellowwallpaper.png" alt="theyellowwallpaper"></div>
 </div>
 
 <div class="lightbox" id="lightbox">
@@ -114,52 +123,15 @@
 </div>
 
 <script>
-  const GITHUB_USER = 'karmirarev';
-  const GITHUB_REPO = 'karmir-arev';
-  const FOLDER_PATH = 'arts-and-crafts';
-  const IMAGE_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif', 'webp'];
-
-  const gallery = document.getElementById('gallery');
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
 
-  async function loadGallery() {
-    try {
-      const response = await fetch(
-        `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${FOLDER_PATH}`
-      );
-      const files = await response.json();
-
-      const images = files.filter(file => {
-        const ext = file.name.split('.').pop().toLowerCase();
-        return IMAGE_EXTENSIONS.includes(ext);
-      });
-
-      gallery.innerHTML = '';
-
-      images.forEach(image => {
-        const item = document.createElement('div');
-        item.className = 'gallery-item';
-
-        const img = document.createElement('img');
-        img.src = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/${FOLDER_PATH}/${image.name}`;
-        img.alt = image.name.split('.')[0];
-        img.loading = 'lazy';
-
-        img.addEventListener('click', () => {
-          lightboxImg.src = img.src;
-          lightbox.classList.add('active');
-        });
-
-        item.appendChild(img);
-        gallery.appendChild(item);
-      });
-
-    } catch (error) {
-      gallery.innerHTML = '<p>could not load images</p>';
-      console.error(error);
-    }
-  }
+  document.querySelectorAll('.gallery-item img').forEach(img => {
+    img.addEventListener('click', () => {
+      lightboxImg.src = img.src;
+      lightbox.classList.add('active');
+    });
+  });
 
   function closeLightbox() {
     lightbox.classList.remove('active');
@@ -172,8 +144,6 @@
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeLightbox();
   });
-
-  loadGallery();
 </script>
 
 </body>
