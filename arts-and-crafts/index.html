@@ -16,17 +16,36 @@
       text-decoration: none;
       color: #2A9BB5;
     }
+    .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 40px;
+    }
+    .menu {
+      flex-shrink: 0;
+    }
+    .art-image {
+      max-width: 500px;
+      width: 100%;
+      height: auto;
+    }
   </style>
 </head>
 <body>
 
-<p><a href="../">back</a></p>
-<p>arts and crafts</p>
-<br>
-<p><a href="./digital-mixed-media">digital-mixed-media</a></p>
-<p><a href="./clay">clay</a></p>
-<p><a href="./papercraft">papercraft</a></p>
-<p><a href="./blogs">blogs</a></p>
+<div class="container">
+  <div class="menu">
+    <p><a href="../">back</a></p>
+    <p>arts and crafts</p>
+    <br>
+    <p><a href="./digital-mixed-media">digital-mixed-media</a></p>
+    <p><a href="./clay">clay</a></p>
+    <p><a href="./papercraft">papercraft</a></p>
+    <p><a href="./blogs">blogs</a></p>
+  </div>
+  <img src="rennala.png" alt="art" class="art-image">
+</div>
 
 </body>
 </html>
