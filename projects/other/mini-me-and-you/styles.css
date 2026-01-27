@@ -1,0 +1,84 @@
+body {
+  background-color: rgb(229, 228, 221);
+  background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22><rect x=%229%22 y=%229%22 width=%222%22 height=%222%22 fill=%22%235CD0E6%22/></svg>');
+  margin: 0;
+  padding: 20px;
+  font-family: 'Courier New', monospace;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: #0000EE;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.menu {
+  flex-shrink: 0;
+}
+
+/* Buddy characters */
+.buddy-character {
+  position: fixed;
+  width: 250px;
+  height: 225px;
+  z-index: 99999;
+  cursor: grab;
+  pointer-events: auto;
+  image-rendering: pixelated;
+  background-size: 1250px 225px;
+  background-repeat: no-repeat;
+}
+
+.buddy-character.dragging {
+  cursor: grabbing;
+}
+
+.kiss-overlay {
+  position: fixed;
+  width: 255px;
+  height: 255px;
+  z-index: 100000;
+  pointer-events: none;
+  image-rendering: pixelated;
+  background-size: 255px 255px;
+  background-repeat: no-repeat;
+}
+
+.buddy-context-menu {
+  position: fixed;
+  background: white;
+  border: 2px solid #333;
+  border-radius: 4px;
+  padding: 4px 0;
+  z-index: 100001;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  color: #000;
+}
+
+.buddy-context-menu-item {
+  padding: 6px 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  color: #000;
+}
+
+.buddy-context-menu-item:hover {
+  background: #f0f0f0;
+}
+
+.horse-chaos {
+  position: fixed;
+  z-index: 99998;
+  pointer-events: none;
+  image-rendering: pixelated;
+}
