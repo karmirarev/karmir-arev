@@ -16,11 +16,14 @@
       text-decoration: none;
       color: #0000EE;
     }
-    .container {
+    .page-layout {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       gap: 40px;
+    }
+    .content {
+      flex: 1;
     }
     .menu {
       flex-shrink: 0;
@@ -34,10 +37,13 @@
 </head>
 <body>
 
-<div class="container">
-  <img src="10.png" alt="art" class="art-image">
+<div class="page-layout">
+  <div class="content">
+    <img src="10.png" alt="art" class="art-image">
+  </div>
+
   <div class="menu">
-    <p><a href="../">back</a></p>
+    <p><a href="../">home</a></p>
     <p>thinking out loud</p>
     <br>
     <p><a href="./on-art-evolution-ai-and-consciousness">on-art-evolution-ai-and-consciousness</a></p>
