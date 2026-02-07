@@ -29,33 +29,30 @@
     .panel-content {
       flex: 1;
       display: flex;
-      gap: 20px;
+      gap: 40px;
       background-color: rgb(212, 211, 200);
       background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22><rect x=%229%22 y=%229%22 width=%222%22 height=%222%22 fill=%22%235CD0E6%22/></svg>');
       margin: -20px -20px -20px 0;
       padding: 20px;
     }
-    .panel {
+    .panel-middle {
       flex: 1;
       padding: 20px;
-    }
-    .panel-right {
-      flex: none;
-    }
-    .panel-right a {
-      display: block;
-      margin: 10px 0;
+      min-width: 0;
+      overflow: hidden;
     }
     .panel-middle a {
       display: block;
       margin: 10px 0;
     }
-    .panel-blog a {
+    .panel-menu {
+      flex-shrink: 0;
+      width: 280px;
+      padding: 20px;
+    }
+    .panel-menu a {
       display: block;
       margin: 10px 0;
-    }
-    .panel-blog {
-      flex: none;
     }
   </style>
 </head>
@@ -73,14 +70,12 @@
       <img src="walkin.gif" alt="Description of the animation">
     </div>
 
-    <div class="panel panel-blog">
+    <div class="panel-menu">
       <p>blog</p>
       <a href="./thinking-out-loud">thinking-out-loud</a>
       <a href="./arts-and-crafts">arts-and-crafts</a>
       <a href="./projects">projects</a>
-    </div>
-
-    <div class="panel panel-right">
+      <br>
       <p>links</p>
       <a href="https://www.instagram.com/thinkofaladybug">instagram</a>
       <a href="https://karmirarev.itch.io/">itch.io</a>
