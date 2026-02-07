@@ -17,34 +17,59 @@
       text-decoration: none;
       color: #0000EE;
     }
+    .page-layout {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 40px;
+    }
+    .content {
+      flex: 1;
+    }
+    .menu {
+      flex-shrink: 0;
+    }
   </style>
 </head>
 <body>
 
-<p><a href="../">back</a></p>
-<p>digital-mixed-media</p>
-<br>
+<div class="page-layout">
+  <div class="content">
+    <p>digital-mixed-media</p>
+    <br>
 
-<div class="gallery" id="gallery">
-  <div class="gallery-item"><img src="astral.png" alt="astral"></div>
-  <div class="gallery-item"><img src="ballladies.png" alt="ballladies"></div>
-  <div class="gallery-item"><img src="blob.png" alt="blob"></div>
-  <div class="gallery-item"><img src="boyfriend.png" alt="boyfriend"></div>
-  <div class="gallery-item"><img src="horselady.png" alt="horselady"></div>
-  <div class="gallery-item"><img src="howmybfseesme.png" alt="howmybfseesme"></div> 
-  <div class="gallery-item"><img src="icanseeyourface.png" alt="icanseeyourface"></div>
-  <div class="gallery-item"><img src="knightlady.png" alt="knightlady"></div>
-  <div class="gallery-item"><img src="pilote.gif" alt="pilote"></div>
-  <div class="gallery-item"><img src="prettylady.png" alt="prettylady"></div>
-  <div class="gallery-item"><img src="sakura.png" alt="sakura"></div>
-  <div class="gallery-item"><img src="spaceseal.png" alt="spaceseal"></div>
-  <div class="gallery-item"><img src="theboyandtheheroin.png" alt="theboyandtheheroin"></div>
-  <div class="gallery-item"><img src="theyellowwallpaper.png" alt="theyellowwallpaper"></div>
-</div>
+    <div class="gallery" id="gallery">
+      <div class="gallery-item"><img src="astral.png" alt="astral"></div>
+      <div class="gallery-item"><img src="ballladies.png" alt="ballladies"></div>
+      <div class="gallery-item"><img src="blob.png" alt="blob"></div>
+      <div class="gallery-item"><img src="boyfriend.png" alt="boyfriend"></div>
+      <div class="gallery-item"><img src="horselady.png" alt="horselady"></div>
+      <div class="gallery-item"><img src="howmybfseesme.png" alt="howmybfseesme"></div>
+      <div class="gallery-item"><img src="icanseeyourface.png" alt="icanseeyourface"></div>
+      <div class="gallery-item"><img src="knightlady.png" alt="knightlady"></div>
+      <div class="gallery-item"><img src="pilote.gif" alt="pilote"></div>
+      <div class="gallery-item"><img src="prettylady.png" alt="prettylady"></div>
+      <div class="gallery-item"><img src="sakura.png" alt="sakura"></div>
+      <div class="gallery-item"><img src="spaceseal.png" alt="spaceseal"></div>
+      <div class="gallery-item"><img src="theboyandtheheroin.png" alt="theboyandtheheroin"></div>
+      <div class="gallery-item"><img src="theyellowwallpaper.png" alt="theyellowwallpaper"></div>
+    </div>
 
-<div class="lightbox" id="lightbox">
-  <span class="lightbox-close" onclick="closeLightbox()">x</span>
-  <img id="lightbox-img" src="" alt="">
+    <div class="lightbox" id="lightbox">
+      <span class="lightbox-close" onclick="closeLightbox()">x</span>
+      <img id="lightbox-img" src="" alt="">
+    </div>
+  </div>
+
+  <div class="menu">
+    <p><a href="../../">home</a></p>
+    <p><a href="../">arts and crafts</a></p>
+    <br>
+    <p>digital-mixed-media</p>
+    <p><a href="../clay">clay</a></p>
+    <p><a href="../papercraft">papercraft</a></p>
+    <p><a href="../events-markets-exhibits">events-markets-exhibits</a></p>
+  </div>
 </div>
 
 <script>
