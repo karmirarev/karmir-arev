@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -55,37 +55,177 @@
       display: block;
       margin: 10px 0;
     }
+
+    /* category view */
+    #category-view {
+      display: none;
+    }
+    #category-view .container {
+      display: flex;
+      gap: 20px;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    #category-view .cat-content {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 40px;
+      background-color: rgb(212, 211, 200);
+      background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22><rect x=%229%22 y=%229%22 width=%222%22 height=%222%22 fill=%22%235CD0E6%22/></svg>');
+      margin: -20px -20px -20px 0;
+      padding: 20px;
+    }
+    #category-view .menu {
+      flex-shrink: 0;
+      padding: 20px;
+    }
+    #category-view .menu p {
+      margin: 0 0 10px 0;
+    }
+    #category-view .menu a {
+      display: inline;
+    }
+    #category-view .content-area {
+      flex: 1;
+      padding: 20px;
+    }
+    .sub-heading {
+      margin: 10px 0 2px 0;
+      color: #333;
+    }
+    .sub-item {
+      margin: 0 0 10px 12px;
+    }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="panel-left">
-    
-  </div>
+<!-- State 1: Home view -->
+<div id="home-view">
+  <div class="container">
+    <div class="panel-left">
 
-  <div class="panel-content">
-    <div class="panel panel-middle">
-      <p>կարմիր արեւ 🟒 կանաչ տերեւ<br> this is the website of marita/karmirarev</p>
-      <p>i do game dev, arts and crafts, thinkering, etc</p>
-      <img src="walkin.gif" alt="Description of the animation">
     </div>
 
-    <div class="panel-menu">
-      <p>blog</p>
-      <a href="./thinking-out-loud">thinking-out-loud</a>
-      <a href="./arts-and-crafts">arts-and-crafts</a>
-      <a href="./projects">projects</a>
-      <a href="./diagram">diagram</a>
-      <br>
-      <p>links</p>
-      <a href="https://www.instagram.com/thinkofaladybug">instagram</a>
-      <a href="https://karmirarev.itch.io/">itch.io</a>
-      <a href="https://buymeacoffee.com/karmirarev">buymeacoffee</a>
+    <div class="panel-content">
+      <div class="panel panel-middle">
+        <p>կարմիր արեւ 🟒 կանաչ տերեւ<br> this is the website of marita/karmirarev</p>
+        <p>i do game dev, arts and crafts, thinkering, etc</p>
+        <img src="walkin.gif" alt="Description of the animation">
+      </div>
+
+      <div class="panel-menu">
+        <p>blog</p>
+        <a href="#" data-category="thinking-out-loud">thinking-out-loud</a>
+        <a href="#" data-category="arts-and-crafts">arts-and-crafts</a>
+        <a href="#" data-category="projects">projects</a>
+        <a href="./diagram">diagram</a>
+        <br>
+        <p>links</p>
+        <a href="https://www.instagram.com/thinkofaladybug">instagram</a>
+        <a href="https://karmirarev.itch.io/">itch.io</a>
+        <a href="https://buymeacoffee.com/karmirarev">buymeacoffee</a>
+      </div>
     </div>
   </div>
 </div>
 
+<!-- State 2: Category view -->
+<div id="category-view">
+  <div class="container">
+    <div class="panel-left">
+
+    </div>
+
+    <div class="cat-content">
+      <div class="menu" id="category-menu"></div>
+      <div class="content-area">
+        <p>text</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var categories = {
+    'thinking-out-loud': {
+      title: 'thinking out loud',
+      items: [
+        { label: 'on-art-evolution-ai-and-consciousness', href: './thinking-out-loud/on-art-evolution-ai-and-consciousness' }
+      ]
+    },
+    'arts-and-crafts': {
+      title: 'arts and crafts',
+      items: [
+        { label: 'digital-mixed-media', href: './arts-and-crafts/digital-mixed-media' },
+        { label: 'clay', href: './arts-and-crafts/clay' },
+        { label: 'papercraft', href: './arts-and-crafts/papercraft' },
+        { label: 'events-markets-exhibits', href: './arts-and-crafts/events-markets-exhibits' }
+      ]
+    },
+    'projects': {
+      title: 'projects',
+      groups: [
+        {
+          heading: 'games',
+          items: [
+            { label: 'bebe heist', href: './projects/games/bebe-heist' }
+          ]
+        },
+        {
+          heading: 'other',
+          items: [
+            { label: 'mini-me-and-u', href: './projects/other/mini-me-and-you' }
+          ]
+        }
+      ]
+    }
+  };
+
+  function showCategory(key) {
+    var cat = categories[key];
+    var menu = document.getElementById('category-menu');
+    var html = '<p><a href="#" id="back-link">back</a></p>';
+    html += '<p>' + cat.title + '</p>';
+    html += '<br>';
+
+    if (cat.items) {
+      for (var i = 0; i < cat.items.length; i++) {
+        html += '<p><a href="' + cat.items[i].href + '">' + cat.items[i].label + '</a></p>';
+      }
+    }
+
+    if (cat.groups) {
+      for (var g = 0; g < cat.groups.length; g++) {
+        var group = cat.groups[g];
+        html += '<p class="sub-heading">' + group.heading + '</p>';
+        for (var i = 0; i < group.items.length; i++) {
+          html += '<p class="sub-item"><a href="' + group.items[i].href + '">' + group.items[i].label + '</a></p>';
+        }
+      }
+    }
+
+    menu.innerHTML = html;
+
+    document.getElementById('home-view').style.display = 'none';
+    document.getElementById('category-view').style.display = 'block';
+
+    document.getElementById('back-link').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('category-view').style.display = 'none';
+      document.getElementById('home-view').style.display = 'block';
+    });
+  }
+
+  document.querySelectorAll('[data-category]').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      showCategory(this.getAttribute('data-category'));
+    });
+  });
+</script>
 
 </body>
 </html>
