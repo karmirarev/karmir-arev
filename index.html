@@ -17,50 +17,24 @@
     }
     .container {
       display: flex;
-      gap: 20px;
       min-height: 100vh;
-      padding: 20px;
     }
     .panel-left {
-      flex-shrink: 0;
-      flex-grow: 0;
-      width: 370px;
-      padding: 20px;
-    }
-    .panel-content {
       flex: 1;
-      display: flex;
-      gap: 40px;
+      padding: 20px;
       background-color: rgb(212, 211, 200);
       background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22><rect x=%229%22 y=%229%22 width=%222%22 height=%222%22 fill=%22%235CD0E6%22/></svg>');
-      margin: -20px -20px -20px 0;
-      padding: 20px;
-    }
-    .panel-middle {
-      flex: 1;
-      padding: 20px;
-      min-width: 0;
-      overflow: hidden;
-    }
-    .panel-middle a {
-      display: block;
-      margin: 10px 0;
     }
     .panel-right {
       flex-shrink: 0;
-      width: 280px;
+      width: 300px;
       padding: 20px;
+      background-color: rgb(212, 211, 200);
+      background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22><rect x=%229%22 y=%229%22 width=%222%22 height=%222%22 fill=%22%235CD0E6%22/></svg>');
     }
     .panel-right a {
       display: block;
       margin: 10px 0;
-    }
-    .sub-heading {
-      margin: 10px 0 2px 0;
-      color: #333;
-    }
-    .sub-item {
-      margin: 0 0 10px 12px;
     }
   </style>
 </head>
@@ -68,112 +42,24 @@
 
 <div class="container">
   <div class="panel-left">
-
+      <p>կարմիր արեւ 🟒 կանաչ տերեւ<br> this is the website of marita/karmirarev</p>
+    <p>i do game dev, arts and crafts, thinkering, etc</p>
+    <img src="walkin.gif" alt="Description of the animation">
   </div>
 
-  <div class="panel-content">
-    <div class="panel panel-middle">
-      <p>կարմիր արեւ 🟒 կանաչ տերեւ<br> this is the website of marita/karmirarev</p>
-      <p>i do game dev, arts and crafts, thinkering, etc</p>
-      <img src="walkin.gif" alt="Description of the animation">
-    </div>
-
-    <div class="panel-right" id="right-panel"></div>
+  <div class="panel-right">
+    <p>blog</p>
+    <a href="./thinking-out-loud">thinking-out-loud</a>
+    <a href="./arts-and-crafts">arts-and-crafts</a>
+    <a href="./projects">projects</a>
+    <a href="./diagram">diagram</a>
+    <br>
+    <p>links</p>
+    <a href="https://www.instagram.com/thinkofaladybug">instagram</a>
+    <a href="https://karmirarev.itch.io/">itch.io</a>
+    <a href="https://buymeacoffee.com/karmirarev">buymeacoffee</a>
   </div>
 </div>
-
-<script>
-  var mainMenu = '<p>blog</p>'
-    + '<a href="#" data-category="thinking-out-loud">thinking-out-loud</a>'
-    + '<a href="#" data-category="arts-and-crafts">arts-and-crafts</a>'
-    + '<a href="#" data-category="projects">projects</a>'
-    + '<a href="./diagram">diagram</a>'
-    + '<br>'
-    + '<p>links</p>'
-    + '<a href="https://www.instagram.com/thinkofaladybug">instagram</a>'
-    + '<a href="https://karmirarev.itch.io/">itch.io</a>'
-    + '<a href="https://buymeacoffee.com/karmirarev">buymeacoffee</a>';
-
-  var categories = {
-    'thinking-out-loud': {
-      title: 'thinking out loud',
-      items: [
-        { label: 'on-art-evolution-ai-and-consciousness', href: './thinking-out-loud/on-art-evolution-ai-and-consciousness' }
-      ]
-    },
-    'arts-and-crafts': {
-      title: 'arts and crafts',
-      items: [
-        { label: 'digital-mixed-media', href: './arts-and-crafts/digital-mixed-media' },
-        { label: 'clay', href: './arts-and-crafts/clay' },
-        { label: 'papercraft', href: './arts-and-crafts/papercraft' },
-        { label: 'events-markets-exhibits', href: './arts-and-crafts/events-markets-exhibits' }
-      ]
-    },
-    'projects': {
-      title: 'projects',
-      groups: [
-        {
-          heading: 'games',
-          items: [
-            { label: 'bebe heist', href: './projects/games/bebe-heist' }
-          ]
-        },
-        {
-          heading: 'other',
-          items: [
-            { label: 'mini-me-and-u', href: './projects/other/mini-me-and-you' }
-          ]
-        }
-      ]
-    }
-  };
-
-  var panel = document.getElementById('right-panel');
-
-  function showMain() {
-    panel.innerHTML = mainMenu;
-    panel.querySelectorAll('[data-category]').forEach(function(link) {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        showCategory(this.getAttribute('data-category'));
-      });
-    });
-  }
-
-  function showCategory(key) {
-    var cat = categories[key];
-    var html = '<a href="#" id="back-link">back</a>'
-      + '<p>' + cat.title + '</p>'
-      + '<p>text</p>'
-      + '<br>';
-
-    if (cat.items) {
-      for (var i = 0; i < cat.items.length; i++) {
-        html += '<a href="' + cat.items[i].href + '">' + cat.items[i].label + '</a>';
-      }
-    }
-
-    if (cat.groups) {
-      for (var g = 0; g < cat.groups.length; g++) {
-        var group = cat.groups[g];
-        html += '<p class="sub-heading">' + group.heading + '</p>';
-        for (var i = 0; i < group.items.length; i++) {
-          html += '<a class="sub-item" href="' + group.items[i].href + '">' + group.items[i].label + '</a>';
-        }
-      }
-    }
-
-    panel.innerHTML = html;
-
-    document.getElementById('back-link').addEventListener('click', function(e) {
-      e.preventDefault();
-      showMain();
-    });
-  }
-
-  showMain();
-</script>
 
 </body>
 </html>
