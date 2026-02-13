@@ -46,50 +46,14 @@
       display: block;
       margin: 10px 0;
     }
-    .panel-menu {
+    .panel-right {
       flex-shrink: 0;
       width: 280px;
       padding: 20px;
     }
-    .panel-menu a {
+    .panel-right a {
       display: block;
       margin: 10px 0;
-    }
-
-    /* category view */
-    #category-view {
-      display: none;
-    }
-    #category-view .container {
-      display: flex;
-      gap: 20px;
-      min-height: 100vh;
-      padding: 20px;
-    }
-    #category-view .cat-content {
-      flex: 1;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 40px;
-      background-color: rgb(212, 211, 200);
-      background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22><rect x=%229%22 y=%229%22 width=%222%22 height=%222%22 fill=%22%235CD0E6%22/></svg>');
-      margin: -20px -20px -20px 0;
-      padding: 20px;
-    }
-    #category-view .menu {
-      flex-shrink: 0;
-      padding: 20px;
-    }
-    #category-view .menu p {
-      margin: 0 0 10px 0;
-    }
-    #category-view .menu a {
-      display: inline;
-    }
-    #category-view .content-area {
-      flex: 1;
-      padding: 20px;
     }
     .sub-heading {
       margin: 10px 0 2px 0;
@@ -102,53 +66,34 @@
 </head>
 <body>
 
-<!-- State 1: Home view -->
-<div id="home-view">
-  <div class="container">
-    <div class="panel-left">
+<div class="container">
+  <div class="panel-left">
 
-    </div>
-
-    <div class="panel-content">
-      <div class="panel panel-middle">
-        <p>կարմիր արեւ 🟒 կանաչ տերեւ<br> this is the website of marita/karmirarev</p>
-        <p>i do game dev, arts and crafts, thinkering, etc</p>
-        <img src="walkin.gif" alt="Description of the animation">
-      </div>
-
-      <div class="panel-menu">
-        <p>blog</p>
-        <a href="#" data-category="thinking-out-loud">thinking-out-loud</a>
-        <a href="#" data-category="arts-and-crafts">arts-and-crafts</a>
-        <a href="#" data-category="projects">projects</a>
-        <a href="./diagram">diagram</a>
-        <br>
-        <p>links</p>
-        <a href="https://www.instagram.com/thinkofaladybug">instagram</a>
-        <a href="https://karmirarev.itch.io/">itch.io</a>
-        <a href="https://buymeacoffee.com/karmirarev">buymeacoffee</a>
-      </div>
-    </div>
   </div>
-</div>
 
-<!-- State 2: Category view -->
-<div id="category-view">
-  <div class="container">
-    <div class="panel-left">
-
+  <div class="panel-content">
+    <div class="panel panel-middle">
+      <p>կարմիր արեւ 🟒 կանաչ տերեւ<br> this is the website of marita/karmirarev</p>
+      <p>i do game dev, arts and crafts, thinkering, etc</p>
+      <img src="walkin.gif" alt="Description of the animation">
     </div>
 
-    <div class="cat-content">
-      <div class="menu" id="category-menu"></div>
-      <div class="content-area">
-        <p>text</p>
-      </div>
-    </div>
+    <div class="panel-right" id="right-panel"></div>
   </div>
 </div>
 
 <script>
+  var mainMenu = '<p>blog</p>'
+    + '<a href="#" data-category="thinking-out-loud">thinking-out-loud</a>'
+    + '<a href="#" data-category="arts-and-crafts">arts-and-crafts</a>'
+    + '<a href="#" data-category="projects">projects</a>'
+    + '<a href="./diagram">diagram</a>'
+    + '<br>'
+    + '<p>links</p>'
+    + '<a href="https://www.instagram.com/thinkofaladybug">instagram</a>'
+    + '<a href="https://karmirarev.itch.io/">itch.io</a>'
+    + '<a href="https://buymeacoffee.com/karmirarev">buymeacoffee</a>';
+
   var categories = {
     'thinking-out-loud': {
       title: 'thinking out loud',
@@ -184,16 +129,28 @@
     }
   };
 
+  var panel = document.getElementById('right-panel');
+
+  function showMain() {
+    panel.innerHTML = mainMenu;
+    panel.querySelectorAll('[data-category]').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        showCategory(this.getAttribute('data-category'));
+      });
+    });
+  }
+
   function showCategory(key) {
     var cat = categories[key];
-    var menu = document.getElementById('category-menu');
-    var html = '<p><a href="#" id="back-link">back</a></p>';
-    html += '<p>' + cat.title + '</p>';
-    html += '<br>';
+    var html = '<a href="#" id="back-link">back</a>'
+      + '<p>' + cat.title + '</p>'
+      + '<p>text</p>'
+      + '<br>';
 
     if (cat.items) {
       for (var i = 0; i < cat.items.length; i++) {
-        html += '<p><a href="' + cat.items[i].href + '">' + cat.items[i].label + '</a></p>';
+        html += '<a href="' + cat.items[i].href + '">' + cat.items[i].label + '</a>';
       }
     }
 
@@ -202,29 +159,20 @@
         var group = cat.groups[g];
         html += '<p class="sub-heading">' + group.heading + '</p>';
         for (var i = 0; i < group.items.length; i++) {
-          html += '<p class="sub-item"><a href="' + group.items[i].href + '">' + group.items[i].label + '</a></p>';
+          html += '<a class="sub-item" href="' + group.items[i].href + '">' + group.items[i].label + '</a>';
         }
       }
     }
 
-    menu.innerHTML = html;
-
-    document.getElementById('home-view').style.display = 'none';
-    document.getElementById('category-view').style.display = 'block';
+    panel.innerHTML = html;
 
     document.getElementById('back-link').addEventListener('click', function(e) {
       e.preventDefault();
-      document.getElementById('category-view').style.display = 'none';
-      document.getElementById('home-view').style.display = 'block';
+      showMain();
     });
   }
 
-  document.querySelectorAll('[data-category]').forEach(function(link) {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      showCategory(this.getAttribute('data-category'));
-    });
-  });
+  showMain();
 </script>
 
 </body>
