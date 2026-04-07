@@ -1,0 +1,11 @@
+/projects/games/pingala/Build/*.data.gz
+  Content-Encoding: gzip
+  Content-Type: application/octet-stream
+
+/projects/games/pingala/Build/*.wasm.gz
+  Content-Encoding: gzip
+  Content-Type: application/wasm
+
+/projects/games/pingala/Build/*.js.gz
+  Content-Encoding: gzip
+  Content-Type: application/javascript
