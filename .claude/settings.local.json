@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(copy \"C:\\\\Users\\\\User\\\\Desktop\\\\personal projects\\\\MiniMe&U\\\\*.png\" \"C:\\\\Users\\\\User\\\\Desktop\\\\karmir-arev\\\\projects\\\\other\\\\mini-me-and-you\"\")"
+    ]
+  }
+}
