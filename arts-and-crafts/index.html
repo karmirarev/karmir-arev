@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>arts and crafts - karmirarev</title>
+  <link rel="stylesheet" href="../gallery.css">
+  <style>
+    body {
+      background-color: rgb(212, 211, 200);
+      background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22><rect x=%229%22 y=%229%22 width=%222%22 height=%222%22 fill=%22%235CD0E6%22/></svg>');
+      margin: 0;
+      padding: 20px;
+      font-family: 'Courier New', monospace;
+    }
+    a {
+      text-decoration: none;
+      color: #0000EE;
+    }
+    .page-layout {
+      display: flex;
+      align-items: flex-start;
+      gap: 40px;
+    }
+    .content {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      padding: 20px;
+    }
+    .menu {
+      flex-shrink: 0;
+      width: 280px;
+      position: sticky;
+      top: 20px;
+    }
+    .event-row {
+      display: flex;
+      align-items: stretch;
+      gap: 15px;
+      height: 400px;
+    }
+    .event-text {
+      width: 320px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+    .gifs-column {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      height: 400px;
+    }
+    .gifs-column img {
+      height: calc((400px - 12px) / 3);
+      width: auto;
+      object-fit: contain;
+    }
+    .main-photo {
+      height: 100%;
+      width: auto;
+      object-fit: contain;
+    }
+    .event-row video {
+      height: 100%;
+      width: auto;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-layout">
+  <div class="content" id="content">
+    <p>some silly things i did</p>
+  </div>
+
+  <div class="menu">
+    <p><a href="../">🟒</a></p>
+    <p>arts and crafts</p>
+    <br>
+    <p><a href="#" onclick="show('digital-mixed-media'); return false;">digital-mixed-media</a></p>
+    <p><a href="#" onclick="show('clay'); return false;">clay</a></p>
+    <p><a href="#" onclick="show('papercraft'); return false;">papercraft</a></p>
+    <p><a href="#" onclick="show('events-markets-exhibits'); return false;">events-markets-exhibits</a></p>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <span class="lightbox-close" onclick="closeLightbox()">x</span>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+  const sections = {
+    'digital-mixed-media': `
+      <p>digital-mixed-media</p>
+      <br>
+      <div class="gallery" id="gallery">
+        <div class="gallery-item"><img src="./digital-mixed-media/astral.png" alt="astral"></div>
+        <div class="gallery-item"><img src="./digital-mixed-media/ballladies.png" alt="ballladies"></div>
+        <div class="gallery-item"><img src="./digital-mixed-media/blob.png" alt="blob"></div>
+        <div class="gallery-item"><img src="./digital-mixed-media/boyfriend.png" alt="boyfriend"></div>
+        <div class="gallery-item"><img src="./digital-mixed-media/horselady.png" alt="horselady"></div>
+        <div class="gallery-item"><img src="./digital-mixed-media/howmybfseesme.png" alt="howmybfseesme"></div>
+        <div class="gallery-item"><img src="./digital-mixed-media/icanseeyourface.png" alt="icanseeyourface"></div>
+        <div class="gallery-item"><img src="./digital-mixed-media/knightlady.png" alt="knightlady"></div>
+        <div class="gallery-item"><img src="./digital-mixed-media/pilote.gif" alt="pilote"></div>
+        <div class="gallery-item"><img src="./digital-mixed-media/prettylady.png" alt="prettylady"></div>
+        <div class="gallery-item"><img src="./digital-mixed-media/sakura.png" alt="sakura"></div>
+        <div class="gallery-item"><img src="./digital-mixed-media/spaceseal.png" alt="spaceseal"></div>
+        <div class="gallery-item"><img src="./digital-mixed-media/theboyandtheheroin.png" alt="theboyandtheheroin"></div>
+        <div class="gallery-item"><img src="./digital-mixed-media/theyellowwallpaper.png" alt="theyellowwallpaper"></div>
+      </div>
+    `,
+    'clay': `
+      <p>clay</p>
+      <br>
+      <div class="gallery" id="gallery">
+      </div>
+    `,
+    'papercraft': `
+      <p>papercraft</p>
+      <br>
+      <div class="gallery" id="gallery">
+        <div class="gallery-item"><img src="./papercraft/saber.jpg" alt="saber"></div>
+      </div>
+    `,
+    'events-markets-exhibits': `
+      <p>events-markets-exhibits</p>
+      <br>
+      <div class="event-row">
+        <div class="event-text">
+          <p>nov 7, 2025</p>
+          <p>took part in BYOB (bring your own beamer) organized by hosq.co. looking back at these drawings, i find them too depressing. i remember drawing them right after i moved out, when i was missing our old village house.</p>
+        </div>
+        <div class="gifs-column">
+          <img src="./events-markets-exhibits/1.gif" alt="">
+          <img src="./events-markets-exhibits/2.gif" alt="">
+          <img src="./events-markets-exhibits/3.gif" alt="">
+        </div>
+        <img src="./events-markets-exhibits/ikindalookcoolhere.jpg" alt="" class="main-photo">
+        <video src="./events-markets-exhibits/cringe.MOV" controls></video>
+      </div>
+      <br>
+      <div class="event-row">
+        <div class="event-text">
+          <p>nov 22-23, 2025</p>
+          <p>saw an invitation to take part in an exhibit-market in qrchi bazaar with the focus being more on making connections and exchanging items rather than selling them. it actually worked and i met some coolsy people there. one of them even gave me sun shaped red earrings that i wear religiously.</p>
+        </div>
+        <img src="./events-markets-exhibits/4.jpg" alt="" class="main-photo">
+        <img src="./events-markets-exhibits/5.jpg" alt="" class="main-photo">
+        <img src="./events-markets-exhibits/7.jpg" alt="" class="main-photo">
+      </div>
+    `,
+  };
+
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+
+  function show(section) {
+    document.getElementById('content').innerHTML = sections[section];
+    document.querySelectorAll('.gallery-item img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightbox.classList.add('active');
+      });
+    });
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+  }
+
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
+
+</body>
+</html>
