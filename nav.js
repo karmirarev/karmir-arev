@@ -3,8 +3,8 @@
     { label: 'home', href: '/', color: 'green' },
     { label: 'projects', href: '/projects/', color: 'lilac', children: [
       { label: 'games', href: '/projects/#games', children: [
-        { label: 'bebe heist', href: '/projects/games/bebe-heist/' },
-        { label: 'pingala', href: '/projects/games/pingala/' }
+        { label: 'bebe heist', href: '/projects/games/bebe-heist/', newTab: true },
+        { label: 'pingala', href: '/projects/games/pingala/', newTab: true }
       ]},
       { label: 'other', href: '/projects/#other', children: [
         { label: 'mini me and u', href: '/projects/other/mini-me-and-you/' }
@@ -27,10 +27,10 @@
   ];
 
   var LINKS = [
-    { label: 'instagram', href: 'https://www.instagram.com/karmirarev__' },
-    { label: 'itch.io', href: 'https://karmirarev.itch.io/' },
-    { label: 'letterboxd', href: 'https://letterboxd.com/karmirarev/' },
-    { label: 'buymeacoffee', href: 'https://buymeacoffee.com/karmirarev' }
+    { label: 'instagram', href: 'https://www.instagram.com/karmirarev__', newTab: true },
+    { label: 'itch.io', href: 'https://karmirarev.itch.io/', newTab: true },
+    { label: 'letterboxd', href: 'https://letterboxd.com/karmirarev/', newTab: true },
+    { label: 'buymeacoffee', href: 'https://buymeacoffee.com/karmirarev', newTab: true }
   ];
 
   var menu = document.getElementById('menu');
@@ -63,6 +63,10 @@
       var a = document.createElement('a');
       a.href = it.href;
       a.textContent = it.label;
+      if (it.newTab) {
+        a.target = '_blank';
+        a.rel = 'noopener';
+      }
       if (it === current) a.className = 'current';
       li.appendChild(a);
       if (it.children) {
