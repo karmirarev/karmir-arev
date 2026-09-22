@@ -1,6 +1,3 @@
-/*
-  Cache-Control: public, max-age=0, must-revalidate
-
 /projects/games/pingala/Build/*.data.gz
   Content-Encoding: gzip
   Content-Type: application/octet-stream
