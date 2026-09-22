@@ -161,7 +161,7 @@ a:hover {
   margin-right: 6px;
   line-height: 16px;
   border: 1px solid var(--maroon);
-  border-radius: 3px;
+  border-radius: 2px;
   background: transparent;
   color: var(--maroon);
   cursor: pointer;
@@ -169,8 +169,20 @@ a:hover {
 }
 
 .nav .toggle:hover {
-  background: var(--maroon);
+  background: var(--maroon) !important;
   color: #fff;
+}
+
+.nav > li.has-kids::before {
+  display: none;
+}
+
+.nav > li.c-lime > .toggle { background: var(--lime); }
+.nav > li.c-lilac > .toggle { background: var(--lilac); }
+.nav > li.c-green > .toggle { background: var(--green); color: #fff; }
+
+.nav.links > li::before {
+  background: transparent;
 }
 
 .nav > li::before,

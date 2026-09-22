@@ -72,6 +72,7 @@
       if (it === current) a.className = 'current';
       li.appendChild(a);
       if (it.children) {
+        li.className += ' has-kids';
         var isOpen = open.indexOf(it) !== -1;
         var btn = document.createElement('button');
         btn.type = 'button';
@@ -116,7 +117,7 @@
     lt.textContent = 'links';
     menu.appendChild(lt);
     var links = build(LINKS, [], null);
-    links.className = 'nav';
+    links.className = 'nav links';
     menu.appendChild(links);
   }
 
