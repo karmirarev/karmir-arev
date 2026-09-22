@@ -1,7 +1,7 @@
 (function () {
   var NAV = [
     { label: 'home', href: '/', color: 'green' },
-    { label: 'projects', href: '/projects/', color: 'orange', children: [
+    { label: 'projects', href: '/projects/', color: 'lilac', children: [
       { label: 'games', href: '/projects/#games', children: [
         { label: 'bebe heist', href: '/projects/games/bebe-heist/' },
         { label: 'pingala', href: '/projects/games/pingala/' }
@@ -10,14 +10,14 @@
         { label: 'mini me and u', href: '/projects/other/mini-me-and-you/' }
       ]}
     ]},
-    { label: 'arts-and-crafts', href: '/arts-and-crafts/', color: 'pink', children: [
+    { label: 'arts-and-crafts', href: '/arts-and-crafts/', color: 'lime', children: [
       { label: 'digital-mixed-media', href: '/arts-and-crafts/#digital-mixed-media' },
       { label: 'clay', href: '/arts-and-crafts/#clay' },
       { label: 'papercraft', href: '/arts-and-crafts/#papercraft' },
       { label: '3d-model-painting', href: '/arts-and-crafts/#3d-model-painting' },
       { label: 'events-markets-exhibits', href: '/arts-and-crafts/#events-markets-exhibits' }
     ]},
-    { label: 'thinking-out-loud', href: '/thinking-out-loud/', color: 'blue', children: [
+    { label: 'thinking-out-loud', href: '/thinking-out-loud/', color: 'lilac', children: [
       { label: 'on-art-evolution-ai-and-consciousness', href: '/thinking-out-loud/#on-art-evolution-ai-and-consciousness' },
       { label: 'positive-outlook-on-reality', href: '/thinking-out-loud/#positive-outlook-on-reality' },
       { label: 'reflections-on-armenian-paganism', href: '/thinking-out-loud/#reflections-on-armenian-paganism' },
@@ -112,7 +112,7 @@
     var hr = document.createElement('hr');
     menu.appendChild(hr);
     var lt = document.createElement('p');
-    lt.className = 'nav-title c-yellow';
+    lt.className = 'nav-title c-lime';
     lt.textContent = 'links';
     menu.appendChild(lt);
     var links = build(LINKS, [], null);
