@@ -4,38 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>thinking out loud - karmirarev</title>
+  <link rel="stylesheet" href="../site.css">
   <style>
-    body {
-      background-color: rgb(212, 211, 200);
-      background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22><rect x=%229%22 y=%229%22 width=%222%22 height=%222%22 fill=%22%235CD0E6%22/></svg>');
-      margin: 0;
-      padding: 20px;
-      font-family: 'Courier New', monospace;
-    }
-    a {
-      text-decoration: none;
-      color: #0000EE;
-    }
-    .page-layout {
-      display: flex;
-      align-items: flex-start;
-      gap: 40px;
-    }
-    .content {
-      flex: 1;
-      min-width: 0;
-      overflow: hidden;
-      padding: 20px;
-    }
     .content p {
       max-width: 100%;
       line-height: 1.6;
-    }
-    .menu {
-      flex-shrink: 0;
-      width: 280px;
-      position: sticky;
-      top: 20px;
     }
   </style>
 </head>
@@ -47,9 +20,9 @@
   </div>
 
   <div class="menu">
-    <p><a href="../">🟒</a></p>
-    <p>thinking out loud</p>
-    <br>
+    <p class="menu-home"><a href="../">home</a></p>
+    <p class="menu-current">thinking out loud</p>
+    <hr>
     <p><a href="#" onclick="show('on-art-evolution-ai-and-consciousness'); return false;">on-art-evolution-ai-and-consciousness</a></p>
     <p><a href="#" onclick="show('positive-outlook-on-reality'); return false;">positive-outlook-on-reality</a></p>
     <p><a href="#" onclick="show('reflections-on-armenian-paganism'); return false;">reflections-on-armenian-paganism</a></p>
