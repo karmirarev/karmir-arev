@@ -2,6 +2,11 @@
   --paper: rgb(212, 211, 200);
   --maroon: #6b1a24;
   --link: #0000EE;
+  --green: #4fb043;
+  --orange: #f0912a;
+  --pink: #e8688f;
+  --blue: #3f8fd8;
+  --yellow: #f2c53d;
 }
 
 html {
@@ -76,18 +81,19 @@ a:hover {
   margin: 14px -20px;
 }
 
-.menu-home {
+.nav-back {
   margin: 0 -20px 0 -20px !important;
   padding: 8px 20px 10px;
   border-bottom: 1px solid var(--maroon);
 }
 
-.menu-home a {
+.nav-back a {
   color: var(--maroon);
 }
 
-.menu-home a::before {
-  content: '<- ';
+.nav-title {
+  color: var(--maroon);
+  font-weight: bold;
 }
 
 .menu-title {
@@ -95,14 +101,82 @@ a:hover {
   font-weight: bold;
 }
 
-.menu-current {
-  color: var(--maroon);
+.nav {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+}
+
+.nav ul {
+  list-style: none;
+  margin: 2px 0 4px 20px;
+  padding: 0;
+  border-left: 1px dashed var(--maroon);
+}
+
+.nav li {
+  margin: 6px 0;
+  padding-left: 8px;
+}
+
+.nav > li {
+  padding-left: 0;
+}
+
+.nav a {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.nav a.current {
+  background: var(--green);
+  color: #fff;
   font-weight: bold;
 }
 
-.menu-current::before {
-  content: '> ';
+.nav a.current:hover {
+  text-decoration: none;
 }
+
+.nav .toggle {
+  font: inherit;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  margin-right: 6px;
+  line-height: 16px;
+  border: 1px solid var(--maroon);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--maroon);
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.nav .toggle:hover {
+  background: var(--maroon);
+  color: #fff;
+}
+
+.nav > li::before,
+.nav-title::before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+  vertical-align: middle;
+  border-radius: 2px;
+  border: 1px solid var(--maroon);
+  background: var(--maroon);
+}
+
+.nav > li.c-green::before, .nav-title.c-green::before { background: var(--green); }
+.nav > li.c-orange::before, .nav-title.c-orange::before { background: var(--orange); }
+.nav > li.c-pink::before, .nav-title.c-pink::before { background: var(--pink); }
+.nav > li.c-blue::before, .nav-title.c-blue::before { background: var(--blue); }
+.nav > li.c-yellow::before, .nav-title.c-yellow::before { background: var(--yellow); }
 
 .art-image {
   max-width: 700px;
