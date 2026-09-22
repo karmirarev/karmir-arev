@@ -5,35 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>arts and crafts - karmirarev</title>
   <link rel="stylesheet" href="../gallery.css">
+  <link rel="stylesheet" href="../site.css">
   <style>
-    body {
-      background-color: rgb(212, 211, 200);
-      background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22><rect x=%229%22 y=%229%22 width=%222%22 height=%222%22 fill=%22%235CD0E6%22/></svg>');
-      margin: 0;
-      padding: 20px;
-      font-family: 'Courier New', monospace;
-    }
-    a {
-      text-decoration: none;
-      color: #0000EE;
-    }
-    .page-layout {
-      display: flex;
-      align-items: flex-start;
-      gap: 40px;
-    }
-    .content {
-      flex: 1;
-      min-width: 0;
-      overflow: hidden;
-      padding: 20px;
-    }
-    .menu {
-      flex-shrink: 0;
-      width: 280px;
-      position: sticky;
-      top: 20px;
-    }
     .event-row {
       display: flex;
       align-items: stretch;
@@ -77,9 +50,9 @@
   </div>
 
   <div class="menu">
-    <p><a href="../">🟒</a></p>
-    <p>arts and crafts</p>
-    <br>
+    <p class="menu-home"><a href="../">home</a></p>
+    <p class="menu-current">arts and crafts</p>
+    <hr>
     <p><a href="#" onclick="show('digital-mixed-media'); return false;">digital-mixed-media</a></p>
     <p><a href="#" onclick="show('clay'); return false;">clay</a></p>
     <p><a href="#" onclick="show('papercraft'); return false;">papercraft</a></p>
