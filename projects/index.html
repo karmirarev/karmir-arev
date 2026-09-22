@@ -13,13 +13,7 @@
     <p>some silly things i work/worked on</p>
   </div>
 
-  <div class="menu">
-    <p class="menu-home"><a href="../">home</a></p>
-    <p class="menu-current">projects</p>
-    <hr>
-    <p><a href="#" onclick="show('games'); return false;">games</a></p>
-    <p><a href="#" onclick="show('other'); return false;">other</a></p>
-  </div>
+  <div class="menu" id="menu"></div>
 </div>
 
 <script>
@@ -35,10 +29,18 @@
     `,
   };
 
+  function showFromHash() {
+    var key = location.hash.slice(1);
+    if (sections[key]) show(key);
+  }
+  window.addEventListener('hashchange', showFromHash);
+  showFromHash();
+
   function show(section) {
     document.getElementById('content').innerHTML = sections[section];
   }
 </script>
 
+<script src="/nav.js"></script>
 </body>
 </html>

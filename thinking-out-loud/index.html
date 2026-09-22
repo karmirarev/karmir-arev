@@ -19,16 +19,7 @@
     <p>some silly thoughts ive had</p>
   </div>
 
-  <div class="menu">
-    <p class="menu-home"><a href="../">home</a></p>
-    <p class="menu-current">thinking out loud</p>
-    <hr>
-    <p><a href="#" onclick="show('on-art-evolution-ai-and-consciousness'); return false;">on-art-evolution-ai-and-consciousness</a></p>
-    <p><a href="#" onclick="show('positive-outlook-on-reality'); return false;">positive-outlook-on-reality</a></p>
-    <p><a href="#" onclick="show('reflections-on-armenian-paganism'); return false;">reflections-on-armenian-paganism</a></p>
-    <p><a href="#" onclick="show('my-elden-ring-experience'); return false;">my-elden-ring-experience</a></p>
-    <p><a href="#" onclick="show('cool-animals-i-have-yet-to-see'); return false;">cool-animals-i-have-yet-to-see</a></p>
-  </div>
+  <div class="menu" id="menu"></div>
 </div>
 
 <script>
@@ -70,10 +61,18 @@
     `,
   };
 
+  function showFromHash() {
+    var key = location.hash.slice(1);
+    if (sections[key]) show(key);
+  }
+  window.addEventListener('hashchange', showFromHash);
+  showFromHash();
+
   function show(section) {
     document.getElementById('content').innerHTML = sections[section];
   }
 </script>
 
+<script src="/nav.js"></script>
 </body>
 </html>

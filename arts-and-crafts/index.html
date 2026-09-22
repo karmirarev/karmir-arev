@@ -49,16 +49,7 @@
     <p>some silly things i did</p>
   </div>
 
-  <div class="menu">
-    <p class="menu-home"><a href="../">home</a></p>
-    <p class="menu-current">arts and crafts</p>
-    <hr>
-    <p><a href="#" onclick="show('digital-mixed-media'); return false;">digital-mixed-media</a></p>
-    <p><a href="#" onclick="show('clay'); return false;">clay</a></p>
-    <p><a href="#" onclick="show('papercraft'); return false;">papercraft</a></p>
-    <p><a href="#" onclick="show('3d-model-painting'); return false;">3d-model-painting</a></p>
-    <p><a href="#" onclick="show('events-markets-exhibits'); return false;">events-markets-exhibits</a></p>
-  </div>
+  <div class="menu" id="menu"></div>
 </div>
 
 <div class="lightbox" id="lightbox">
@@ -145,6 +136,13 @@
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
 
+  function showFromHash() {
+    var key = location.hash.slice(1);
+    if (sections[key]) show(key);
+  }
+  window.addEventListener('hashchange', showFromHash);
+  showFromHash();
+
   function show(section) {
     document.getElementById('content').innerHTML = sections[section];
     document.querySelectorAll('.gallery-item img').forEach(img => {
@@ -168,5 +166,6 @@
   });
 </script>
 
+<script src="/nav.js"></script>
 </body>
 </html>
