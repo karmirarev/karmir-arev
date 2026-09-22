@@ -39,6 +39,29 @@
       height: 100%;
       width: auto;
     }
+    @media (max-width: 700px) {
+      .event-row {
+        flex-wrap: wrap;
+        height: auto;
+      }
+      .event-text {
+        width: 100%;
+      }
+      .gifs-column {
+        flex-direction: row;
+        height: auto;
+        width: 100%;
+      }
+      .gifs-column img {
+        height: auto;
+        width: calc((100% - 12px) / 3);
+      }
+      .main-photo,
+      .event-row video {
+        height: auto;
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
