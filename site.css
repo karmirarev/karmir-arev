@@ -38,7 +38,7 @@ a:hover {
 
 .page-layout {
   display: flex;
-  align-items: flex-start;
+  align-items: stretch;
   gap: 20px;
 }
 
@@ -57,8 +57,6 @@ a:hover {
 .menu {
   flex-shrink: 0;
   width: 400px;
-  position: sticky;
-  top: 20px;
   padding: 16px 20px;
 }
 
@@ -114,11 +112,7 @@ a:hover {
     flex-direction: column-reverse;
     gap: 12px;
   }
-  .page-layout {
-    align-items: stretch;
-  }
   .menu {
     width: 100%;
-    position: static;
   }
 }
