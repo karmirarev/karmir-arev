@@ -55,12 +55,6 @@
     return null;
   }
 
-  function parentOf(cur) {
-    if (cur.indexOf('#') !== -1) return cur.split('#')[0];
-    if (cur === '/') return null;
-    return cur.replace(/[^\/]+\/$/, '');
-  }
-
   function build(items, open, current) {
     var ul = document.createElement('ul');
     items.forEach(function (it) {
@@ -97,14 +91,6 @@
     var path = trail(NAV, cur, []) || trail(NAV, cur.split('#')[0], []) || [];
     var current = path[path.length - 1] || null;
     menu.innerHTML = '';
-
-    var back = parentOf(cur);
-    if (back !== null) {
-      var b = document.createElement('p');
-      b.className = 'nav-back';
-      b.innerHTML = '<a href="' + back + '">&lt;- back</a>';
-      menu.appendChild(b);
-    }
 
     var tree = build(NAV, path, current);
     tree.className = 'nav';

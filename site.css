@@ -48,7 +48,6 @@ a:hover {
 .menu {
   border: 1px solid var(--maroon);
   box-sizing: border-box;
-  position: relative;
 }
 
 .content {
@@ -78,26 +77,6 @@ a:hover {
   border: 0;
   border-top: 1px solid var(--maroon);
   margin: 14px -20px;
-}
-
-.nav-back {
-  position: absolute;
-  top: -1px;
-  right: -1px;
-  margin: 0 !important;
-}
-
-.nav-back a {
-  display: inline-block;
-  padding: 3px 10px;
-  border: 1px solid var(--maroon);
-  background: var(--lilac);
-  color: var(--maroon);
-}
-
-.nav-back a:hover {
-  background: var(--lime);
-  text-decoration: none;
 }
 
 .nav-title {
