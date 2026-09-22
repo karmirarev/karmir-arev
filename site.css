@@ -91,15 +91,18 @@ a:hover {
 
 .nav-title {
   color: var(--maroon);
+  font-weight: bold;
 }
 
 .nav a.strong {
   color: var(--maroon);
+  font-weight: bold;
 }
 
 .menu-title,
 .page-title {
   color: var(--maroon);
+  font-weight: bold;
 }
 
 .nav {
