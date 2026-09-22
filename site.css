@@ -155,11 +155,13 @@ a:hover {
 
 .nav .toggle {
   font: inherit;
-  width: 18px;
-  height: 18px;
+  font-size: 13px;
+  box-sizing: border-box;
+  width: 15px;
+  height: 15px;
   padding: 0;
-  margin-right: 6px;
-  line-height: 16px;
+  margin-right: 8px;
+  line-height: 13px;
   border: 1px solid var(--maroon);
   border-radius: 2px;
   background: transparent;
@@ -177,10 +179,6 @@ a:hover {
   display: none;
 }
 
-.nav > li.c-lime > .toggle { background: var(--lime); }
-.nav > li.c-lilac > .toggle { background: var(--lilac); }
-.nav > li.c-green > .toggle { background: var(--green); color: #fff; }
-
 .nav.links > li::before {
   background: transparent;
 }
@@ -189,18 +187,18 @@ a:hover {
 .nav-title::before {
   content: '';
   display: inline-block;
-  width: 10px;
-  height: 10px;
+  box-sizing: border-box;
+  width: 15px;
+  height: 15px;
   margin-right: 8px;
   vertical-align: middle;
   border-radius: 2px;
   border: 1px solid var(--maroon);
-  background: var(--maroon);
+  background: transparent;
 }
 
-.nav > li.c-green::before { background: var(--green); }
-.nav > li.c-lime::before, .nav-title.c-lime::before { background: var(--lime); }
-.nav > li.c-lilac::before, .nav-title.c-lilac::before { background: var(--lilac); }
+.nav > li.c-green::before,
+.nav-title.c-green::before { background: var(--green); }
 
 .art-image {
   max-width: 700px;
