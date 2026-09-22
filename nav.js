@@ -113,7 +113,7 @@
     var hr = document.createElement('hr');
     menu.appendChild(hr);
     var lt = document.createElement('p');
-    lt.className = 'nav-title c-lime';
+    lt.className = 'nav-title c-green';
     lt.textContent = 'links';
     menu.appendChild(lt);
     var links = build(LINKS, [], null);
