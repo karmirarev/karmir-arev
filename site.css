@@ -56,7 +56,7 @@ a:hover {
 
 .menu {
   flex-shrink: 0;
-  width: 280px;
+  width: 400px;
   position: sticky;
   top: 20px;
   padding: 16px 20px;
