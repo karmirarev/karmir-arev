@@ -7,6 +7,30 @@
   <link rel="stylesheet" href="../gallery.css">
   <link rel="stylesheet" href="../site.css">
   <style>
+    .parade {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      bottom: 12px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      pointer-events: none;
+    }
+    .parade img {
+      flex-shrink: 0;
+    }
+    @media (max-width: 700px) {
+      .parade {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px 4%;
+      }
+      .parade img {
+        width: calc(var(--w) * 2);
+      }
+    }
     .event-row {
       display: flex;
       align-items: stretch;
@@ -71,14 +95,16 @@
   <div class="content" id="content">
     <p class="page-title">arts and crafts</p>
     <p>artsy stuff i am working/worked on</p>
-    <img class="deco pinned" src="./deco/seal.png" alt="" style="left:27%;top:0;width:104px">
-    <img class="deco pinned" src="./deco/moth.png" alt="" style="left:1%;top:9%;width:160px">
-    <img class="deco pinned" src="./deco/funnelman.png" alt="" style="left:88%;top:3%;width:138px">
-    <img class="deco pinned" src="./deco/chairbird.png" alt="" style="left:81%;bottom:1%;width:178px">
-    <img class="deco pinned" src="./deco/frog.png" alt="" style="left:1%;bottom:1%;width:63px">
-    <img class="deco pinned" src="./deco/snailhare.png" alt="" style="left:7%;bottom:1%;width:114px">
-    <img class="deco pinned" src="./deco/dog.png" alt="" style="left:18%;bottom:1%;width:130px">
-    <img class="deco pinned" src="./deco/turtle.png" alt="" style="left:29%;bottom:1%;width:130px">
+    <div class="parade">
+      <img src="./deco/seal.png" alt="" style="--w:9.4%;width:var(--w)">
+      <img src="./deco/moth.png" alt="" style="--w:14.5%;width:var(--w)">
+      <img src="./deco/funnelman.png" alt="" style="--w:12.5%;width:var(--w)">
+      <img src="./deco/chairbird.png" alt="" style="--w:16.1%;width:var(--w)">
+      <img src="./deco/frog.png" alt="" style="--w:5.7%;width:var(--w)">
+      <img src="./deco/snailhare.png" alt="" style="--w:10.3%;width:var(--w)">
+      <img src="./deco/dog.png" alt="" style="--w:11.8%;width:var(--w)">
+      <img src="./deco/turtle.png" alt="" style="--w:11.8%;width:var(--w)">
+    </div>
   </div>
 
   <div class="menu" id="menu"></div>
