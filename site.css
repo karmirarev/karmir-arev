@@ -43,7 +43,7 @@ a:hover {
 }
 
 .menu {
-  border: 2px solid var(--maroon);
+  border: 1px solid var(--maroon);
   box-sizing: border-box;
 }
 
@@ -68,14 +68,14 @@ a:hover {
 
 .menu hr {
   border: 0;
-  border-top: 2px solid var(--maroon);
+  border-top: 1px solid var(--maroon);
   margin: 14px -20px;
 }
 
 .menu-home {
   margin: 0 -20px 0 -20px !important;
   padding: 8px 20px 10px;
-  border-bottom: 2px solid var(--maroon);
+  border-bottom: 1px solid var(--maroon);
 }
 
 .menu-home a {
