@@ -3,7 +3,9 @@
   if (!content) return;
   var KEY = 'deco-positions:' + location.pathname;
   var saved = {};
-  try { saved = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) {}
+  try {
+    saved = JSON.parse(localStorage.getItem(KEY) || localStorage.getItem('deco-positions') || '{}');
+  } catch (e) {}
 
   document.querySelectorAll('.deco').forEach(function (img) {
     img.draggable = false;
