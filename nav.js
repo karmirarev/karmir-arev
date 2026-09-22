@@ -18,11 +18,7 @@
       { label: 'events-markets-exhibits', href: '/arts-and-crafts/#events-markets-exhibits' }
     ]},
     { label: 'thinking-out-loud', href: '/thinking-out-loud/', color: 'lilac', children: [
-      { label: 'on-art-evolution-ai-and-consciousness', href: '/thinking-out-loud/#on-art-evolution-ai-and-consciousness' },
-      { label: 'positive-outlook-on-reality', href: '/thinking-out-loud/#positive-outlook-on-reality' },
-      { label: 'reflections-on-armenian-paganism', href: '/thinking-out-loud/#reflections-on-armenian-paganism' },
-      { label: 'my-elden-ring-experience', href: '/thinking-out-loud/#my-elden-ring-experience' },
-      { label: 'cool-animals-i-have-yet-to-see', href: '/thinking-out-loud/#cool-animals-i-have-yet-to-see' }
+      { label: 'on-art-evolution-ai-and-consciousness', href: '/thinking-out-loud/#on-art-evolution-ai-and-consciousness' }
     ]}
   ];
 
