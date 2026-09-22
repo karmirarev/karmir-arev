@@ -42,10 +42,8 @@ a:hover {
   gap: 20px;
 }
 
-.content,
 .menu {
   border: 2px solid var(--maroon);
-  background-color: var(--paper);
   box-sizing: border-box;
 }
 
