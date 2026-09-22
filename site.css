@@ -43,11 +43,27 @@ a:hover {
   display: flex;
   align-items: stretch;
   gap: 20px;
+  min-height: calc(100vh - 40px);
+}
+
+.side {
+  flex-shrink: 0;
+  width: 400px;
+  margin-top: 17px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.menu,
+.links-box {
+  border: 1px solid var(--maroon);
+  box-sizing: border-box;
+  padding: 16px 20px;
 }
 
 .menu {
-  border: 1px solid var(--maroon);
-  box-sizing: border-box;
+  flex: 1;
 }
 
 .content {
@@ -58,15 +74,9 @@ a:hover {
 }
 
 .content > :first-child,
-.menu > :first-child {
+.menu > :first-child,
+.links-box > :first-child {
   margin-top: 0;
-}
-
-.menu {
-  flex-shrink: 0;
-  width: 400px;
-  margin-top: 17px;
-  padding: 16px 20px;
 }
 
 .menu p {
@@ -84,6 +94,11 @@ a:hover {
   font-weight: bold;
 }
 
+.nav a.strong {
+  color: var(--maroon);
+  font-weight: bold;
+}
+
 .menu-title,
 .page-title {
   color: var(--maroon);
@@ -92,8 +107,12 @@ a:hover {
 
 .nav {
   list-style: none;
-  margin: 12px 0 0;
+  margin: 0;
   padding: 0;
+}
+
+.links-box .nav {
+  margin-top: 12px;
 }
 
 .nav ul {
@@ -194,8 +213,9 @@ a:hover {
     flex-direction: column-reverse;
     gap: 12px;
   }
-  .menu {
+  .side {
     width: 100%;
     margin-top: 0;
+    gap: 12px;
   }
 }
