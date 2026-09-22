@@ -1,6 +1,6 @@
 (function () {
   var NAV = [
-    { label: 'home', href: '/', color: 'green' },
+    { label: 'home', href: '/', color: 'green', strong: true },
     { label: 'projects', href: '/projects/', color: 'lilac', children: [
       { label: 'games', href: '/projects/#games', children: [
         { label: 'bebe heist', href: '/projects/games/bebe-heist/', newTab: true },
@@ -31,6 +31,13 @@
 
   var menu = document.getElementById('menu');
   if (!menu) return;
+  var side = document.createElement('div');
+  side.className = 'side';
+  menu.parentNode.insertBefore(side, menu);
+  side.appendChild(menu);
+  var linksBox = document.createElement('div');
+  linksBox.className = 'links-box';
+  side.appendChild(linksBox);
 
   function here() {
     var p = location.pathname;
@@ -63,7 +70,8 @@
         a.target = '_blank';
         a.rel = 'noopener';
       }
-      if (it === current) a.className = 'current';
+      if (it.strong) a.className = 'strong';
+      if (it === current) a.className += ' current';
       li.appendChild(a);
       if (it.children) {
         li.className += ' has-kids';
@@ -96,15 +104,14 @@
     tree.className = 'nav';
     menu.appendChild(tree);
 
-    var hr = document.createElement('hr');
-    menu.appendChild(hr);
+    linksBox.innerHTML = '';
     var lt = document.createElement('p');
     lt.className = 'nav-title c-green';
     lt.textContent = 'links';
-    menu.appendChild(lt);
+    linksBox.appendChild(lt);
     var links = build(LINKS, [], null);
     links.className = 'nav links';
-    menu.appendChild(links);
+    linksBox.appendChild(links);
   }
 
   render();
