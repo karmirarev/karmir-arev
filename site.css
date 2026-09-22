@@ -221,6 +221,11 @@ a:hover {
   z-index: 5;
 }
 
+.deco.pinned {
+  cursor: default;
+  pointer-events: none;
+}
+
 @media (max-width: 700px) {
   #content {
     min-height: 70vh;
