@@ -10,7 +10,7 @@
       border: 1px solid var(--maroon);
       padding: 16px 20px;
       margin-bottom: 20px;
-      width: 250px;
+      width: 270px;
       max-width: 100%;
       box-sizing: content-box;
     }
@@ -31,6 +31,51 @@
     }
     .card .email {
       margin-top: 2px;
+    }
+    .email-wrap {
+      white-space: nowrap;
+    }
+    .copy {
+      font: inherit;
+      box-sizing: border-box;
+      width: 18px;
+      height: 18px;
+      padding: 0;
+      margin-left: 6px;
+      border: 1px solid var(--maroon);
+      border-radius: 2px;
+      background: transparent;
+      color: var(--maroon);
+      cursor: pointer;
+      vertical-align: middle;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .copy:hover {
+      background: var(--lime);
+    }
+    .copy svg {
+      width: 11px;
+      height: 11px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .copy .check {
+      display: none;
+    }
+    .copy.done {
+      border-color: var(--green);
+      color: var(--green);
+    }
+    .copy.done .clip {
+      display: none;
+    }
+    .copy.done .check {
+      display: block;
     }
     .card p {
       line-height: 1.5;
@@ -60,7 +105,7 @@
       <div class="card">
         <img src="./yum.gif" alt="pixel me at my desk">
         <p class="page-title name">marita movsisyan</p>
-        <p class="email">email: maritamovsisyan@gmail.com</p>
+        <p class="email">email: <span class="email-wrap"><span id="email">maritamovsisyan@gmail.com</span><button type="button" class="copy" title="copy email" onclick="copyEmail(this)"><svg class="clip" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><svg class="check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></button></span></p>
         <p>game designer and developer in yerevan. i work on a live mobile games at rockbite and make my own on the side: design docs, code, and art included!</p>
       </div>
 
@@ -90,6 +135,14 @@
 
   function show(section) {
     document.getElementById('content').innerHTML = sections[section];
+  }
+
+  function copyEmail(btn) {
+    var text = document.getElementById('email').textContent;
+    navigator.clipboard.writeText(text).then(function () {
+      btn.classList.add('done');
+      setTimeout(function () { btn.classList.remove('done'); }, 1500);
+    });
   }
 </script>
 
