@@ -204,6 +204,33 @@ a:hover {
   max-width: 100%;
 }
 
+.content {
+  position: relative;
+}
+
+.deco {
+  position: absolute;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.deco.dragging {
+  cursor: grabbing;
+  z-index: 5;
+}
+
+@media (max-width: 700px) {
+  #content {
+    min-height: 70vh;
+  }
+  .deco {
+    transform: scale(0.75);
+    transform-origin: top left;
+  }
+}
+
 .art-image {
   max-width: 700px;
   width: 100%;
