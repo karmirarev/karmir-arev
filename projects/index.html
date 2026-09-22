@@ -111,15 +111,18 @@
   <div class="content" id="content">
     <p class="page-title">projects</p>
     <p>projects i am working/worked on during free time</p>
-    <img class="deco" src="./deco/sword.gif" alt="" style="left:4%;top:20%;width:62px">
-    <img class="deco" src="./deco/fish.gif" alt="" style="left:34%;top:14%;width:71px">
-    <img class="deco" src="./deco/glove.gif" alt="" style="left:70%;top:10%;width:64px">
-    <img class="deco" src="./deco/key.gif" alt="" style="left:18%;top:40%;width:64px">
-    <img class="deco" src="./deco/smiley.gif" alt="" style="left:52%;top:32%;width:36px">
-    <img class="deco" src="./deco/statue.gif" alt="" style="left:80%;top:36%;width:78px">
-    <img class="deco" src="./deco/toilet.gif" alt="" style="left:4%;bottom:6%;width:55px">
-    <img class="deco" src="./deco/flower.gif" alt="" style="left:62%;top:50%;width:120px">
-    <img class="deco" src="./deco/scene.gif" alt="" style="left:36%;bottom:2%;width:290px">
+    <img class="deco" data-id="sword-1" src="./deco/sword.gif" alt="" style="left:29%;top:86%;width:62px">
+    <img class="deco" data-id="sword-2" src="./deco/sword.gif" alt="" style="left:56%;top:84%;width:62px">
+    <img class="deco" data-id="sword-3" src="./deco/sword.gif" alt="" style="left:5%;top:63%;width:62px">
+    <img class="deco" data-id="fish-1" src="./deco/fish.gif" alt="" style="left:4%;top:81%;width:71px">
+    <img class="deco" data-id="fish-2" src="./deco/fish.gif" alt="" style="left:84%;top:83%;width:71px">
+    <img class="deco" data-id="fish-3" src="./deco/fish.gif" alt="" style="left:52%;top:12%;width:71px">
+    <img class="deco" data-id="key-1" src="./deco/key.gif" alt="" style="left:53%;top:39%;width:64px">
+    <img class="deco" data-id="key-2" src="./deco/key.gif" alt="" style="left:77%;top:12%;width:64px">
+    <img class="deco" data-id="key-3" src="./deco/key.gif" alt="" style="left:34%;top:57%;width:64px">
+    <img class="deco" data-id="smiley-1" src="./deco/smiley.gif" alt="" style="left:82%;top:38%;width:36px">
+    <img class="deco" data-id="smiley-2" src="./deco/smiley.gif" alt="" style="left:5%;top:37%;width:36px">
+    <img class="deco" data-id="smiley-3" src="./deco/smiley.gif" alt="" style="left:55%;top:61%;width:36px">
   </div>
 
   <div class="menu" id="menu"></div>
@@ -173,8 +176,7 @@
 
     document.querySelectorAll('.deco').forEach(function (img) {
       img.draggable = false;
-      var id = img.getAttribute('src').split('/').pop();
-      img.dataset.id = id;
+      var id = img.dataset.id;
       if (saved[id]) {
         img.style.left = saved[id].x + 'px';
         img.style.top = saved[id].y + 'px';
