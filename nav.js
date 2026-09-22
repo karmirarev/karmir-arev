@@ -1,9 +1,9 @@
 (function () {
   var NAV = [
     { label: 'home', href: '/', color: 'green', strong: true },
-    { label: 'portfolio', href: '/portfolio/' },
     { label: 'projects', href: '/projects/', color: 'lilac', children: [
       { label: 'games', href: '/projects/#games', children: [
+        { label: 'portfolio', href: '/portfolio/' },
         { label: 'bebe heist', href: '/projects/games/bebe-heist/', newTab: true },
         { label: 'pingala', href: '/projects/games/pingala/', newTab: true }
       ]},
