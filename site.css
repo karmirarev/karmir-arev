@@ -206,6 +206,39 @@ a:hover {
 
 .content {
   position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.cols {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
+}
+
+.cols > .left,
+.cols > .right {
+  flex: 1 1 0;
+  min-width: 0;
+  position: relative;
+}
+
+.cols > .left > :first-child,
+.cols > .right > :first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 700px) {
+  .cols {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .cols > .left,
+  .cols > .right {
+    flex: none;
+    width: 100%;
+  }
 }
 
 .deco {
