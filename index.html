@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>karmirarev</title>
-  <link rel="stylesheet" href="site.css?v=12">
+  <link rel="stylesheet" href="site.css?v=13">
   <style>
     .content > img {
       display: block;
@@ -91,72 +91,5 @@
 </div>
 
 <script src="/nav.js?v=7"></script>
-<script>
-(function () {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var TOTAL = 24;
-  var grid = document.querySelector('.tiles');
-  var cells = Array.from(grid.children);
-  var MIN = 12, MAX = 17;
-
-  function src(i) { return 'tiles/t' + (i < 10 ? '0' + i : i) + '.jpg'; }
-  function used() {
-    return cells.filter(function (c) { return c.tagName === 'IMG'; })
-      .map(function (c) { return parseInt(c.getAttribute('src').slice(-6, -4), 10); });
-  }
-  function pick(list) { return list[Math.floor(Math.random() * list.length)]; }
-  function fadeOut(el, done) { done(); }
-  function fadeIn(el) {}
-  function makeImg(i) {
-    var img = document.createElement('img');
-    img.className = 'tile';
-    img.src = src(i); img.alt = '';
-    return img;
-  }
-  function makeEmpty() {
-    var sp = document.createElement('span');
-    sp.className = 'tile empty';
-    return sp;
-  }
-  function replace(oldEl, newEl) {
-    cells[cells.indexOf(oldEl)] = newEl;
-    grid.replaceChild(newEl, oldEl);
-    fadeIn(newEl);
-  }
-
-  function step() {
-    var imgs = cells.filter(function (c) { return c.tagName === 'IMG'; });
-    var empties = cells.filter(function (c) { return c.tagName !== 'IMG'; });
-    var unused = [];
-    var u = used();
-    for (var i = 0; i < TOTAL; i++) if (u.indexOf(i) === -1) unused.push(i);
-    var moves = ['swap'];
-    if (empties.length && unused.length && imgs.length < MAX) moves.push('fill', 'fill');
-    if (imgs.length > MIN) moves.push('clear');
-    if (unused.length) moves.push('replace');
-    var move = pick(moves);
-
-    if (move === 'swap' && imgs.length > 1) {
-      var a = pick(imgs), b = pick(imgs.filter(function (x) { return x !== a; }));
-      var sa = a.getAttribute('src'), sb = b.getAttribute('src');
-      a.src = sb; b.src = sa;
-    } else if (move === 'fill') {
-      var e = pick(empties);
-      replace(e, makeImg(pick(unused)));
-    } else if (move === 'clear') {
-      var c = pick(imgs);
-      fadeOut(c, function () { replace(c, makeEmpty()); });
-    } else if (move === 'replace') {
-      var r = pick(imgs);
-      fadeOut(r, function () { replace(r, makeImg(pick(unused))); });
-    }
-    schedule();
-  }
-  function schedule() {
-    setTimeout(step, 4500 + Math.random() * 4000);
-  }
-  schedule();
-})();
-</script>
 </body>
 </html>
