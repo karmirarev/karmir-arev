@@ -109,7 +109,7 @@
 
     var map = document.createElement('img');
     map.className = 'menu-map';
-    map.src = '/tiles/map.jpg';
+    map.src = '/tiles/map2.jpg';
     map.alt = '';
     menu.appendChild(map);
 
