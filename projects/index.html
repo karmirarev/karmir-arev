@@ -4,22 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>projects - karmirarev</title>
-  <link rel="stylesheet" href="../site.css?v=17">
+  <link rel="stylesheet" href="../gallery.css?v=4">
+  <link rel="stylesheet" href="../site.css?v=24">
   <style>
     .content {
       position: relative;
       overflow: hidden;
-    }
-    .deco {
-      position: absolute;
-      cursor: grab;
-      touch-action: none;
-      user-select: none;
-      -webkit-user-drag: none;
-    }
-    .deco.dragging {
-      cursor: grabbing;
-      z-index: 5;
     }
     .games {
       margin-top: 16px;
@@ -176,19 +166,152 @@
       display: inline-block;
       margin-right: 16px;
     }
+    .back {
+      margin: 0 0 14px;
+      font-size: 13px;
+    }
+    .detail-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px 12px;
+    }
+    .detail-head .page-title {
+      margin: 0;
+      font-size: 22px;
+    }
+    .detail-head .tag {
+      font-size: 12px;
+      padding: 1px 7px;
+      border: 1px solid var(--maroon);
+      border-radius: 3px;
+    }
+    .hero {
+      margin: 16px 0;
+      border: 1px solid var(--maroon);
+      border-radius: 14px;
+      box-shadow: 4px 4px 0 #C1BCD7;
+      background: var(--paper);
+      overflow: hidden;
+    }
+    .hero canvas {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      cursor: pointer;
+    }
+    .hero canvas.no-gl {
+      background-image: repeating-linear-gradient(45deg, transparent 0 10px, rgba(145, 18, 84, 0.12) 10px 12px);
+    }
+    .get {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 20px;
+    }
+    .get a {
+      padding: 3px 12px;
+      border: 1px solid var(--maroon);
+      border-radius: 12px;
+      background: var(--paper);
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .get a.main {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fff;
+    }
+    .get a:hover {
+      background: var(--lime);
+      border-color: var(--maroon);
+      color: #1b1b1b;
+      text-decoration: none;
+    }
+    .block {
+      border: 1px solid var(--maroon);
+      border-radius: 14px;
+      box-shadow: 4px 4px 0 #C1BCD7;
+      background: var(--paper);
+      padding: 16px 20px;
+      margin-bottom: 20px;
+    }
+    .block > :first-child {
+      margin-top: 0;
+    }
+    .block > :last-child {
+      margin-bottom: 0;
+    }
+    .block p {
+      line-height: 1.6;
+    }
+    .did {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .did li {
+      position: relative;
+      padding: 4px 0 4px 20px;
+      line-height: 1.5;
+    }
+    .did li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.62em;
+      width: 9px;
+      height: 9px;
+      box-sizing: border-box;
+      border: 1px solid var(--maroon);
+      border-radius: 2px;
+    }
+    .shots {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
+    }
+    .shots img {
+      display: block;
+      width: 100%;
+      border: 1px solid var(--maroon);
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .shots img:hover {
+      outline: 2px solid var(--green);
+    }
+    .facts {
+      margin: 12px 0 24px;
+    }
+    .facts div {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--maroon);
+    }
+    .facts dt {
+      color: var(--maroon);
+    }
+    .facts dd {
+      margin: 0;
+      text-align: right;
+    }
+    .made span {
+      display: inline-block;
+      margin: 0 6px 6px 0;
+      padding: 2px 10px;
+      border: 1px solid var(--maroon);
+      border-radius: 12px;
+      font-size: 13px;
+    }
   </style>
 </head>
 <body>
 
 <div class="page-layout">
-  <div class="wing deco-area" id="wing">
-    <img class="deco" data-id="fish-1" src="./deco/fish.gif" alt="" style="left:4%;top:81%;width:71px">
-    <img class="deco" data-id="fish-2" src="./deco/fish.gif" alt="" style="left:84%;top:83%;width:71px">
-    <img class="deco" data-id="fish-3" src="./deco/fish.gif" alt="" style="left:52%;top:12%;width:71px">
-    <img class="deco" data-id="smiley-1" src="./deco/smiley.gif" alt="" style="left:82%;top:38%;width:36px">
-    <img class="deco" data-id="smiley-2" src="./deco/smiley.gif" alt="" style="left:5%;top:37%;width:36px">
-    <img class="deco" data-id="smiley-3" src="./deco/smiley.gif" alt="" style="left:55%;top:61%;width:36px">
-  </div>
+  <div class="wing only-toy" id="wing"><canvas class="wing-toy" data-toy="wing-projects"></canvas></div>
   <div class="content" id="content">
     <p class="page-title">projects</p>
     <p>projects i am working/worked on during free time</p>
@@ -197,49 +320,148 @@
   <div class="menu" id="menu"></div>
 </div>
 
+<div class="lightbox" id="lightbox">
+  <span class="lightbox-close" onclick="closeLightbox()">x</span>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
 <script>
+  const GAMES = [
+    {
+      key: 'sandsong',
+      name: 'sandsong',
+      tag: 'mobile game',
+      blurb: 'a top-down mobile puzzle game about playing a flute to shape sand into pattern-paths across a field of a dangerous desert.',
+      about: [],
+      did: [],
+      facts: { year: '', platform: 'mobile', engine: '', role: '', team: '', status: '' },
+      made: [],
+      links: { play: '', itch: '', store: '', github: '', ggd: '' },
+      shots: []
+    },
+    {
+      key: 'kami-hovani',
+      name: 'kami hovani',
+      tag: 'video game',
+      blurb: '',
+      about: [],
+      did: [],
+      facts: { year: '', platform: '', engine: '', role: '', team: '', status: '' },
+      made: [],
+      links: { play: '', itch: '', store: '', github: '', ggd: '' },
+      shots: []
+    },
+    {
+      key: 'bebe-heist',
+      name: 'bebe heist',
+      tag: 'video game',
+      blurb: '',
+      about: [],
+      did: [],
+      facts: { year: '', platform: 'browser', engine: 'javascript', role: '', team: '', status: 'playable' },
+      made: [],
+      links: { play: './games/bebe-heist/', itch: '', store: '', github: '', ggd: '' },
+      shots: []
+    },
+    {
+      key: 'pingala',
+      name: 'pingala',
+      tag: 'mobile game',
+      blurb: 'a single player code-breaking game',
+      about: [],
+      did: [],
+      facts: { year: '', platform: 'mobile, browser', engine: 'unity', role: '', team: '', status: 'playable' },
+      made: ['unity'],
+      links: { play: './games/pingala/', itch: '', store: '', github: '', ggd: '' },
+      shots: []
+    },
+    {
+      key: 'khali',
+      name: 'khali',
+      tag: 'video game',
+      blurb: '',
+      about: [],
+      did: [],
+      facts: { year: '', platform: '', engine: '', role: '', team: '', status: '' },
+      made: [],
+      links: { play: '', itch: '', store: '', github: '', ggd: '' },
+      shots: []
+    }
+  ];
+
+  const LINK_NAMES = {
+    play: 'play in browser',
+    itch: 'itch.io',
+    store: 'google play',
+    appstore: 'app store',
+    github: 'github',
+    ggd: 'game design doc (pdf)',
+    trailer: 'trailer'
+  };
+
+  function gameCard(g) {
+    return `
+      <a class="game" href="#${g.key}">
+        <canvas class="cover" data-toy="${g.key}"></canvas>
+        <div class="body">
+          <p class="name">${g.name}</p>
+          <span class="tag">${g.tag}</span>
+          ${g.blurb ? `<p>${g.blurb}</p>` : ''}
+        </div>
+      </a>`;
+  }
+
+  function gamePage(g) {
+    const links = Object.keys(LINK_NAMES).filter(k => g.links[k]).map(k =>
+      `<a class="${k === 'play' ? 'main' : ''}" href="${g.links[k]}" target="_blank" rel="noopener">${LINK_NAMES[k]}</a>`
+    ).join('');
+    const about = g.about.length ? g.about.map(t => `<p>${t}</p>`).join('') : `<p>${g.blurb || 'more about this one soon.'}</p>`;
+    return `
+      <p class="back"><a href="#games">&lt; all games</a></p>
+      <div class="detail-head">
+        <p class="page-title">${g.name}</p>
+        <span class="tag">${g.tag}</span>
+      </div>
+      <div class="hero"><canvas data-toy="${g.key}"></canvas></div>
+      ${links ? `<div class="get">${links}</div>` : ''}
+      <div class="block">
+        <p class="page-title">about</p>
+        ${about}
+      </div>
+      ${g.did.length ? `
+      <div class="block">
+        <p class="page-title">what i did</p>
+        <ul class="did">${g.did.map(t => `<li>${t}</li>`).join('')}</ul>
+      </div>` : ''}
+      ${g.shots.length ? `
+      <div class="block">
+        <p class="page-title">screenshots</p>
+        <div class="shots">${g.shots.map(src => `<img src="${src}" alt="${g.name}">`).join('')}</div>
+      </div>` : ''}
+    `;
+  }
+
+  function gameWing(g) {
+    const rows = Object.keys(g.facts).filter(k => g.facts[k]).map(k =>
+      `<div><dt>${k}</dt><dd>${g.facts[k]}</dd></div>`
+    ).join('');
+    return `
+      <p class="page-title">at a glance</p>
+      <dl class="facts">
+        <div><dt>type</dt><dd>${g.tag}</dd></div>
+        ${rows}
+      </dl>
+      ${g.made.length ? `
+      <p class="page-title">made with</p>
+      <p class="made">${g.made.map(t => `<span>${t}</span>`).join('')}</p>` : ''}
+    `;
+  }
+
   const sections = {
     games: `
       <p class="page-title">games</p>
       <div class="games">
-        <div class="games-grid">
-          <div class="game">
-            <canvas class="cover" data-toy="sandsong"></canvas>
-            <div class="body">
-              <p class="name">sandsong</p>
-              <span class="tag mobile">mobile game</span>
-              <p>a top-down mobile puzzle game about playing a flute to shape sand into pattern-paths across a field of a dangerous desert.</p>
-            </div>
-          </div>
-          <div class="game">
-            <canvas class="cover" data-toy="kami-hovani"></canvas>
-            <div class="body">
-              <p class="name">kami hovani</p>
-              <span class="tag video">video game</span>
-            </div>
-          </div>
-          <a class="game" href="./games/bebe-heist/" target="_blank" rel="noopener">
-            <canvas class="cover" data-toy="bebe-heist"></canvas>
-            <div class="body">
-              <p class="name">bebe heist</p>
-              <span class="tag video">video game</span>
-            </div>
-          </a>
-          <a class="game" href="./games/pingala/" target="_blank" rel="noopener">
-            <canvas class="cover" data-toy="pingala"></canvas>
-            <div class="body">
-              <p class="name">pingala</p>
-              <span class="tag mobile">mobile game</span>
-              <p>a single player code-breaking game</p>
-            </div>
-          </a>
-          <div class="game">
-            <canvas class="cover" data-toy="khali"></canvas>
-            <div class="body">
-              <p class="name">khali</p>
-              <span class="tag video">video game</span>
-            </div>
-          </div>
+        <div class="games-grid">${GAMES.map(gameCard).join('')}
         </div>
       </div>
     `,
@@ -271,6 +493,23 @@
     `,
   };
 
+  GAMES.forEach(g => {
+    sections[g.key] = gamePage(g);
+    wings[g.key] = gameWing(g);
+  });
+
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+  }
+  lightbox.addEventListener('click', e => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+
   function showFromHash() {
     var key = location.hash.slice(1);
     if (sections[key]) show(key);
@@ -280,7 +519,16 @@
 
   function show(section) {
     document.getElementById('content').innerHTML = sections[section];
-    document.getElementById('wing').innerHTML = wings[section] || '';
+    const wing = document.getElementById('wing');
+    wing.innerHTML = wings[section] || '';
+    wing.classList.remove('only-toy');
+    document.querySelectorAll('.shots img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightbox.classList.add('active');
+      });
+    });
+    if (GAMES.some(g => g.key === section)) window.scrollTo(0, 0);
     if (window.startToys) window.startToys();
   }
 
@@ -293,9 +541,8 @@
   }
 </script>
 
-<script src="/nav.js?v=11"></script>
-<script src="/deco.js?v=5"></script>
-<script src="/toys.js?v=7"></script>
+<script src="/nav.js?v=13"></script>
+<script src="/toys.js?v=14"></script>
 <script>if (window.startToys) window.startToys();</script>
 </body>
 </html>

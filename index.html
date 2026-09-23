@@ -4,87 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>karmirarev</title>
-  <link rel="stylesheet" href="site.css?v=17">
+  <link rel="stylesheet" href="site.css?v=24">
   <style>
-    .book-title {
-      margin-top: 22px;
-    }
-    .log.sep {
-      padding-bottom: 14px;
-      border-bottom: 1px dashed var(--maroon);
-    }
-    .book {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .book-scroll {
-      max-height: 260px;
-      overflow-y: auto;
-      margin-top: 8px;
-      padding-right: 6px;
-    }
-    .book-scroll:empty {
+    .log.sep li:nth-child(n+4) {
       display: none;
-    }
-    .book li {
-      padding: 6px 0;
-      line-height: 1.5;
-      overflow-wrap: anywhere;
-    }
-    .book b {
-      overflow-wrap: anywhere;
-    }
-    .sign-note {
-      font-size: 12px;
-      color: var(--maroon);
-      margin: 6px 0 0;
-      min-height: 1em;
-    }
-    .book b {
-      color: var(--maroon);
-      font-weight: normal;
-    }
-    .book time {
-      float: right;
-      font-size: 11px;
-      letter-spacing: 1px;
-      color: var(--maroon);
-    }
-    .sign {
-      display: flex;
-      gap: 8px;
-      margin-top: 12px;
-    }
-    .sign input {
-      flex: 1;
-      min-width: 0;
-      font: inherit;
-      font-size: 13px;
-      padding: 4px 8px;
-      border: 1px solid var(--maroon);
-      border-radius: 4px;
-      background: var(--paper);
-      color: #1b1b1b;
-    }
-    .sign button {
-      font: inherit;
-      font-size: 13px;
-      padding: 4px 10px;
-      border: 1px solid var(--maroon);
-      border-radius: 4px;
-      background: var(--lime);
-      color: var(--maroon);
-      cursor: pointer;
-    }
-    .sign button:hover {
-      background: var(--green);
-      color: #fff;
-    }
-    .sign input:disabled,
-    .sign button:disabled {
-      opacity: 0.5;
-      cursor: default;
     }
     .content > img {
       display: block;
@@ -99,21 +22,14 @@
   <div class="wing" id="wing">
     <p class="nav-title">update log</p>
     <ul class="log sep">
+      <li><time>sep 23, 2026</time>guestbook gone. elsewhere now lives inside the menu and follows you down the page.</li>
+      <li><time>sep 23, 2026</time>each section's left box has its own tiny purple creatures: ripples, curls and budding dots.</li>
+      <li><time>sep 23, 2026</time>every game got its own page: about, links, facts and a live cover.</li>
       <li><time>sep 23, 2026</time>drawings split by type. events got a proper layout. a sketch of a new look lives in the lab.</li>
       <li><time>sep 22, 2026</time>whole site restyled: menu tree, left wing, draggable fish, portfolio under games.</li>
       <li><time>nov 2025</time>byob at hosq.co and the exhibit-market at qrchi bazaar, both in arts and crafts.</li>
     </ul>
 
-    <p class="nav-title book-title">guestbook</p>
-    <div class="book-scroll" id="book-scroll">
-      <ul class="book" id="book"></ul>
-    </div>
-    <form class="sign" id="sign" action="https://formspree.io/f/FORMSPREE_ID" method="POST">
-      <input name="name" id="sign-name" placeholder="name" maxlength="24" required autocomplete="off">
-      <input name="message" id="sign-text" placeholder="leave a mark" maxlength="160" required autocomplete="off">
-      <button type="submit">sign</button>
-    </form>
-    <p class="sign-note" id="sign-note"></p>
   </div>
   <div class="content">
         <p class="menu-title">կարմիր արեւ · կանաչ տերեւ</p>
@@ -125,50 +41,6 @@
   <div class="menu" id="menu"></div>
 </div>
 
-<script src="/nav.js?v=11"></script>
-<script>
-(function () {
-  var list = document.getElementById('book');
-  var scroll = document.getElementById('book-scroll');
-  var form = document.getElementById('sign');
-  var note = document.getElementById('sign-note');
-
-  function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
-  function draw(entries) {
-    list.innerHTML = entries.map(function (e) {
-      return '<li><b>' + esc(e.name) + '</b> <time>' + esc(e.when) + '</time><br>' + esc(e.text) + '</li>';
-    }).join('');
-    scroll.scrollTop = scroll.scrollHeight;
-  }
-  fetch('/guestbook.json?t=' + Date.now())
-    .then(function (r) { return r.json(); })
-    .then(draw)
-    .catch(function () {});
-
-  if (form.action.indexOf('FORMSPREE_ID') !== -1) {
-    form.querySelectorAll('input, button').forEach(function (el) { el.disabled = true; });
-    note.textContent = 'the book opens soon.';
-  }
-
-  form.addEventListener('submit', function (ev) {
-    ev.preventDefault();
-    var name = document.getElementById('sign-name').value.trim();
-    var text = document.getElementById('sign-text').value.trim();
-    if (!name || !text) return;
-    note.textContent = 'sending…';
-    fetch(form.action, {
-      method: 'POST',
-      headers: { 'Accept': 'application/json' },
-      body: new FormData(form)
-    }).then(function (r) {
-      if (!r.ok) throw new Error();
-      form.reset();
-      note.textContent = 'got it. marks show up once marita adds them.';
-    }).catch(function () {
-      note.textContent = 'could not send. try again in a bit.';
-    });
-  });
-})();
-</script>
+<script src="/nav.js?v=13"></script>
 </body>
 </html>

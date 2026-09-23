@@ -9,6 +9,10 @@ https://xn--y9aamws5a2fcbv.xn--y9a3aq). Static files, no build step. Pushing to
 - Beige paper `rgb(212,211,200)` with the light-blue dot grid, fixed behind the page.
 - Font: `'Courier New', monospace` everywhere. All text lowercase. Titles are the same
   font, bold, in purple.
+- Armenian letters use FreeMono (`fonts/FreeMono.ttf`, GNU FreeFont, GPL with font
+  exception, credit in `fonts/CREDITS.txt`). It is first in the `body` font stack with a
+  `unicode-range`, so any Armenian text picks it up and everything else stays Courier.
+  Do not use the Antique font: its license forbids hosting it.
 - Colours are CSS variables in `site.css`:
   - `--maroon: #911254` purple. Lines, titles, chips, dashed dividers, the `+`/`-` squares.
   - `--green: #129150` current page highlight, filled squares next to home and elsewhere.
@@ -16,7 +20,7 @@ https://xn--y9aamws5a2fcbv.xn--y9a3aq). Static files, no build step. Pushing to
   - `--lilac: #9582F8` accent. Game tag pills are `#C1BCD7`.
   - Box shadow on every box is `4px 4px 0 #C1BCD7`.
   - Text is `#1b1b1b`. Links are ink with a thin purple underline. Never bright blue.
-- Boxes (left wing, menu, elsewhere, portfolio cards, game cards): 1px purple border,
+- Boxes (left wing, menu, portfolio cards, game cards): 1px purple border,
   `border-radius: 14px`, the lilac shadow, solid paper background so dots do not show through.
 - The left wing has notebook lines inside it: red verticals near its sides and a purple
   line across the top (done with background gradients in `.wing`).
@@ -30,8 +34,11 @@ https://xn--y9aamws5a2fcbv.xn--y9a3aq). Static files, no build step. Pushing to
 ## Layout
 
 Every main page is three parts: `.wing` (left box), `.content` (middle), `.side` on the
-right which holds `.menu` (the page tree, rendered by `nav.js`) and `.links-box`
-("elsewhere"). Wing and menu are `min(400px, 28vw)` wide and stretch to the full page
+right which holds `.menu`, one box with the page tree and, at its bottom, `.links-box`
+("elsewhere"), both rendered by `nav.js`. The links sit under a dashed line and are
+`position: sticky; bottom: 21px` (the page padding plus the border, so they sit exactly
+where they sit on a short page), so on long pages they ride along the bottom of the
+screen and settle at the bottom of the menu box at the end (static under 700px). Wing and menu are `min(400px, 28vw)` wide and stretch to the full page
 height. Under 700px the order is menu, content, wing, and an empty wing is hidden.
 
 Section pages (`projects`, `arts-and-crafts`, `thinking-out-loud`) keep every subsection
@@ -44,31 +51,42 @@ Sub-pages like `arts-and-crafts/clay/` still exist as files but nothing links to
 ## Menu
 
 `nav.js` holds the whole tree in `NAV` and the outside links in `LINKS`. Adding a page
-means adding an entry there. Links with `newTab: true` open in a new tab (used for the
-two playable games and all outside links). The current page gets the green pill, its
+means adding an entry there. Links with `newTab: true` open in a new tab (used for all
+outside links). The current page gets the green pill, its
 parents are unfolded.
 
 ## Adding a game
 
-1. In `projects/index.html`, inside `sections.games`, copy one `.game` card:
-   ```html
-   <div class="game">
-     <canvas class="cover" data-toy="NAME"></canvas>
-     <div class="body">
-       <p class="name">NAME</p>
-       <span class="tag mobile">mobile game</span>   <!-- or tag video / video game -->
-       <p>one line about it</p>
-     </div>
-   </div>
+Every game has its own page at `/projects/#KEY`, built from one entry in the `GAMES`
+list in `projects/index.html`. The games grid, the game page (content) and the
+"at a glance" fact sheet (wing) are all made from that entry, so there is no html
+to copy.
+
+1. Add an entry to `GAMES`:
+   ```js
+   {
+     key: 'my-game',                 // url hash and toys.js key
+     name: 'my game',
+     tag: 'mobile game',             // or 'video game'
+     blurb: 'one line for the card',
+     about: ['paragraph', 'paragraph'],
+     did: ['thing i did', 'another'],
+     facts: { year: '', platform: '', engine: '', role: '', team: '', status: '' },
+     made: ['unity', 'aseprite'],
+     links: { play: '', itch: '', store: '', github: '', ggd: '' },
+     shots: ['./shots/my-game-1.png']
+   }
    ```
-   Use `<a class="game" href="..." target="_blank" rel="noopener">` instead of the div
-   if it links somewhere. Cards are 16:9 covers, name, tag, blurb, in that order.
-2. In `toys.js`, add a `TOYS[NAME]` entry. Covers are live GPU cellular automata
+   Empty fields, links and lists are simply not shown. `play` is the green button.
+   Other link keys: `appstore`, `trailer` (names in `LINK_NAMES`). Design docs and
+   screenshots go in `projects/` as files with new names.
+2. In `toys.js`, add a `TOYS[KEY]` entry. Covers are live GPU cellular automata
    (WebGL2, ported from snek-git/quickshell-toys). Existing regimes: Gray-Scott with
    `u_F`/`u_k` (mode 4) and Lenia species (mode 0). Keep them purple: `ink: PLUM,
    ink2: PLUM2`. They pause off-screen and reseed on click.
-3. Add the game to the `games` children in `nav.js`, same order as the cards.
-4. Bump `toys.js?v=N` in `projects/index.html`.
+3. Add `{ label, href: '/projects/#KEY' }` to the `games` children in `nav.js`, same
+   order as `GAMES`.
+4. Bump `toys.js?v=N` in `projects/index.html` and `nav.js?v=N` in all pages.
 
 The portfolio cards (gif, name, email with copy button, bio, find me on, resume) live in
 `wings.games` in `projects/index.html`. The resume is `projects/resume.pdf`.
@@ -85,23 +103,40 @@ The portfolio cards (gif, name, email with copy button, bio, find me on, resume)
   `alignEvents()` lines each story up with its photos. Photo columns are sized from
   the images' real proportions so nothing is cropped.
 - Essays: `thinking-out-loud/index.html`, `sections`, plus a `nav.js` entry.
+  Quotes from other authors go between paragraphs as
+  `<div class="cite-spot"><blockquote class="cite">"quote"<cite>author</cite></blockquote></div>`.
+  On desktop `show()` copies them into the left box, `alignCites()` lines each one up with
+  its spot and draws a straight dashed purple line with a dot to the gap (quotes are square, kept
+  inside the box). Under 700px they
+  show inline instead. Quote background is the tag colour `#C1BCD7`.
 
-## Draggable things
+## Creatures in the left box
 
-`deco.js` makes `.deco` images draggable inside `.deco-area` (the projects wing).
-Positions are saved per visitor in localStorage under `deco-positions:v2:<path>`.
+Only the main pages `projects`, `arts-and-crafts` and `thinking-out-loud` (no hash) show `<canvas class="wing-toy" data-toy="wing-PAGE">`, sized to the box. Each page has
+its own, picked by marita from `lab/creatures.html` (a numbered grid of every
+option, `pick-N` in `toys.js`): projects is 11 (pale ripples, Gray-Scott F 0.014 k 0.054),
+arts is 9 (rings and curls, F 0.03 k 0.062), thinking is 10 (budding dots, F 0.078
+k 0.061). Keep them small (`cols: 220`) and never reuse a game banner's creature. She
+disliked the spinning Gyrorbium in the wings. Subpages (any hash) never
+show creatures: `show()` sets the wing to `wings[key]` or empty and drops `.only-toy`
+(which hides the landing box under 700px).
+
+`deco.js` (draggable `.deco` gifs) is no longer used by any page.
 
 ## Home wing
 
-Update log (`ul.log` with `<time>` lines) and the guestbook. The guestbook posts to
-Formspree (form action in `index.html`, currently a `FORMSPREE_ID` placeholder, which
-keeps the form disabled) and lists entries from `guestbook.json` in the repo root:
-`[{ "name": "...", "when": "23 sep", "text": "..." }]`. Add approved entries there.
+Every major change to the site gets a line at the top of the update log in
+`index.html` (`<li><time>mon d, yyyy</time>short lowercase line.</li>`), in the same
+change that makes it. Only the newest 3 lines show (CSS hides the rest, no
+"older" button, marita does not want one), so keep new lines at the top.
+
+The home wing is only the update log (`ul.log` with `<time>` lines). Marita removed
+the guestbook, do not add a message form back.
 
 ## Cache
 
 The host caches files for four hours and ignores `_headers`. Every page loads
-`site.css?v=N`, `nav.js?v=N`, `deco.js?v=N`, `toys.js?v=N`. Bump the number in all
+`site.css?v=N`, `nav.js?v=N`, `toys.js?v=N`. Bump the number in all
 pages whenever that file changes (a one-line sed across `**/index.html`, skipping the
 game folders and `lab/`). New images get new file names rather than reusing one.
 
@@ -114,6 +149,7 @@ simulations pause there; `?toys=force` in the URL overrides that, and each canva
 
 ## Not part of the site
 
-`lab/` holds design sketches (`index.html` is the latest, `v1.html` the first). Do not
+`lab/` holds design sketches (`index.html` is the latest, `v1.html` the first) and
+`creatures.html`, the creature picker. Do not
 link them from the menu. `projects/games/pingala/` and `bebe-heist/` are built game
 exports, leave their files alone.

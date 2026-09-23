@@ -1,0 +1,2 @@
+FreeMono.ttf: freemono from gnu freefont (https://www.gnu.org/software/freefont/), copyright gnu freefont contributors.
+licensed under the gnu gpl v3 or later with the font exception, shared here unchanged.

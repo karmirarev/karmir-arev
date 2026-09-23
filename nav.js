@@ -3,11 +3,11 @@
     { label: 'home', href: '/', color: 'green', strong: true },
     { label: 'projects', href: '/projects/', color: 'lilac', children: [
       { label: 'games', href: '/projects/#games', children: [
-        { label: 'sandsong', href: '/projects/#games' },
-        { label: 'kami hovani', href: '/projects/#games' },
-        { label: 'bebe heist', href: '/projects/games/bebe-heist/', newTab: true },
-        { label: 'pingala', href: '/projects/games/pingala/', newTab: true },
-        { label: 'khali', href: '/projects/#games' }
+        { label: 'sandsong', href: '/projects/#sandsong' },
+        { label: 'kami hovani', href: '/projects/#kami-hovani' },
+        { label: 'bebe heist', href: '/projects/#bebe-heist' },
+        { label: 'pingala', href: '/projects/#pingala' },
+        { label: 'khali', href: '/projects/#khali' }
       ]},
       { label: 'other', href: '/projects/#other', children: [
         { label: 'mini me and u', href: '/projects/other/mini-me-and-you/' }
@@ -40,7 +40,6 @@
   side.appendChild(menu);
   var linksBox = document.createElement('div');
   linksBox.className = 'links-box';
-  side.appendChild(linksBox);
 
   function here() {
     var p = location.pathname;
@@ -106,7 +105,7 @@
     var tree = build(NAV, path, current);
     tree.className = 'nav';
     menu.appendChild(tree);
-
+    menu.appendChild(linksBox);
 
     linksBox.innerHTML = '';
     var lt = document.createElement('p');
