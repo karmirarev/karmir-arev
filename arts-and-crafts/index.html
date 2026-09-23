@@ -62,6 +62,17 @@
       display: block;
       background: #000;
     }
+    .shots.byob {
+      grid-auto-rows: 150px;
+    }
+    .shots.byob img {
+      height: 150px;
+    }
+    .shots.byob .me {
+      grid-column: 2;
+      grid-row: 1 / span 3;
+      height: 100%;
+    }
     .shots img {
       cursor: pointer;
     }
@@ -169,12 +180,11 @@
     'events-markets-exhibits': `
       <p class="page-title">events-markets-exhibits</p>
       <div class="event">
-        <div class="shots">
-          <img class="shot" src="./events-markets-exhibits/ikindalookcoolhere.jpg" alt="">
+        <div class="shots byob">
           <img class="shot" src="./events-markets-exhibits/1.gif" alt="">
           <img class="shot" src="./events-markets-exhibits/2.gif" alt="">
           <img class="shot" src="./events-markets-exhibits/3.gif" alt="">
-          <video src="./events-markets-exhibits/cringe.MOV" controls></video>
+          <img class="shot me" src="./events-markets-exhibits/ikindalookcoolhere.jpg" alt="">
         </div>
       </div>
       <div class="event">
