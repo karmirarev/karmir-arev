@@ -118,10 +118,11 @@ a:hover {
 
 .walker {
   position: absolute;
-  width: 15%;
-  transform: translate(-50%, -100%);
+  width: 23%;
+  transform: translate(-45%, -100%);
   left: 30%;
   top: 24%;
+  image-rendering: auto;
 }
 
 .content {
