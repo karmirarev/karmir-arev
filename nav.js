@@ -11,7 +11,7 @@
       ]}
     ]},
     { label: 'arts-and-crafts', href: '/arts-and-crafts/', color: 'lime', children: [
-      { label: 'digital-mixed-media', href: '/arts-and-crafts/#digital-mixed-media' },
+      { label: 'drawings', href: '/arts-and-crafts/#drawings' },
       { label: 'clay', href: '/arts-and-crafts/#clay' },
       { label: 'papercraft', href: '/arts-and-crafts/#papercraft' },
       { label: '3d-model-painting', href: '/arts-and-crafts/#3d-model-painting' },
