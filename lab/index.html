@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>lab - karmirarev</title>
+  <style>
+    :root {
+      --paper: #d8d6c8;
+      --ink: #1b1b1b;
+      --plum: #911254;
+      --green: #129150;
+      --lilac: #C1BCD7;
+      --lime: #E4F882;
+      --rule: rgba(145, 18, 84, 0.55);
+      --grid: rgba(92, 208, 230, 0.35);
+    }
+    html { background: var(--paper); }
+    body {
+      margin: 0;
+      padding: 28px 24px 40px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      color: var(--ink);
+      background-color: var(--paper);
+      background-image:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+        url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22><rect x=%229%22 y=%229%22 width=%222%22 height=%222%22 fill=%22%235CD0E6%22/></svg>');
+      background-size: 80px 80px, 80px 80px, 20px 20px;
+      background-attachment: fixed;
+    }
+    a { color: #0000EE; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* the sheet: one rounded frame with a red margin line, like a notebook page */
+    .sheet {
+      max-width: 1380px;
+      margin: 0 auto;
+      border: 1.5px solid var(--plum);
+      border-radius: 22px;
+      background: rgba(216, 214, 200, 0.55);
+      position: relative;
+      overflow: hidden;
+    }
+    .sheet::before, .sheet::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: rgba(220, 40, 60, 0.45);
+    }
+    .sheet::before { left: 36px; }
+    .sheet::after { right: 36px; }
+
+    /* header strip */
+    .masthead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 56px;
+      border-bottom: 1.5px solid var(--plum);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .brand .stamp {
+      background: var(--lime);
+      border: 1.5px solid var(--plum);
+      padding: 6px 12px;
+      color: var(--plum);
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .brand .sub { font-size: 12px; opacity: .8; }
+    .topnav { display: flex; gap: 22px; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; }
+    .topnav a { color: var(--ink); }
+    .topnav a.here { color: var(--plum); border-bottom: 2px solid var(--green); }
+
+    /* three columns of "windows" */
+    .desk {
+      display: grid;
+      grid-template-columns: 300px 1fr 300px;
+      gap: 22px;
+      padding: 26px 56px 30px;
+      align-items: start;
+    }
+    .win {
+      border: 1.5px solid var(--plum);
+      background: var(--paper);
+      margin-bottom: 22px;
+      box-shadow: 4px 4px 0 var(--lilac);
+    }
+    .win .bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px 10px;
+      border-bottom: 1.5px solid var(--plum);
+      background: repeating-linear-gradient(90deg, var(--plum) 0 2px, transparent 2px 6px);
+      color: var(--ink);
+    }
+    .win .bar span {
+      background: var(--paper);
+      padding: 0 8px;
+      font-weight: bold;
+      color: var(--plum);
+    }
+    .win .bar i {
+      display: inline-block;
+      width: 12px; height: 12px;
+      border: 1.5px solid var(--plum);
+      background: var(--paper);
+      font-style: normal;
+      font-size: 9px;
+      line-height: 11px;
+      text-align: center;
+      color: var(--plum);
+    }
+    .win .body { padding: 14px 16px; line-height: 1.55; }
+    .win .body > :first-child { margin-top: 0; }
+    .win .body > :last-child { margin-bottom: 0; }
+    .h { color: var(--plum); font-weight: bold; }
+
+    /* left: webmaster + now playing + todo */
+    .me { display: flex; gap: 12px; align-items: flex-start; }
+    .me img { width: 96px; border: 1.5px solid var(--plum); background: #000; }
+    .buttons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .buttons b {
+      display: block;
+      border: 1.5px solid var(--plum);
+      background: var(--lilac);
+      font-size: 10px;
+      text-align: center;
+      padding: 4px 2px;
+      color: var(--plum);
+    }
+    .buttons b:nth-child(2n) { background: var(--lime); }
+    .todo { list-style: none; padding: 0; margin: 0; }
+    .todo li::before { content: '[ ] '; color: var(--plum); }
+    .todo li.done::before { content: '[x] '; color: var(--green); }
+    .todo li.done { text-decoration: line-through; opacity: .7; }
+
+    /* middle: catalog sheet of drawings, numbered cells */
+    .catalog {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 150px;
+      border: 1.5px solid var(--plum);
+      background: var(--paper);
+    }
+    .cell {
+      position: relative;
+      border: 0.75px solid var(--rule);
+      padding: 22px 8px 20px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .cell img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .cell .n { position: absolute; top: 5px; left: 7px; font-size: 11px; color: var(--plum); }
+    .cell .cap { position: absolute; bottom: 4px; left: 0; right: 0; text-align: center; font-size: 11px; color: var(--plum); }
+    .cell.w2 { grid-column: span 2; }
+    .cell.h2 { grid-row: span 2; }
+    .cell.big { grid-column: span 2; grid-row: span 2; }
+    .cell:hover { outline: 2px solid var(--green); outline-offset: -2px; cursor: pointer; }
+    .catalog-title { text-align: center; color: var(--plum); font-weight: bold; letter-spacing: 2px; margin: 0 0 10px; }
+    .catalog-foot { text-align: center; color: var(--plum); font-size: 11px; margin-top: 8px; letter-spacing: 2px; }
+
+    /* right: directory, update log, links */
+    .dir a { display: block; padding: 3px 0; color: var(--ink); }
+    .dir a::before { content: '\25A1  '; color: var(--plum); }
+    .dir a.here { color: var(--plum); font-weight: bold; }
+    .dir a.here::before { content: '\25A0  '; color: var(--green); }
+    .dir .sub a { padding-left: 22px; font-size: 13px; }
+    .log { list-style: none; padding: 0; margin: 0; }
+    .log li { padding: 5px 0; border-bottom: 1px dashed var(--rule); }
+    .log li:last-child { border-bottom: 0; }
+    .log time { color: var(--plum); display: block; font-size: 11px; letter-spacing: 1px; }
+    .links a { display: inline-block; margin: 2px 8px 2px 0; padding: 1px 8px; border: 1.5px solid var(--plum); border-radius: 12px; color: var(--plum); }
+    .links a:hover { background: var(--lime); text-decoration: none; }
+
+    /* stickers on top of everything */
+    .sticker { position: absolute; pointer-events: none; }
+
+    /* footer parade */
+    .foot {
+      border-top: 1.5px solid var(--plum);
+      padding: 14px 56px 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .foot img { height: auto; }
+
+    @media (max-width: 1000px) {
+      .desk { grid-template-columns: 1fr; }
+      .catalog { grid-template-columns: repeat(3, 1fr); }
+      .sheet::before, .sheet::after { display: none; }
+      .masthead, .desk, .foot { padding-left: 20px; padding-right: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="sheet">
+  <img class="sticker" src="../projects/deco/fish.gif" alt="" style="left:46%;top:2px;width:70px">
+  <img class="sticker" src="../projects/deco/smiley.gif" alt="" style="left:330px;top:26px;width:34px">
+
+  <div class="masthead">
+    <div class="brand">
+      <span class="stamp">կարմիր արեւ</span>
+      <span class="sub">· կանաչ տերեւ · the website of marita/karmirarev</span>
+    </div>
+    <nav class="topnav">
+      <a class="here" href="#">home</a>
+      <a href="../projects/">projects</a>
+      <a href="../arts-and-crafts/">arts and crafts</a>
+      <a href="../thinking-out-loud/">thinking out loud</a>
+    </nav>
+  </div>
+
+  <div class="desk">
+    <div>
+      <div class="win">
+        <div class="bar"><span>about the webmaster</span><i>x</i></div>
+        <div class="body">
+          <div class="me">
+            <img src="../projects/desk.gif" alt="">
+            <div>
+              <p class="h">marita movsisyan</p>
+              <p>game designer and developer in yerevan. i work on live mobile games at rockbite and make my own on the side.</p>
+            </div>
+          </div>
+          <p>email: maritamovsisyan@gmail.com</p>
+          <div class="buttons">
+            <b>game dev</b><b>clay</b><b>papercraft</b><b>3d paint</b><b>essays</b><b>frogs</b>
+          </div>
+        </div>
+      </div>
+
+      <div class="win">
+        <div class="bar"><span>now playing</span><i>x</i></div>
+        <div class="body">
+          <p class="h">elden ring</p>
+          <p>my elden ring experience: pending essay. also bebe heist, which i made, which counts.</p>
+          <p><a href="../projects/games/pingala/" target="_blank">play pingala</a> · <a href="../projects/games/bebe-heist/" target="_blank">play bebe heist</a></p>
+        </div>
+      </div>
+
+      <div class="win">
+        <div class="bar"><span>to-do</span><i>x</i></div>
+        <div class="body">
+          <ul class="todo">
+            <li class="done">draggable fish</li>
+            <li class="done">bosch creatures</li>
+            <li>fill sketches + fanarts</li>
+            <li>clay photos</li>
+            <li>write the paganism essay</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p class="catalog-title">DRAWINGS No.01 · mixed media</p>
+      <div class="catalog">
+        <div class="cell big"><span class="n">01.</span><img src="../arts-and-crafts/digital-mixed-media/teinik.png" alt=""><span class="cap">teinik</span></div>
+        <div class="cell"><span class="n">02.</span><img src="../arts-and-crafts/digital-mixed-media/artemis.png" alt=""><span class="cap">artemis</span></div>
+        <div class="cell"><span class="n">03.</span><img src="../arts-and-crafts/digital-mixed-media/blob.png" alt=""><span class="cap">blob</span></div>
+        <div class="cell h2"><span class="n">04.</span><img src="../arts-and-crafts/digital-mixed-media/astral.png" alt=""><span class="cap">astral</span></div>
+        <div class="cell"><span class="n">05.</span><img src="../arts-and-crafts/digital-mixed-media/spaceseal.png" alt=""><span class="cap">space seal</span></div>
+        <div class="cell w2"><span class="n">06.</span><img src="../arts-and-crafts/digital-mixed-media/howmybfseesme.png" alt=""><span class="cap">how my bf sees me</span></div>
+        <div class="cell"><span class="n">07.</span><img src="../arts-and-crafts/digital-mixed-media/boyfriend.png" alt=""><span class="cap">boyfriend</span></div>
+        <div class="cell"><span class="n">08.</span><img src="../arts-and-crafts/digital-mixed-media/pilote.gif" alt=""><span class="cap">pilote</span></div>
+        <div class="cell"><span class="n">09.</span><img src="../arts-and-crafts/digital-mixed-media/knightlady.png" alt=""><span class="cap">knight lady</span></div>
+        <div class="cell"><span class="n">10.</span><img src="../arts-and-crafts/digital-mixed-media/sakura.png" alt=""><span class="cap">sakura</span></div>
+        <div class="cell h2"><span class="n">11.</span><img src="../arts-and-crafts/digital-mixed-media/horselady.png" alt=""><span class="cap">horse lady</span></div>
+        <div class="cell"><span class="n">12.</span><img src="../arts-and-crafts/digital-mixed-media/prettylady.png" alt=""><span class="cap">pretty lady</span></div>
+        <div class="cell"><span class="n">13.</span><img src="../arts-and-crafts/digital-mixed-media/icanseeyourface.png" alt=""><span class="cap">i can see your face</span></div>
+        <div class="cell"><span class="n">14.</span><img src="../arts-and-crafts/digital-mixed-media/theboyandtheheroin.png" alt=""><span class="cap">the boy and the heroin</span></div>
+        <div class="cell"><span class="n">15.</span><img src="../arts-and-crafts/digital-mixed-media/ballladies.png" alt=""><span class="cap">ball ladies</span></div>
+        <div class="cell"><span class="n">16.</span><img src="../arts-and-crafts/digital-mixed-media/theyellowwallpaper.png" alt=""><span class="cap">the yellow wallpaper</span></div>
+      </div>
+      <p class="catalog-foot">§ · 01 · §</p>
+    </div>
+
+    <div>
+      <div class="win">
+        <div class="bar"><span>directory</span><i>x</i></div>
+        <div class="body dir">
+          <a class="here" href="#">home</a>
+          <a href="../projects/">projects</a>
+          <div class="sub"><a href="../projects/#games">games</a><a href="../projects/#other">other</a></div>
+          <a href="../arts-and-crafts/">arts and crafts</a>
+          <div class="sub"><a href="../arts-and-crafts/#drawings">drawings</a><a href="../arts-and-crafts/#clay">clay</a><a href="../arts-and-crafts/#papercraft">papercraft</a><a href="../arts-and-crafts/#3d-model-painting">3d model painting</a><a href="../arts-and-crafts/#events-markets-exhibits">events</a></div>
+          <a href="../thinking-out-loud/">thinking out loud</a>
+        </div>
+      </div>
+
+      <div class="win">
+        <div class="bar"><span>update log</span><i>x</i></div>
+        <div class="body">
+          <ul class="log">
+            <li><time>sep 23, 2026</time>drawings split by type. events got a proper layout.</li>
+            <li><time>sep 22, 2026</time>whole site restyled: menu tree, wings, draggable fish.</li>
+            <li><time>nov 2025</time>byob at hosq.co, exhibit-market at qrchi bazaar.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="win">
+        <div class="bar"><span>elsewhere</span><i>x</i></div>
+        <div class="body links">
+          <a href="https://www.instagram.com/karmirarev__" target="_blank">instagram</a>
+          <a href="https://karmirarev.itch.io/" target="_blank">itch.io</a>
+          <a href="https://letterboxd.com/karmirarev/" target="_blank">letterboxd</a>
+          <a href="https://buymeacoffee.com/karmirarev" target="_blank">buymeacoffee</a>
+          <a href="https://www.linkedin.com/in/marita-movsisyan-155a3425b/" target="_blank">linkedin</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <img src="../arts-and-crafts/deco/seal.png" alt="" style="width:8%">
+    <img src="../arts-and-crafts/deco/moth.png" alt="" style="width:9%">
+    <img src="../arts-and-crafts/deco/funnelman.png" alt="" style="width:9%">
+    <img src="../arts-and-crafts/deco/chairbird.png" alt="" style="width:9%">
+    <img src="../walkin.gif" alt="" style="width:16%">
+    <img src="../arts-and-crafts/deco/frog.png" alt="" style="width:5%">
+    <img src="../arts-and-crafts/deco/snailhare.png" alt="" style="width:8%">
+    <img src="../arts-and-crafts/deco/dog.png" alt="" style="width:10%">
+    <img src="../arts-and-crafts/deco/turtle.png" alt="" style="width:10%">
+  </div>
+</div>
+
+</body>
+</html>
