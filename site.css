@@ -202,12 +202,7 @@ a:hover {
 
 .log li {
   padding: 6px 0;
-  border-bottom: 1px dashed var(--maroon);
   line-height: 1.5;
-}
-
-.log li:last-child {
-  border-bottom: 0;
 }
 
 .log time {
