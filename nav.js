@@ -3,8 +3,11 @@
     { label: 'home', href: '/', color: 'green', strong: true },
     { label: 'projects', href: '/projects/', color: 'lilac', children: [
       { label: 'games', href: '/projects/#games', children: [
+        { label: 'sandsong', href: '/projects/#games' },
+        { label: 'kami hovani', href: '/projects/#games' },
         { label: 'bebe heist', href: '/projects/games/bebe-heist/', newTab: true },
-        { label: 'pingala', href: '/projects/games/pingala/', newTab: true }
+        { label: 'pingala', href: '/projects/games/pingala/', newTab: true },
+        { label: 'khali', href: '/projects/#games' }
       ]},
       { label: 'other', href: '/projects/#other', children: [
         { label: 'mini me and u', href: '/projects/other/mini-me-and-you/' }
