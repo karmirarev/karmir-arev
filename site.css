@@ -26,7 +26,13 @@ body::before {
   inset: 0;
   z-index: -1;
   background-color: var(--paper);
-  background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22><rect x=%229%22 y=%229%22 width=%222%22 height=%222%22 fill=%22%235CD0E6%22/></svg>');
+  background-image:
+    linear-gradient(90deg, transparent 9px, rgba(220, 40, 60, 0.45) 9px, rgba(220, 40, 60, 0.45) 10px, transparent 10px),
+    linear-gradient(90deg, transparent calc(100% - 10px), rgba(220, 40, 60, 0.45) calc(100% - 10px), rgba(220, 40, 60, 0.45) calc(100% - 9px), transparent calc(100% - 9px)),
+    linear-gradient(transparent 9px, rgba(220, 40, 60, 0.45) 9px, rgba(220, 40, 60, 0.45) 10px, transparent 10px),
+    url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22><rect x=%229%22 y=%229%22 width=%222%22 height=%222%22 fill=%22%235CD0E6%22/></svg>');
+  background-repeat: no-repeat, no-repeat, no-repeat, repeat;
+  background-size: 100% 100%, 100% 100%, 100% 100%, 20px 20px;
   pointer-events: none;
 }
 
@@ -60,9 +66,7 @@ a:hover {
 }
 
 .wing {
-  border: 1px solid var(--maroon);
-  box-sizing: border-box;
-  padding: 16px 20px;
+  overflow: hidden;
 }
 
 .wing > :first-child {
@@ -70,10 +74,13 @@ a:hover {
 }
 
 .menu,
-.links-box {
+.links-box,
+.wing {
   border: 1px solid var(--maroon);
   box-sizing: border-box;
   padding: 16px 20px;
+  border-radius: 14px;
+  box-shadow: 4px 4px 0 #C1BCD7;
 }
 
 .menu {
@@ -127,6 +134,51 @@ a:hover {
 
 .links-box .nav {
   margin-top: 12px;
+}
+
+.links-box .nav > li {
+  display: inline-block;
+  margin: 4px 6px 4px 0;
+  padding: 0;
+}
+
+.links-box .nav > li::before {
+  display: none;
+}
+
+.links-box .nav a {
+  padding: 2px 10px;
+  border: 1px solid var(--maroon);
+  border-radius: 12px;
+  color: var(--maroon);
+}
+
+.links-box .nav a:hover {
+  background: var(--lime);
+}
+
+.log {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+.log li {
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--maroon);
+  line-height: 1.5;
+}
+
+.log li:last-child {
+  border-bottom: 0;
+}
+
+.log time {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--maroon);
 }
 
 .nav ul {
