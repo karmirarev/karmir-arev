@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>arts and crafts - karmirarev</title>
   <link rel="stylesheet" href="../gallery.css?v=3">
-  <link rel="stylesheet" href="../site.css?v=3">
+  <link rel="stylesheet" href="../site.css?v=4">
   <style>
     .content {
       position: relative;
@@ -35,61 +35,32 @@
         width: calc(var(--w) * 2);
       }
     }
-    .event-row {
+    .cols.event {
+      flex: none;
+      margin-bottom: 28px;
+    }
+    .cols.event .left {
+      border: 1px solid var(--maroon);
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    .shots {
       display: flex;
-      align-items: stretch;
-      gap: 15px;
-      height: 400px;
+      flex-wrap: wrap;
+      gap: 8px;
     }
-    .event-text {
-      width: 320px;
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-    }
-    .gifs-column {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      height: 400px;
-    }
-    .gifs-column img {
-      height: calc((400px - 12px) / 3);
+    .shots img,
+    .shots video {
+      height: 150px;
       width: auto;
-      object-fit: contain;
+      max-width: 100%;
+      display: block;
     }
-    .main-photo {
-      height: 100%;
-      width: auto;
-      object-fit: contain;
+    .shots img {
+      cursor: pointer;
     }
-    .event-row video {
-      height: 100%;
-      width: auto;
-    }
-    @media (max-width: 700px) {
-      .event-row {
-        flex-wrap: wrap;
-        height: auto;
-      }
-      .event-text {
-        width: 100%;
-      }
-      .gifs-column {
-        flex-direction: row;
-        height: auto;
-        width: 100%;
-      }
-      .gifs-column img {
-        height: auto;
-        width: calc((100% - 12px) / 3);
-      }
-      .main-photo,
-      .event-row video {
-        height: auto;
-        width: 100%;
-      }
+    .shots img:hover {
+      outline: 2px solid var(--green);
     }
   </style>
 </head>
@@ -97,8 +68,13 @@
 
 <div class="page-layout">
   <div class="content" id="content">
-    <p class="page-title">arts and crafts</p>
-    <p>artsy stuff i am working/worked on</p>
+    <div class="cols">
+      <div class="left">
+        <p class="page-title">arts and crafts</p>
+        <p>artsy stuff i am working/worked on</p>
+      </div>
+      <div class="right"></div>
+    </div>
     <div class="parade">
       <img src="./deco/seal.png" alt="" style="--w:9.4%;width:var(--w)">
       <img src="./deco/moth.png" alt="" style="--w:14.5%;width:var(--w)">
@@ -168,29 +144,33 @@
     `,
     'events-markets-exhibits': `
       <p class="page-title">events-markets-exhibits</p>
-      <br>
-      <div class="event-row">
-        <div class="event-text">
-          <p>nov 7, 2025</p>
+      <div class="cols event">
+        <div class="left">
+          <div class="shots">
+            <img class="shot" src="./events-markets-exhibits/1.gif" alt="">
+            <img class="shot" src="./events-markets-exhibits/2.gif" alt="">
+            <img class="shot" src="./events-markets-exhibits/3.gif" alt="">
+            <img class="shot" src="./events-markets-exhibits/ikindalookcoolhere.jpg" alt="">
+            <video src="./events-markets-exhibits/cringe.MOV" controls></video>
+          </div>
+        </div>
+        <div class="right">
+          <p class="page-title">nov 7, 2025</p>
           <p>took part in BYOB (bring your own beamer) organized by hosq.co. looking back at these drawings, i find them too depressing. i remember drawing them right after i moved out, when i was missing our old village house.</p>
         </div>
-        <div class="gifs-column">
-          <img src="./events-markets-exhibits/1.gif" alt="">
-          <img src="./events-markets-exhibits/2.gif" alt="">
-          <img src="./events-markets-exhibits/3.gif" alt="">
-        </div>
-        <img src="./events-markets-exhibits/ikindalookcoolhere.jpg" alt="" class="main-photo">
-        <video src="./events-markets-exhibits/cringe.MOV" controls></video>
       </div>
-      <br>
-      <div class="event-row">
-        <div class="event-text">
-          <p>nov 22-23, 2025</p>
+      <div class="cols event">
+        <div class="left">
+          <div class="shots">
+            <img class="shot" src="./events-markets-exhibits/4.jpg" alt="">
+            <img class="shot" src="./events-markets-exhibits/5.jpg" alt="">
+            <img class="shot" src="./events-markets-exhibits/7.jpg" alt="">
+          </div>
+        </div>
+        <div class="right">
+          <p class="page-title">nov 22-23, 2025</p>
           <p>saw an invitation to take part in an exhibit-market in qrchi bazaar with the focus being more on making connections and exchanging items rather than selling them. it actually worked and i met some coolsy people there. one of them even gave me sun shaped red earrings that i wear religiously.</p>
         </div>
-        <img src="./events-markets-exhibits/4.jpg" alt="" class="main-photo">
-        <img src="./events-markets-exhibits/5.jpg" alt="" class="main-photo">
-        <img src="./events-markets-exhibits/7.jpg" alt="" class="main-photo">
       </div>
     `,
   };
@@ -207,7 +187,7 @@
 
   function show(section) {
     document.getElementById('content').innerHTML = sections[section];
-    document.querySelectorAll('.gallery-item img').forEach(img => {
+    document.querySelectorAll('.gallery-item img, .shot').forEach(img => {
       img.addEventListener('click', () => {
         lightboxImg.src = img.src;
         lightbox.classList.add('active');

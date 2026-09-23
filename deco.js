@@ -1,5 +1,5 @@
 (function () {
-  var content = document.getElementById('content');
+  var content = document.querySelector('.deco-area') || document.getElementById('content');
   if (!content) return;
   var KEY = 'deco-positions:' + location.pathname;
   var saved = {};

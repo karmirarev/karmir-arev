@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>projects - karmirarev</title>
-  <link rel="stylesheet" href="../site.css?v=3">
+  <link rel="stylesheet" href="../site.css?v=4">
   <style>
     .content {
       position: relative;
@@ -21,21 +21,7 @@
       cursor: grabbing;
       z-index: 5;
     }
-    .portfolio {
-      display: flex;
-      align-items: flex-start;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-    .portfolio .cards {
-      flex-shrink: 0;
-      width: 342px;
-      max-width: 100%;
-    }
     .games {
-      flex: 1;
-      min-width: 260px;
-      max-width: 620px;
       border: 1px solid var(--maroon);
       padding: 16px 20px;
       box-sizing: border-box;
@@ -45,7 +31,7 @@
     }
     .games-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
       gap: 16px;
     }
     .game {
@@ -100,8 +86,7 @@
       border: 1px solid var(--maroon);
       padding: 16px 20px;
       margin-bottom: 20px;
-      width: 342px;
-      max-width: 100%;
+      width: 100%;
       box-sizing: border-box;
     }
     .card > :first-child {
@@ -180,6 +165,8 @@
 
 <div class="page-layout">
   <div class="content" id="content">
+    <div class="cols">
+      <div class="left deco-area">
     <p class="page-title">projects</p>
     <p>projects i am working/worked on during free time</p>
     <img class="deco" data-id="sword-1" src="./deco/sword.gif" alt="" style="left:29%;top:86%;width:62px">
@@ -190,6 +177,9 @@
     <img class="deco" data-id="smiley-1" src="./deco/smiley.gif" alt="" style="left:82%;top:38%;width:36px">
     <img class="deco" data-id="smiley-2" src="./deco/smiley.gif" alt="" style="left:5%;top:37%;width:36px">
     <img class="deco" data-id="smiley-3" src="./deco/smiley.gif" alt="" style="left:55%;top:61%;width:36px">
+      </div>
+      <div class="right"></div>
+    </div>
   </div>
 
   <div class="menu" id="menu"></div>
@@ -198,29 +188,9 @@
 <script>
   const sections = {
     games: `
+      <div class="cols">
+      <div class="left">
       <p class="page-title">games</p>
-
-      <div class="portfolio">
-      <div class="cards">
-      <div class="card">
-        <img src="./desk.gif" alt="pixel me at my desk">
-        <p class="page-title name">marita movsisyan</p>
-        <p class="email">email: <span class="email-wrap"><span id="email">maritamovsisyan@gmail.com</span><button type="button" class="copy" title="copy email" onclick="copyEmail(this)"><svg class="clip" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><svg class="check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></button></span></p>
-        <p>game designer and developer in yerevan. i work on live mobile games at rockbite and make my own on the side: design docs, code, and art included!</p>
-      </div>
-
-      <div class="card find">
-        <p class="page-title">find me on</p>
-        <p>
-          <a href="https://www.linkedin.com/in/marita-movsisyan-155a3425b/" target="_blank" rel="noopener">linkedin</a>
-        </p>
-      </div>
-
-      <div class="card">
-        <p><a href="./resume.pdf" target="_blank" rel="noopener">download resume (pdf)</a></p>
-      </div>
-      </div>
-
       <div class="games">
         <p class="page-title">projects</p>
         <div class="games-grid">
@@ -257,10 +227,37 @@
         </div>
       </div>
       </div>
+      <div class="right">
+      <div class="cards">
+      <div class="card">
+        <img src="./desk.gif" alt="pixel me at my desk">
+        <p class="page-title name">marita movsisyan</p>
+        <p class="email">email: <span class="email-wrap"><span id="email">maritamovsisyan@gmail.com</span><button type="button" class="copy" title="copy email" onclick="copyEmail(this)"><svg class="clip" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><svg class="check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></button></span></p>
+        <p>game designer and developer in yerevan. i work on live mobile games at rockbite and make my own on the side: design docs, code, and art included!</p>
+      </div>
+
+      <div class="card find">
+        <p class="page-title">find me on</p>
+        <p>
+          <a href="https://www.linkedin.com/in/marita-movsisyan-155a3425b/" target="_blank" rel="noopener">linkedin</a>
+        </p>
+      </div>
+
+      <div class="card">
+        <p><a href="./resume.pdf" target="_blank" rel="noopener">download resume (pdf)</a></p>
+      </div>
+      </div>
+      </div>
+      </div>
     `,
     other: `
+      <div class="cols">
+      <div class="left">
       <p class="page-title">other</p>
       <p>some other silly things i am working/worked on</p>
+      </div>
+      <div class="right"></div>
+      </div>
     `,
   };
 
@@ -285,6 +282,6 @@
 </script>
 
 <script src="/nav.js?v=3"></script>
-<script src="/deco.js?v=3"></script>
+<script src="/deco.js?v=4"></script>
 </body>
 </html>
