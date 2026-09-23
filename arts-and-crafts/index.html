@@ -69,9 +69,13 @@
       outline: 2px solid var(--green);
     }
     .story {
+      box-sizing: border-box;
       padding: 4px 0 18px;
       margin-bottom: 18px;
       border-bottom: 1px dashed var(--maroon);
+    }
+    .event {
+      box-sizing: border-box;
     }
     .story:last-child {
       border-bottom: 0;
@@ -210,9 +214,34 @@
   window.addEventListener('hashchange', showFromHash);
   showFromHash();
 
+  function alignEvents() {
+    var stories = document.querySelectorAll('#wing .story');
+    var events = document.querySelectorAll('#content .event');
+    if (!stories.length || stories.length !== events.length) return;
+    if (window.innerWidth <= 700) return;
+    stories.forEach(function (el) { el.style.marginTop = ''; el.style.minHeight = ''; });
+    events.forEach(function (el) { el.style.marginTop = ''; el.style.minHeight = ''; });
+    for (var i = 0; i < stories.length; i++) {
+      var st = stories[i].getBoundingClientRect().top;
+      var et = events[i].getBoundingClientRect().top;
+      if (et > st) stories[i].style.marginTop = (et - st) + 'px';
+      else if (st > et) events[i].style.marginTop = (st - et) + 'px';
+      var h = Math.max(stories[i].getBoundingClientRect().height, events[i].getBoundingClientRect().height);
+      stories[i].style.minHeight = h + 'px';
+      events[i].style.minHeight = h + 'px';
+    }
+  }
+  window.addEventListener('resize', alignEvents);
+  window.addEventListener('load', alignEvents);
+
   function show(section) {
     document.getElementById('content').innerHTML = sections[section];
     document.getElementById('wing').innerHTML = wings[section] || '';
+    document.querySelectorAll('#content img, #content video').forEach(function (m) {
+      m.addEventListener('load', alignEvents);
+      m.addEventListener('loadedmetadata', alignEvents);
+    });
+    alignEvents();
     document.querySelectorAll('.gallery-item img, .shot').forEach(img => {
       img.addEventListener('click', () => {
         lightboxImg.src = img.src;
