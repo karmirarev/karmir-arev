@@ -16,14 +16,30 @@
     .book {
       list-style: none;
       padding: 0;
-      margin: 10px 0 0;
+      margin: 0;
+    }
+    .book-scroll {
+      max-height: 260px;
+      overflow-y: auto;
+      margin-top: 8px;
+      padding-right: 6px;
+    }
+    .book-scroll:empty {
+      display: none;
     }
     .book li {
       padding: 6px 0;
       line-height: 1.5;
+      overflow-wrap: anywhere;
     }
-    .book:empty {
-      display: none;
+    .book b {
+      overflow-wrap: anywhere;
+    }
+    .sign-note {
+      font-size: 12px;
+      color: var(--maroon);
+      margin: 6px 0 0;
+      min-height: 1em;
     }
     .book b {
       color: var(--maroon);
@@ -84,12 +100,15 @@
     </ul>
 
     <p class="nav-title book-title">guestbook</p>
-    <ul class="book" id="book"></ul>
-    <form class="sign" id="sign">
-      <input id="sign-name" placeholder="name" maxlength="24" required>
-      <input id="sign-text" placeholder="leave a mark" maxlength="120" required>
+    <div class="book-scroll" id="book-scroll">
+      <ul class="book" id="book"></ul>
+    </div>
+    <form class="sign" id="sign" action="https://formspree.io/f/FORMSPREE_ID" method="POST">
+      <input name="name" id="sign-name" placeholder="name" maxlength="24" required autocomplete="off">
+      <input name="message" id="sign-text" placeholder="leave a mark" maxlength="160" required autocomplete="off">
       <button type="submit">sign</button>
     </form>
+    <p class="sign-note" id="sign-note"></p>
   </div>
   <div class="content">
         <p class="menu-title">կարմիր արեւ · կանաչ տերեւ</p>
@@ -104,35 +123,41 @@
 <script src="/nav.js?v=9"></script>
 <script>
 (function () {
-  var KEY = 'guestbook';
   var list = document.getElementById('book');
+  var scroll = document.getElementById('book-scroll');
   var form = document.getElementById('sign');
-  var entries = [];
-  try { entries = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) {}
+  var note = document.getElementById('sign-note');
 
-  function esc(t) { return t.replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
-  function draw() {
-    if (!entries.length) {
-      list.innerHTML = '';
-      return;
-    }
-    list.innerHTML = entries.slice(-6).reverse().map(function (e) {
+  function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function draw(entries) {
+    list.innerHTML = entries.map(function (e) {
       return '<li><b>' + esc(e.name) + '</b> <time>' + esc(e.when) + '</time><br>' + esc(e.text) + '</li>';
     }).join('');
+    scroll.scrollTop = scroll.scrollHeight;
   }
+  fetch('/guestbook.json?t=' + Date.now())
+    .then(function (r) { return r.json(); })
+    .then(draw)
+    .catch(function () {});
+
   form.addEventListener('submit', function (ev) {
     ev.preventDefault();
     var name = document.getElementById('sign-name').value.trim();
     var text = document.getElementById('sign-text').value.trim();
     if (!name || !text) return;
-    var d = new Date();
-    var when = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }).toLowerCase();
-    entries.push({ name: name, text: text, when: when });
-    try { localStorage.setItem(KEY, JSON.stringify(entries)); } catch (e) {}
-    form.reset();
-    draw();
+    note.textContent = 'sending…';
+    fetch(form.action, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(form)
+    }).then(function (r) {
+      if (!r.ok) throw new Error();
+      form.reset();
+      note.textContent = 'got it. marks show up once marita adds them.';
+    }).catch(function () {
+      note.textContent = 'could not send. try again in a bit.';
+    });
   });
-  draw();
 })();
 </script>
 </body>
