@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>arts and crafts - karmirarev</title>
   <link rel="stylesheet" href="../gallery.css?v=3">
-  <link rel="stylesheet" href="../site.css?v=5">
+  <link rel="stylesheet" href="../site.css?v=6">
   <style>
     .content {
       position: relative;
@@ -35,23 +35,21 @@
         width: calc(var(--w) * 2);
       }
     }
-    .cols.event {
-      flex: none;
-      margin-bottom: 28px;
+    .event {
+      margin-bottom: 36px;
     }
-    .cols.event .left {
-      border: 1px solid var(--maroon);
-      padding: 10px;
-      box-sizing: border-box;
+    .event p {
+      line-height: 1.6;
     }
     .shots {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 10px;
+      margin-top: 12px;
     }
     .shots img,
     .shots video {
-      height: 150px;
+      height: 170px;
       width: auto;
       max-width: 100%;
       display: block;
@@ -140,32 +138,25 @@
     `,
     'events-markets-exhibits': `
       <p class="page-title">events-markets-exhibits</p>
-      <div class="cols event">
-        <div class="left">
-          <div class="shots">
-            <img class="shot" src="./events-markets-exhibits/1.gif" alt="">
-            <img class="shot" src="./events-markets-exhibits/2.gif" alt="">
-            <img class="shot" src="./events-markets-exhibits/3.gif" alt="">
-            <img class="shot" src="./events-markets-exhibits/ikindalookcoolhere.jpg" alt="">
-            <video src="./events-markets-exhibits/cringe.MOV" controls></video>
-          </div>
-        </div>
-        <div class="right">
-          <p class="page-title">nov 7, 2025</p>
-          <p>took part in BYOB (bring your own beamer) organized by hosq.co. looking back at these drawings, i find them too depressing. i remember drawing them right after i moved out, when i was missing our old village house.</p>
+      <br>
+      <div class="event">
+        <p class="page-title">nov 7, 2025 · byob at hosq.co</p>
+        <p>took part in BYOB (bring your own beamer) organized by hosq.co. looking back at these drawings, i find them too depressing. i remember drawing them right after i moved out, when i was missing our old village house.</p>
+        <div class="shots">
+          <img class="shot" src="./events-markets-exhibits/1.gif" alt="">
+          <img class="shot" src="./events-markets-exhibits/2.gif" alt="">
+          <img class="shot" src="./events-markets-exhibits/3.gif" alt="">
+          <img class="shot" src="./events-markets-exhibits/ikindalookcoolhere.jpg" alt="">
+          <video src="./events-markets-exhibits/cringe.MOV" controls></video>
         </div>
       </div>
-      <div class="cols event">
-        <div class="left">
-          <div class="shots">
-            <img class="shot" src="./events-markets-exhibits/4.jpg" alt="">
-            <img class="shot" src="./events-markets-exhibits/5.jpg" alt="">
-            <img class="shot" src="./events-markets-exhibits/7.jpg" alt="">
-          </div>
-        </div>
-        <div class="right">
-          <p class="page-title">nov 22-23, 2025</p>
-          <p>saw an invitation to take part in an exhibit-market in qrchi bazaar with the focus being more on making connections and exchanging items rather than selling them. it actually worked and i met some coolsy people there. one of them even gave me sun shaped red earrings that i wear religiously.</p>
+      <div class="event">
+        <p class="page-title">nov 22-23, 2025 · exhibit-market at qrchi bazaar</p>
+        <p>saw an invitation to take part in an exhibit-market in qrchi bazaar with the focus being more on making connections and exchanging items rather than selling them. it actually worked and i met some coolsy people there. one of them even gave me sun shaped red earrings that i wear religiously.</p>
+        <div class="shots">
+          <img class="shot" src="./events-markets-exhibits/4.jpg" alt="">
+          <img class="shot" src="./events-markets-exhibits/5.jpg" alt="">
+          <img class="shot" src="./events-markets-exhibits/7.jpg" alt="">
         </div>
       </div>
     `,

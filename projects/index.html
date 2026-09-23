@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>projects - karmirarev</title>
-  <link rel="stylesheet" href="../site.css?v=5">
+  <link rel="stylesheet" href="../site.css?v=6">
   <style>
     .content {
       position: relative;
@@ -22,9 +22,7 @@
       z-index: 5;
     }
     .games {
-      border: 1px solid var(--maroon);
-      padding: 16px 20px;
-      box-sizing: border-box;
+      margin-top: 16px;
     }
     .games > :first-child {
       margin-top: 0;
@@ -88,6 +86,13 @@
     }
     .card:last-child {
       margin-bottom: 0;
+    }
+    .card.intro {
+      border: 0;
+      padding: 0;
+    }
+    .wing {
+      position: relative;
     }
     .card > :first-child {
       margin-top: 0;
@@ -164,10 +169,7 @@
 <body>
 
 <div class="page-layout">
-  <div class="wing" id="wing"></div>
-  <div class="content" id="content">
-    <p class="page-title">projects</p>
-    <p>projects i am working/worked on during free time</p>
+  <div class="wing deco-area" id="wing">
     <img class="deco" data-id="sword-1" src="./deco/sword.gif" alt="" style="left:29%;top:86%;width:62px">
     <img class="deco" data-id="fish-1" src="./deco/fish.gif" alt="" style="left:4%;top:81%;width:71px">
     <img class="deco" data-id="fish-2" src="./deco/fish.gif" alt="" style="left:84%;top:83%;width:71px">
@@ -176,6 +178,10 @@
     <img class="deco" data-id="smiley-1" src="./deco/smiley.gif" alt="" style="left:82%;top:38%;width:36px">
     <img class="deco" data-id="smiley-2" src="./deco/smiley.gif" alt="" style="left:5%;top:37%;width:36px">
     <img class="deco" data-id="smiley-3" src="./deco/smiley.gif" alt="" style="left:55%;top:61%;width:36px">
+  </div>
+  <div class="content" id="content">
+    <p class="page-title">projects</p>
+    <p>projects i am working/worked on during free time</p>
   </div>
 
   <div class="menu" id="menu"></div>
@@ -186,7 +192,6 @@
     games: `
       <p class="page-title">games</p>
       <div class="games">
-        <p class="page-title">projects</p>
         <div class="games-grid">
           <div class="game">
             <div class="cover empty"></div>
@@ -229,7 +234,7 @@
 
   const wings = {
     games: `
-      <div class="card">
+      <div class="card intro">
         <img src="./desk.gif" alt="pixel me at my desk">
         <p class="page-title name">marita movsisyan</p>
         <p class="email">email: <span class="email-wrap"><span id="email">maritamovsisyan@gmail.com</span><button type="button" class="copy" title="copy email" onclick="copyEmail(this)"><svg class="clip" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><svg class="check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></button></span></p>
