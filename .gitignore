@@ -12,3 +12,6 @@ Desktop.ini
 
 # Logs
 *.log
+
+# local preview config
+.claude/launch.json
