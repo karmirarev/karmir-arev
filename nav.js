@@ -107,6 +107,12 @@
     tree.className = 'nav';
     menu.appendChild(tree);
 
+    var map = document.createElement('img');
+    map.className = 'menu-map';
+    map.src = '/tiles/map.jpg';
+    map.alt = '';
+    menu.appendChild(map);
+
     linksBox.innerHTML = '';
     var lt = document.createElement('p');
     lt.className = 'nav-title c-green';
