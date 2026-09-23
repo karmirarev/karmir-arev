@@ -107,7 +107,7 @@
     linksBox.innerHTML = '';
     var lt = document.createElement('p');
     lt.className = 'nav-title c-green';
-    lt.textContent = 'links';
+    lt.textContent = 'elsewhere';
     linksBox.appendChild(lt);
     var links = build(LINKS, [], null);
     links.className = 'nav links';

@@ -26,13 +26,7 @@ body::before {
   inset: 0;
   z-index: -1;
   background-color: var(--paper);
-  background-image:
-    linear-gradient(90deg, transparent 9px, rgba(220, 40, 60, 0.45) 9px, rgba(220, 40, 60, 0.45) 10px, transparent 10px),
-    linear-gradient(90deg, transparent calc(100% - 10px), rgba(220, 40, 60, 0.45) calc(100% - 10px), rgba(220, 40, 60, 0.45) calc(100% - 9px), transparent calc(100% - 9px)),
-    linear-gradient(transparent 9px, rgba(220, 40, 60, 0.45) 9px, rgba(220, 40, 60, 0.45) 10px, transparent 10px),
-    url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22><rect x=%229%22 y=%229%22 width=%222%22 height=%222%22 fill=%22%235CD0E6%22/></svg>');
-  background-repeat: no-repeat, no-repeat, no-repeat, repeat;
-  background-size: 100% 100%, 100% 100%, 100% 100%, 20px 20px;
+  background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22><rect x=%229%22 y=%229%22 width=%222%22 height=%222%22 fill=%22%235CD0E6%22/></svg>');
   pointer-events: none;
 }
 
@@ -67,6 +61,13 @@ a:hover {
 
 .wing {
   overflow: hidden;
+  padding: 26px 24px 20px;
+  background-image:
+    linear-gradient(90deg, transparent 11px, rgba(220, 40, 60, 0.5) 11px, rgba(220, 40, 60, 0.5) 12px, transparent 12px),
+    linear-gradient(90deg, transparent calc(100% - 12px), rgba(220, 40, 60, 0.5) calc(100% - 12px), rgba(220, 40, 60, 0.5) calc(100% - 11px), transparent calc(100% - 11px)),
+    linear-gradient(transparent 11px, var(--maroon) 11px, var(--maroon) 12px, transparent 12px);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }
 
 .wing > :first-child {
@@ -81,6 +82,7 @@ a:hover {
   padding: 16px 20px;
   border-radius: 14px;
   box-shadow: 4px 4px 0 #C1BCD7;
+  background-color: var(--paper);
 }
 
 .menu {
@@ -201,6 +203,7 @@ a:hover {
   display: inline-block;
   padding: 2px 6px;
   border-radius: 3px;
+  color: #1b1b1b;
 }
 
 .nav a:hover {
