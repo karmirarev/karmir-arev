@@ -96,34 +96,8 @@ a:hover {
 
 .menu {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
 }
 
-.map-wrap {
-  position: relative;
-  margin: 24px -20px -16px;
-  margin-top: auto;
-  width: calc(100% + 40px);
-  pointer-events: none;
-  user-select: none;
-}
-
-.menu-map {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.walker {
-  position: absolute;
-  width: 23%;
-  transform: translate(-45%, -100%);
-  left: 30%;
-  top: 24%;
-  image-rendering: auto;
-}
 
 .content {
   flex: 1;
