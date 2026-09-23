@@ -54,7 +54,10 @@
       border-bottom: 1px solid var(--maroon);
       background: var(--paper);
     }
-    .game .cover.empty {
+    .game canvas.cover {
+      cursor: pointer;
+    }
+    .game canvas.cover.no-gl {
       background-image: repeating-linear-gradient(45deg, transparent 0 10px, rgba(145, 18, 84, 0.12) 10px 12px);
     }
     .game .body {
@@ -201,7 +204,7 @@
       <div class="games">
         <div class="games-grid">
           <div class="game">
-            <div class="cover empty"></div>
+            <canvas class="cover" data-toy="sandsong"></canvas>
             <div class="body">
               <p class="name">sandsong</p>
               <span class="tag mobile">mobile game</span>
@@ -209,21 +212,21 @@
             </div>
           </div>
           <div class="game">
-            <div class="cover empty"></div>
+            <canvas class="cover" data-toy="kami-hovani"></canvas>
             <div class="body">
               <p class="name">kami hovani</p>
               <span class="tag video">video game</span>
             </div>
           </div>
           <a class="game" href="./games/bebe-heist/" target="_blank" rel="noopener">
-            <div class="cover empty"></div>
+            <canvas class="cover" data-toy="bebe-heist"></canvas>
             <div class="body">
               <p class="name">bebe heist</p>
               <span class="tag video">video game</span>
             </div>
           </a>
           <a class="game" href="./games/pingala/" target="_blank" rel="noopener">
-            <div class="cover empty"></div>
+            <canvas class="cover" data-toy="pingala"></canvas>
             <div class="body">
               <p class="name">pingala</p>
               <span class="tag mobile">mobile game</span>
@@ -231,7 +234,7 @@
             </div>
           </a>
           <div class="game">
-            <div class="cover empty"></div>
+            <canvas class="cover" data-toy="khali"></canvas>
             <div class="body">
               <p class="name">khali</p>
               <span class="tag video">video game</span>
@@ -278,6 +281,7 @@
   function show(section) {
     document.getElementById('content').innerHTML = sections[section];
     document.getElementById('wing').innerHTML = wings[section] || '';
+    if (window.startToys) window.startToys();
   }
 
   function copyEmail(btn) {
@@ -291,5 +295,7 @@
 
 <script src="/nav.js?v=11"></script>
 <script src="/deco.js?v=5"></script>
+<script src="/toys.js?v=1"></script>
+<script>if (window.startToys) window.startToys();</script>
 </body>
 </html>
