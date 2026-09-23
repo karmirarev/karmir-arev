@@ -1,20 +1,22 @@
 (function () {
   var content = document.querySelector('.deco-area') || document.getElementById('content');
   if (!content) return;
-  var KEY = 'deco-positions:' + location.pathname;
+  var KEY = 'deco-positions:v2:' + location.pathname;
   var saved = {};
-  try {
-    saved = JSON.parse(localStorage.getItem(KEY) || localStorage.getItem('deco-positions') || '{}');
-  } catch (e) {}
+  try { saved = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) {}
+
+  function place(img, x, y) {
+    var maxX = Math.max(0, content.clientWidth - img.offsetWidth);
+    var maxY = Math.max(0, content.clientHeight - img.offsetHeight);
+    img.style.left = Math.min(Math.max(0, x), maxX) + 'px';
+    img.style.top = Math.min(Math.max(0, y), maxY) + 'px';
+    img.style.bottom = 'auto';
+  }
 
   document.querySelectorAll('.deco').forEach(function (img) {
     img.draggable = false;
     var id = img.dataset.id;
-    if (saved[id]) {
-      img.style.left = saved[id].x + 'px';
-      img.style.top = saved[id].y + 'px';
-      img.style.bottom = 'auto';
-    }
+    if (saved[id]) place(img, saved[id].x, saved[id].y);
   });
 
   var drag = null;
