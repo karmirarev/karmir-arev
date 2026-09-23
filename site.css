@@ -1,7 +1,7 @@
 :root {
   --paper: rgb(212, 211, 200);
   --maroon: #911254;
-  --link: #0000EE;
+  --link: #1b1b1b;
   --green: #129150;
   --lime: #E4F882;
   --lilac: #9582F8;
@@ -31,8 +31,17 @@ body::before {
 }
 
 a {
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-color: var(--maroon);
+  text-underline-offset: 3px;
   color: var(--link);
+}
+
+.nav a,
+.links-box a,
+.game,
+.copy {
+  text-decoration: none;
 }
 
 a:hover {
@@ -152,7 +161,7 @@ a:hover {
   padding: 2px 10px;
   border: 1px solid var(--maroon);
   border-radius: 12px;
-  color: var(--maroon);
+  color: #1b1b1b;
 }
 
 .links-box .nav a:hover {
