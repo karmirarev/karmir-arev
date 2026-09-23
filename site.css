@@ -46,13 +46,27 @@ a:hover {
   min-height: calc(100vh - 40px);
 }
 
-.side {
+.side,
+.wing {
   flex-shrink: 0;
-  width: 400px;
+  width: min(400px, 28vw);
   margin-top: 17px;
+}
+
+.side {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.wing {
+  border: 1px solid var(--maroon);
+  box-sizing: border-box;
+  padding: 16px 20px;
+}
+
+.wing > :first-child {
+  margin-top: 0;
 }
 
 .menu,
@@ -280,12 +294,26 @@ a:hover {
     padding: 12px;
   }
   .page-layout {
-    flex-direction: column-reverse;
     gap: 12px;
   }
+  .page-layout {
+    flex-direction: column;
+  }
   .side {
+    order: 0;
     width: 100%;
     margin-top: 0;
     gap: 12px;
+  }
+  .content {
+    order: 1;
+  }
+  .wing {
+    order: 2;
+    width: 100%;
+    margin-top: 0;
+  }
+  .wing:empty {
+    display: none;
   }
 }
