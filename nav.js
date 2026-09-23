@@ -116,7 +116,6 @@
     wrap.appendChild(map);
     var walker = document.createElement('img');
     walker.className = 'walker';
-    walker.src = '/walkin.gif';
     walker.alt = '';
     wrap.appendChild(walker);
     menu.appendChild(wrap);
@@ -145,40 +144,67 @@
     if (p.indexOf('/thinking-out-loud') === 0) return 'thinking';
     return 'home';
   }
+  var CLIPS = {
+    idle: { src: "/walker/idle.gif", w: 23, ax: 45 },
+    run:  { src: "/walker/run.gif",  w: 23, ax: 45 },
+    jump: { src: "/walker/jump.gif", w: 43, ax: 70, ms: 800 }
+  };
   function startWalker(el) {
     var target = SPOTS[sectionOfPath()];
     var from = null;
     try { from = JSON.parse(localStorage.getItem('walker') || 'null'); } catch (e) {}
     if (!from) from = target;
-    var facing = 1;
+    var facing = 1, clip = null, jumpTimer = null;
+    function show(name) {
+      if (clip === name) return;
+      clip = name;
+      var c = CLIPS[name];
+      el.src = c.src + (name === 'jump' ? '?t=' + Date.now() : '');
+      el.style.width = c.w + '%';
+      el.style.transform = 'translate(-' + c.ax + '%, -100%) scaleX(' + facing + ')';
+      el.style.transformOrigin = c.ax + '% 100%';
+    }
     function face(dir) {
       facing = dir;
-      el.style.transform = 'translate(-50%, -100%) scaleX(' + dir + ')';
+      var c = CLIPS[clip || 'idle'];
+      el.style.transform = 'translate(-' + c.ax + '%, -100%) scaleX(' + dir + ')';
     }
-    function put(x, y) {
-      el.style.left = x + '%';
-      el.style.top = y + '%';
-    }
+    function put(x, y) { el.style.left = x + '%'; el.style.top = y + '%'; }
     function goTo(x, y, cb) {
       var cur = [parseFloat(el.style.left), parseFloat(el.style.top)];
       var dist = Math.hypot(x - cur[0], y - cur[1]);
+      if (dist < 0.5) { cb(); return; }
+      show('run');
       if (x !== cur[0]) face(x < cur[0] ? -1 : 1);
-      el.style.transition = 'left ' + (dist * 60) + 'ms linear, top ' + (dist * 60) + 'ms linear';
+      var ms = dist * 55;
+      el.style.transition = 'left ' + ms + 'ms linear, top ' + ms + 'ms linear';
       put(x, y);
-      setTimeout(cb, dist * 60 + 50);
+      setTimeout(cb, ms + 30);
+    }
+    function land(cb) {
+      show('jump');
+      clearTimeout(jumpTimer);
+      jumpTimer = setTimeout(function () { show('idle'); cb && cb(); }, CLIPS.jump.ms);
     }
     el.style.transition = 'none';
+    show('idle');
     put(from[0], from[1]);
-    face(1);
     try { localStorage.setItem('walker', JSON.stringify(target)); } catch (e) {}
-    var pacing = false;
-    function pace() {
-      var right = !pacing;
-      pacing = !pacing;
-      goTo(target[0] + (right ? 7 : 0), target[1], function () { setTimeout(pace, 1200); });
+    var side = 0;
+    function wander() {
+      side = side ? 0 : 1;
+      var dx = side ? 6 : 0;
+      setTimeout(function () {
+        goTo(target[0] + dx, target[1], function () {
+          show('idle');
+          setTimeout(wander, 3000 + Math.random() * 3000);
+        });
+      }, 0);
     }
     setTimeout(function () {
-      goTo(target[0], target[1], function () { setTimeout(pace, 1500); });
+      goTo(target[0], target[1], function () {
+        land(function () { setTimeout(wander, 2500); });
+      });
     }, 300);
   }
 
