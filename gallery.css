@@ -26,6 +26,10 @@
   display: block;
 }
 
+.gallery-item img:hover {
+  outline: 2px solid #129150;
+}
+
 .lightbox {
   display: none;
   position: fixed;
