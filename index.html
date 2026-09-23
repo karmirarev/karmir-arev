@@ -4,8 +4,68 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>karmirarev</title>
-  <link rel="stylesheet" href="site.css?v=13">
+  <link rel="stylesheet" href="site.css?v=14">
   <style>
+    .book-title {
+      margin-top: 28px;
+    }
+    .book {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0 0;
+    }
+    .book li {
+      padding: 6px 0;
+      border-bottom: 1px dashed var(--maroon);
+      line-height: 1.5;
+    }
+    .book li:last-child {
+      border-bottom: 0;
+    }
+    .book b {
+      color: var(--maroon);
+      font-weight: normal;
+    }
+    .book time {
+      float: right;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--maroon);
+    }
+    .book .none {
+      color: var(--maroon);
+      border: 0;
+    }
+    .sign {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .sign input {
+      flex: 1;
+      min-width: 0;
+      font: inherit;
+      font-size: 13px;
+      padding: 4px 8px;
+      border: 1px solid var(--maroon);
+      border-radius: 4px;
+      background: var(--paper);
+      color: #1b1b1b;
+    }
+    .sign button {
+      font: inherit;
+      font-size: 13px;
+      padding: 4px 10px;
+      border: 1px solid var(--maroon);
+      border-radius: 4px;
+      background: var(--lime);
+      color: var(--maroon);
+      cursor: pointer;
+    }
+    .sign button:hover {
+      background: var(--green);
+      color: #fff;
+    }
     .content > img {
       display: block;
       max-width: 100%;
@@ -23,6 +83,14 @@
       <li><time>sep 22, 2026</time>whole site restyled: menu tree, left wing, draggable fish, portfolio under games.</li>
       <li><time>nov 2025</time>byob at hosq.co and the exhibit-market at qrchi bazaar, both in arts and crafts.</li>
     </ul>
+
+    <p class="nav-title book-title">guestbook</p>
+    <ul class="book" id="book"></ul>
+    <form class="sign" id="sign">
+      <input id="sign-name" placeholder="name" maxlength="24" required>
+      <input id="sign-text" placeholder="leave a mark" maxlength="120" required>
+      <button type="submit">sign</button>
+    </form>
   </div>
   <div class="content">
         <p class="menu-title">կարմիր արեւ · կանաչ տերեւ</p>
@@ -34,6 +102,39 @@
   <div class="menu" id="menu"></div>
 </div>
 
-<script src="/nav.js?v=8"></script>
+<script src="/nav.js?v=9"></script>
+<script>
+(function () {
+  var KEY = 'guestbook';
+  var list = document.getElementById('book');
+  var form = document.getElementById('sign');
+  var entries = [];
+  try { entries = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) {}
+
+  function esc(t) { return t.replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function draw() {
+    if (!entries.length) {
+      list.innerHTML = '<li class="none">no marks yet. be the first.</li>';
+      return;
+    }
+    list.innerHTML = entries.slice(-6).reverse().map(function (e) {
+      return '<li><b>' + esc(e.name) + '</b> <time>' + esc(e.when) + '</time><br>' + esc(e.text) + '</li>';
+    }).join('');
+  }
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var name = document.getElementById('sign-name').value.trim();
+    var text = document.getElementById('sign-text').value.trim();
+    if (!name || !text) return;
+    var d = new Date();
+    var when = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }).toLowerCase();
+    entries.push({ name: name, text: text, when: when });
+    try { localStorage.setItem(KEY, JSON.stringify(entries)); } catch (e) {}
+    form.reset();
+    draw();
+  });
+  draw();
+})();
+</script>
 </body>
 </html>

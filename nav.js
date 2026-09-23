@@ -107,11 +107,20 @@
     tree.className = 'nav';
     menu.appendChild(tree);
 
+    var wrap = document.createElement('div');
+    wrap.className = 'map-wrap';
     var map = document.createElement('img');
     map.className = 'menu-map';
     map.src = '/tiles/map2.jpg';
     map.alt = '';
-    menu.appendChild(map);
+    wrap.appendChild(map);
+    var walker = document.createElement('img');
+    walker.className = 'walker';
+    walker.src = '/walkin.gif';
+    walker.alt = '';
+    wrap.appendChild(walker);
+    menu.appendChild(wrap);
+    startWalker(walker);
 
     linksBox.innerHTML = '';
     var lt = document.createElement('p');
@@ -121,6 +130,56 @@
     var links = build(LINKS, [], null);
     links.className = 'nav links';
     linksBox.appendChild(links);
+  }
+
+  var SPOTS = {
+    home: [30, 24],
+    projects: [80, 22],
+    arts: [33, 50],
+    thinking: [33, 78]
+  };
+  function sectionOfPath() {
+    var p = location.pathname;
+    if (p.indexOf('/projects') === 0) return 'projects';
+    if (p.indexOf('/arts-and-crafts') === 0) return 'arts';
+    if (p.indexOf('/thinking-out-loud') === 0) return 'thinking';
+    return 'home';
+  }
+  function startWalker(el) {
+    var target = SPOTS[sectionOfPath()];
+    var from = null;
+    try { from = JSON.parse(localStorage.getItem('walker') || 'null'); } catch (e) {}
+    if (!from) from = target;
+    var facing = 1;
+    function face(dir) {
+      facing = dir;
+      el.style.transform = 'translate(-50%, -100%) scaleX(' + dir + ')';
+    }
+    function put(x, y) {
+      el.style.left = x + '%';
+      el.style.top = y + '%';
+    }
+    function goTo(x, y, cb) {
+      var cur = [parseFloat(el.style.left), parseFloat(el.style.top)];
+      var dist = Math.hypot(x - cur[0], y - cur[1]);
+      if (x !== cur[0]) face(x < cur[0] ? -1 : 1);
+      el.style.transition = 'left ' + (dist * 60) + 'ms linear, top ' + (dist * 60) + 'ms linear';
+      put(x, y);
+      setTimeout(cb, dist * 60 + 50);
+    }
+    el.style.transition = 'none';
+    put(from[0], from[1]);
+    face(1);
+    try { localStorage.setItem('walker', JSON.stringify(target)); } catch (e) {}
+    var pacing = false;
+    function pace() {
+      var right = !pacing;
+      pacing = !pacing;
+      goTo(target[0] + (right ? 7 : 0), target[1], function () { setTimeout(pace, 1200); });
+    }
+    setTimeout(function () {
+      goTo(target[0], target[1], function () { setTimeout(pace, 1500); });
+    }, 300);
   }
 
   render();
