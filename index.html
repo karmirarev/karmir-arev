@@ -81,6 +81,11 @@
       background: var(--green);
       color: #fff;
     }
+    .sign input:disabled,
+    .sign button:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
     .content > img {
       display: block;
       max-width: 100%;
@@ -139,6 +144,11 @@
     .then(function (r) { return r.json(); })
     .then(draw)
     .catch(function () {});
+
+  if (form.action.indexOf('FORMSPREE_ID') !== -1) {
+    form.querySelectorAll('input, button').forEach(function (el) { el.disabled = true; });
+    note.textContent = 'the book opens soon.';
+  }
 
   form.addEventListener('submit', function (ev) {
     ev.preventDefault();
