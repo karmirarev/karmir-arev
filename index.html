@@ -24,10 +24,6 @@
       width: 100%;
       aspect-ratio: 1 / 1;
       box-sizing: border-box;
-      transition: opacity 1.2s ease;
-    }
-    .tile.fading {
-      opacity: 0;
     }
     img.tile {
       border: 1px solid var(--maroon);
@@ -109,22 +105,17 @@
       .map(function (c) { return parseInt(c.getAttribute('src').slice(-6, -4), 10); });
   }
   function pick(list) { return list[Math.floor(Math.random() * list.length)]; }
-  function fadeOut(el, done) {
-    el.classList.add('fading');
-    setTimeout(done, 1250);
-  }
-  function fadeIn(el) {
-    requestAnimationFrame(function () { el.classList.remove('fading'); });
-  }
+  function fadeOut(el, done) { done(); }
+  function fadeIn(el) {}
   function makeImg(i) {
     var img = document.createElement('img');
-    img.className = 'tile fading';
+    img.className = 'tile';
     img.src = src(i); img.alt = '';
     return img;
   }
   function makeEmpty() {
     var sp = document.createElement('span');
-    sp.className = 'tile empty fading';
+    sp.className = 'tile empty';
     return sp;
   }
   function replace(oldEl, newEl) {
@@ -148,11 +139,7 @@
     if (move === 'swap' && imgs.length > 1) {
       var a = pick(imgs), b = pick(imgs.filter(function (x) { return x !== a; }));
       var sa = a.getAttribute('src'), sb = b.getAttribute('src');
-      a.classList.add('fading'); b.classList.add('fading');
-      setTimeout(function () {
-        a.src = sb; b.src = sa;
-        fadeIn(a); fadeIn(b);
-      }, 1250);
+      a.src = sb; b.src = sa;
     } else if (move === 'fill') {
       var e = pick(empties);
       replace(e, makeImg(pick(unused)));
