@@ -35,12 +35,6 @@
         width: calc(var(--w) * 2);
       }
     }
-    .types li::before {
-      display: none;
-    }
-    .types li {
-      padding-left: 0;
-    }
     .empty-note {
       color: var(--maroon);
     }
@@ -142,25 +136,40 @@
   const sections = {
     'drawings': `
       <p class="page-title">drawings</p>
-      <br>
-      <p class="empty-note" id="empty-note" hidden>nothing here yet</p>
-      <div class="gallery" id="gallery">
-        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/teinik.png" alt="teinik"></div>
-        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/artemis.png" alt="artemis"></div>
-        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/astral.png" alt="astral"></div>
-        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/ballladies.png" alt="ballladies"></div>
-        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/blob.png" alt="blob"></div>
-        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/boyfriend.png" alt="boyfriend"></div>
-        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/horselady.png" alt="horselady"></div>
-        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/howmybfseesme.png" alt="howmybfseesme"></div>
-        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/icanseeyourface.png" alt="icanseeyourface"></div>
-        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/knightlady.png" alt="knightlady"></div>
-        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/pilote.gif" alt="pilote"></div>
-        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/prettylady.png" alt="prettylady"></div>
-        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/sakura.png" alt="sakura"></div>
-        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/spaceseal.png" alt="spaceseal"></div>
-        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/theboyandtheheroin.png" alt="theboyandtheheroin"></div>
-        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/theyellowwallpaper.png" alt="theyellowwallpaper"></div>
+      <div class="event">
+        <p class="empty-note">nothing here yet</p>
+      </div>
+      <div class="event">
+        <div class="gallery">
+          <div class="gallery-item"><img src="./digital-mixed-media/teinik.png" alt="teinik"></div>
+          <div class="gallery-item"><img src="./digital-mixed-media/artemis.png" alt="artemis"></div>
+          <div class="gallery-item"><img src="./digital-mixed-media/astral.png" alt="astral"></div>
+          <div class="gallery-item"><img src="./digital-mixed-media/ballladies.png" alt="ballladies"></div>
+          <div class="gallery-item"><img src="./digital-mixed-media/blob.png" alt="blob"></div>
+          <div class="gallery-item"><img src="./digital-mixed-media/boyfriend.png" alt="boyfriend"></div>
+          <div class="gallery-item"><img src="./digital-mixed-media/horselady.png" alt="horselady"></div>
+          <div class="gallery-item"><img src="./digital-mixed-media/howmybfseesme.png" alt="howmybfseesme"></div>
+          <div class="gallery-item"><img src="./digital-mixed-media/icanseeyourface.png" alt="icanseeyourface"></div>
+          <div class="gallery-item"><img src="./digital-mixed-media/knightlady.png" alt="knightlady"></div>
+          <div class="gallery-item"><img src="./digital-mixed-media/pilote.gif" alt="pilote"></div>
+          <div class="gallery-item"><img src="./digital-mixed-media/prettylady.png" alt="prettylady"></div>
+          <div class="gallery-item"><img src="./digital-mixed-media/sakura.png" alt="sakura"></div>
+          <div class="gallery-item"><img src="./digital-mixed-media/spaceseal.png" alt="spaceseal"></div>
+          <div class="gallery-item"><img src="./digital-mixed-media/theboyandtheheroin.png" alt="theboyandtheheroin"></div>
+          <div class="gallery-item"><img src="./digital-mixed-media/theyellowwallpaper.png" alt="theyellowwallpaper"></div>
+        </div>
+      </div>
+      <div class="event">
+        <p class="empty-note">nothing here yet</p>
+      </div>
+      <div class="event">
+        <p class="empty-note">nothing here yet</p>
+      </div>
+      <div class="event">
+        <p class="empty-note">nothing here yet</p>
+      </div>
+      <div class="event">
+        <p class="empty-note">nothing here yet</p>
       </div>
     `,
     'clay': `
@@ -206,14 +215,14 @@
     `,
   };
 
-  const drawingTypes = ['all', 'game assets', 'mixed media', 'digital', 'traditional', 'fanarts', 'sketches'];
-
   const wings = {
     'drawings': `
-      <p class="nav-title">by type</p>
-      <ul class="nav types">
-        ${drawingTypes.map(t => `<li><a href="#drawings" data-type="${t}" onclick="filterDrawings('${t}'); return false;">${t}</a></li>`).join('')}
-      </ul>
+      <div class="story"><p class="page-title">game assets</p></div>
+      <div class="story"><p class="page-title">mixed media</p></div>
+      <div class="story"><p class="page-title">digital</p></div>
+      <div class="story"><p class="page-title">traditional</p></div>
+      <div class="story"><p class="page-title">fanarts</p></div>
+      <div class="story"><p class="page-title">sketches</p></div>
     `,
     'events-markets-exhibits': `
       <div class="story">
@@ -240,19 +249,6 @@
   window.addEventListener('hashchange', showFromHash);
   showFromHash();
 
-  function filterDrawings(type) {
-    let shown = 0;
-    document.querySelectorAll('#gallery .gallery-item').forEach(item => {
-      const ok = type === 'all' || item.dataset.type === type;
-      item.hidden = !ok;
-      if (ok) shown++;
-    });
-    document.getElementById('empty-note').hidden = shown > 0;
-    document.querySelectorAll('#wing .types a').forEach(a => {
-      a.classList.toggle('current', a.dataset.type === type);
-    });
-  }
-
   function alignEvents() {
     var stories = document.querySelectorAll('#wing .story');
     var events = document.querySelectorAll('#content .event');
@@ -276,7 +272,6 @@
   function show(section) {
     document.getElementById('content').innerHTML = sections[section];
     document.getElementById('wing').innerHTML = wings[section] || '';
-    if (section === 'drawings') filterDrawings('all');
     document.querySelectorAll('#content img, #content video').forEach(function (m) {
       m.addEventListener('load', alignEvents);
       m.addEventListener('loadedmetadata', alignEvents);
