@@ -36,29 +36,67 @@
       }
     }
     .event {
-      margin-bottom: 36px;
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 20px;
+      align-items: start;
+      padding: 20px 0 28px;
+      border-bottom: 1px dashed var(--maroon);
     }
-    .event p {
-      line-height: 1.6;
+    .event:last-child {
+      border-bottom: 0;
     }
     .shots {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 12px;
+      gap: 8px;
     }
     .shots img,
     .shots video {
-      height: 170px;
+      height: 92px;
       width: auto;
       max-width: 100%;
       display: block;
+      border: 1px solid var(--maroon);
+    }
+    .shots img:first-child {
+      height: 180px;
     }
     .shots img {
       cursor: pointer;
     }
     .shots img:hover {
       outline: 2px solid var(--green);
+    }
+    .story {
+      border-left: 1px solid var(--maroon);
+      padding-left: 16px;
+    }
+    .story > :first-child {
+      margin-top: 0;
+    }
+    .story .when {
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--maroon);
+      margin-bottom: 2px;
+    }
+    .story .page-title {
+      margin-top: 0;
+    }
+    .story p {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    @media (max-width: 700px) {
+      .event {
+        grid-template-columns: 1fr;
+      }
+      .story {
+        border-left: 0;
+        padding-left: 0;
+      }
     }
   </style>
 </head>
@@ -138,25 +176,30 @@
     `,
     'events-markets-exhibits': `
       <p class="page-title">events-markets-exhibits</p>
-      <br>
       <div class="event">
-        <p class="page-title">nov 7, 2025 · byob at hosq.co</p>
-        <p>took part in BYOB (bring your own beamer) organized by hosq.co. looking back at these drawings, i find them too depressing. i remember drawing them right after i moved out, when i was missing our old village house.</p>
         <div class="shots">
+          <img class="shot" src="./events-markets-exhibits/ikindalookcoolhere.jpg" alt="">
           <img class="shot" src="./events-markets-exhibits/1.gif" alt="">
           <img class="shot" src="./events-markets-exhibits/2.gif" alt="">
           <img class="shot" src="./events-markets-exhibits/3.gif" alt="">
-          <img class="shot" src="./events-markets-exhibits/ikindalookcoolhere.jpg" alt="">
           <video src="./events-markets-exhibits/cringe.MOV" controls></video>
+        </div>
+        <div class="story">
+          <p class="when">nov 7, 2025</p>
+          <p class="page-title">byob at hosq.co</p>
+          <p>took part in BYOB (bring your own beamer) organized by hosq.co. looking back at these drawings, i find them too depressing. i remember drawing them right after i moved out, when i was missing our old village house.</p>
         </div>
       </div>
       <div class="event">
-        <p class="page-title">nov 22-23, 2025 · exhibit-market at qrchi bazaar</p>
-        <p>saw an invitation to take part in an exhibit-market in qrchi bazaar with the focus being more on making connections and exchanging items rather than selling them. it actually worked and i met some coolsy people there. one of them even gave me sun shaped red earrings that i wear religiously.</p>
         <div class="shots">
           <img class="shot" src="./events-markets-exhibits/4.jpg" alt="">
           <img class="shot" src="./events-markets-exhibits/5.jpg" alt="">
           <img class="shot" src="./events-markets-exhibits/7.jpg" alt="">
+        </div>
+        <div class="story">
+          <p class="when">nov 22-23, 2025</p>
+          <p class="page-title">exhibit-market at qrchi bazaar</p>
+          <p>saw an invitation to take part in an exhibit-market in qrchi bazaar with the focus being more on making connections and exchanging items rather than selling them. it actually worked and i met some coolsy people there. one of them even gave me sun shaped red earrings that i wear religiously.</p>
         </div>
       </div>
     `,
