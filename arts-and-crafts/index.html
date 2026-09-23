@@ -35,6 +35,15 @@
         width: calc(var(--w) * 2);
       }
     }
+    .types li::before {
+      display: none;
+    }
+    .types li {
+      padding-left: 0;
+    }
+    .empty-note {
+      color: var(--maroon);
+    }
     .event {
       padding: 4px 0 24px;
       border-bottom: 1px dashed var(--maroon);
@@ -131,26 +140,27 @@
 
 <script>
   const sections = {
-    'digital-mixed-media': `
-      <p class="page-title">digital-mixed-media</p>
+    'drawings': `
+      <p class="page-title">drawings</p>
       <br>
+      <p class="empty-note" id="empty-note" hidden>nothing here yet</p>
       <div class="gallery" id="gallery">
-        <div class="gallery-item"><img src="./digital-mixed-media/teinik.png" alt="teinik"></div>
-        <div class="gallery-item"><img src="./digital-mixed-media/artemis.png" alt="artemis"></div>
-        <div class="gallery-item"><img src="./digital-mixed-media/astral.png" alt="astral"></div>
-        <div class="gallery-item"><img src="./digital-mixed-media/ballladies.png" alt="ballladies"></div>
-        <div class="gallery-item"><img src="./digital-mixed-media/blob.png" alt="blob"></div>
-        <div class="gallery-item"><img src="./digital-mixed-media/boyfriend.png" alt="boyfriend"></div>
-        <div class="gallery-item"><img src="./digital-mixed-media/horselady.png" alt="horselady"></div>
-        <div class="gallery-item"><img src="./digital-mixed-media/howmybfseesme.png" alt="howmybfseesme"></div>
-        <div class="gallery-item"><img src="./digital-mixed-media/icanseeyourface.png" alt="icanseeyourface"></div>
-        <div class="gallery-item"><img src="./digital-mixed-media/knightlady.png" alt="knightlady"></div>
-        <div class="gallery-item"><img src="./digital-mixed-media/pilote.gif" alt="pilote"></div>
-        <div class="gallery-item"><img src="./digital-mixed-media/prettylady.png" alt="prettylady"></div>
-        <div class="gallery-item"><img src="./digital-mixed-media/sakura.png" alt="sakura"></div>
-        <div class="gallery-item"><img src="./digital-mixed-media/spaceseal.png" alt="spaceseal"></div>
-        <div class="gallery-item"><img src="./digital-mixed-media/theboyandtheheroin.png" alt="theboyandtheheroin"></div>
-        <div class="gallery-item"><img src="./digital-mixed-media/theyellowwallpaper.png" alt="theyellowwallpaper"></div>
+        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/teinik.png" alt="teinik"></div>
+        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/artemis.png" alt="artemis"></div>
+        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/astral.png" alt="astral"></div>
+        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/ballladies.png" alt="ballladies"></div>
+        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/blob.png" alt="blob"></div>
+        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/boyfriend.png" alt="boyfriend"></div>
+        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/horselady.png" alt="horselady"></div>
+        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/howmybfseesme.png" alt="howmybfseesme"></div>
+        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/icanseeyourface.png" alt="icanseeyourface"></div>
+        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/knightlady.png" alt="knightlady"></div>
+        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/pilote.gif" alt="pilote"></div>
+        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/prettylady.png" alt="prettylady"></div>
+        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/sakura.png" alt="sakura"></div>
+        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/spaceseal.png" alt="spaceseal"></div>
+        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/theboyandtheheroin.png" alt="theboyandtheheroin"></div>
+        <div class="gallery-item" data-type="mixed media"><img src="./digital-mixed-media/theyellowwallpaper.png" alt="theyellowwallpaper"></div>
       </div>
     `,
     'clay': `
@@ -196,7 +206,15 @@
     `,
   };
 
+  const drawingTypes = ['all', 'game assets', 'mixed media', 'digital', 'traditional', 'fanarts', 'sketches'];
+
   const wings = {
+    'drawings': `
+      <p class="nav-title">by type</p>
+      <ul class="nav types">
+        ${drawingTypes.map(t => `<li><a href="#drawings" data-type="${t}" onclick="filterDrawings('${t}'); return false;">${t}</a></li>`).join('')}
+      </ul>
+    `,
     'events-markets-exhibits': `
       <div class="story">
         <p class="when">nov 7, 2025</p>
@@ -216,10 +234,24 @@
 
   function showFromHash() {
     var key = location.hash.slice(1);
+    if (key === 'digital-mixed-media') key = 'drawings';
     if (sections[key]) show(key);
   }
   window.addEventListener('hashchange', showFromHash);
   showFromHash();
+
+  function filterDrawings(type) {
+    let shown = 0;
+    document.querySelectorAll('#gallery .gallery-item').forEach(item => {
+      const ok = type === 'all' || item.dataset.type === type;
+      item.hidden = !ok;
+      if (ok) shown++;
+    });
+    document.getElementById('empty-note').hidden = shown > 0;
+    document.querySelectorAll('#wing .types a').forEach(a => {
+      a.classList.toggle('current', a.dataset.type === type);
+    });
+  }
 
   function alignEvents() {
     var stories = document.querySelectorAll('#wing .story');
@@ -244,6 +276,7 @@
   function show(section) {
     document.getElementById('content').innerHTML = sections[section];
     document.getElementById('wing').innerHTML = wings[section] || '';
+    if (section === 'drawings') filterDrawings('all');
     document.querySelectorAll('#content img, #content video').forEach(function (m) {
       m.addEventListener('load', alignEvents);
       m.addEventListener('loadedmetadata', alignEvents);
@@ -270,6 +303,6 @@
   });
 </script>
 
-<script src="/nav.js?v=3"></script>
+<script src="/nav.js?v=4"></script>
 </body>
 </html>
