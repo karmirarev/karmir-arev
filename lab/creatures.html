@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>creatures - karmirarev</title>
+  <link rel="stylesheet" href="../site.css?v=24">
+  <style>
+    .picks {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 14px;
+    }
+    .pick {
+      border: 1px solid var(--maroon);
+      border-radius: 14px;
+      box-shadow: 4px 4px 0 #C1BCD7;
+      background: var(--paper);
+      overflow: hidden;
+    }
+    .pick canvas {
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      border-bottom: 1px solid var(--maroon);
+      cursor: pointer;
+    }
+    .pick p {
+      margin: 8px 10px 10px;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .pick b {
+      color: var(--maroon);
+    }
+    .pick span {
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+<div class="content">
+        <p class="page-title">pick a creature</p>
+        <div class="picks">
+          <div class="pick"><canvas data-toy="pick-1"></canvas><p><b>1.</b> orbium swimmers<br><span>smooth lenia jellies that glide around</span></p></div>
+          <div class="pick"><canvas data-toy="pick-2"></canvas><p><b>2.</b> gyropteron flyers<br><span>lenia arcs that fly and wobble</span></p></div>
+          <div class="pick"><canvas data-toy="pick-3"></canvas><p><b>3.</b> life gliders<br><span>tiny game of life gliders zipping diagonally</span></p></div>
+          <div class="pick"><canvas data-toy="pick-4"></canvas><p><b>4.</b> life spaceships<br><span>game of life ships in three sizes</span></p></div>
+          <div class="pick"><canvas data-toy="pick-5"></canvas><p><b>5.</b> brian's brain sparks<br><span>three-state sparks that shoot off in pairs</span></p></div>
+          <div class="pick"><canvas data-toy="pick-6"></canvas><p><b>6.</b> star wars ships<br><span>fading ships with trails (rule 345/2/4)</span></p></div>
+          <div class="pick"><canvas data-toy="pick-7"></canvas><p><b>7.</b> bosco bugs<br><span>chunky outlined bugs that crawl (larger than life)</span></p></div>
+          <div class="pick"><canvas data-toy="pick-8"></canvas><p><b>8.</b> ring worms<br><span>a busy carpet of wriggling stripes (mnca)</span></p></div>
+          <div class="pick"><canvas data-toy="pick-9"></canvas><p><b>9.</b> bouncing spots<br><span>rings and little curls that split</span></p></div>
+          <div class="pick"><canvas data-toy="pick-10"></canvas><p><b>10.</b> growing worms<br><span>fat dots that bud and merge</span></p></div>
+          <div class="pick"><canvas data-toy="pick-11"></canvas><p><b>11.</b> ripples<br><span>pale rings and arcs that roll along</span></p></div>
+          <div class="pick"><canvas data-toy="pick-12"></canvas><p><b>12.</b> day and night blobs<br><span>big solid blobs that melt into each other</span></p></div>
+        </div>
+</div>
+<script src="/toys.js?v=14"></script>
+<script>if (window.startToys) window.startToys();</script>
+</body>
+</html>
