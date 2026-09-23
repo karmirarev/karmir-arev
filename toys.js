@@ -55,6 +55,8 @@
   var SEED_DISCS = COMMON + 'void main(){vec2 p=gl_FragCoord.xy;float v=0.0;for(int i=0;i<24;i++){vec2 c=vec2(hash(vec2(float(i),3.0)),hash(vec2(float(i),4.0)))*vec2(u_size);float r=4.0+10.0*hash(vec2(float(i),5.0));vec2 d=p-c;d=min(abs(d),vec2(u_size)-abs(d));if(dot(d,d)<r*r)v=0.5+0.5*hash(p);}o=vec4(v,0,0,1);}';
   var SEED_ROW = COMMON + 'void main(){ivec2 p=ivec2(gl_FragCoord.xy);int mid=int(float(u_size.x)*(0.3+0.4*hash(vec2(1.0,2.0))));float v=(p.y==u_size.y-1&&p.x==mid)?1.0:0.0;o=vec4(v,0,0,1);}';
 
+  var SPRINKLE_GS = COMMON + 'void main(){ivec2 ip=ivec2(gl_FragCoord.xy);vec2 p=gl_FragCoord.xy;vec2 c=cell(ip).rg;vec2 k=vec2(hash(vec2(float(u_frame),1.0)),hash(vec2(float(u_frame),2.0)))*vec2(u_size);if(abs(p.x-k.x)<3.0&&abs(p.y-k.y)<3.0)c.y=max(c.y,0.9);o=vec4(c,0,1);}';
+
   // ---- view: paper palette with ordered dither ----
   var VIEW = '#version 300 es\nprecision highp float;uniform sampler2D u_state;uniform ivec2 u_size;uniform vec2 u_res;uniform vec3 u_paper;uniform vec3 u_ink;uniform vec3 u_ink2;uniform int u_mode;out vec4 o;\n' +
     'float bayer(ivec2 p){int x=p.x&3,y=p.y&3;int m[16]=int[16](0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5);return (float(m[y*4+x])+0.5)/16.0;}\n' +
@@ -70,13 +72,15 @@
   function hex(h) { return [parseInt(h.slice(1, 3), 16) / 255, parseInt(h.slice(3, 5), 16) / 255, parseInt(h.slice(5, 7), 16) / 255]; }
   var PAPER = hex('#d4d3c8'), PLUM = hex('#911254'), GREEN = hex('#129150'), LILAC = hex('#9582F8'), INK = hex('#1b1b1b'), LIME = hex('#c9d94a');
 
+  var PLUM2 = hex('#c04a86');
   var TOYS = {
-    sandsong: { step: GS, seed: SEED_GS, mode: 4, size: [192, 108], sps: 6, ink: PLUM, ink2: LILAC, u: { u_F: 0.029, u_k: 0.057 } },
-    'kami-hovani': { step: LENIA, seed: null, mode: 0, size: [128, 72], sps: 1, ink: GREEN, ink2: PLUM, u: { u_R: 13, u_T: 10, u_mu: 0.15, u_sigma: 0.015, u_nb: 1, u_beta: [1, 0, 0, 0] } },
-    'bebe-heist': { step: LIFE, seed: SEED_NOISE, mode: 1, size: [128, 72], sps: 1, every: 4, ink: PLUM, ink2: PLUM, u: { u_fill: 0.3 } },
-    pingala: { step: WOLF, seed: SEED_ROW, mode: 3, size: [160, 90], sps: 1, every: 2, ink: INK, ink2: INK, u: { u_rule: 30 } },
-    khali: { step: MNCA, seed: SEED_DISCS, mode: 0, size: [192, 108], sps: 1, ink: LILAC, ink2: PLUM, u: {} }
+    sandsong:      { step: GS, seed: SEED_GS, sprinkle: SPRINKLE_GS, mode: 4, size: [192, 108], sps: 6, every: 1, poke: 900, ink: PLUM, ink2: PLUM2, u: { u_F: 0.029, u_k: 0.057 } },
+    'kami-hovani': { step: GS, seed: SEED_GS, sprinkle: SPRINKLE_GS, mode: 4, size: [192, 108], sps: 8, every: 1, poke: 400, ink: PLUM, ink2: PLUM2, u: { u_F: 0.0367, u_k: 0.0649 } },
+    'bebe-heist':  { step: GS, seed: SEED_GS, sprinkle: SPRINKLE_GS, mode: 4, size: [192, 108], sps: 10, every: 1, poke: 300, ink: PLUM, ink2: PLUM2, u: { u_F: 0.062, u_k: 0.0609 } },
+    pingala:       { step: GS, seed: SEED_GS, sprinkle: SPRINKLE_GS, mode: 4, size: [192, 108], sps: 8, every: 1, poke: 240, ink: PLUM, ink2: PLUM2, u: { u_F: 0.030, u_k: 0.062 } },
+    khali:         { step: GS, seed: SEED_GS, sprinkle: SPRINKLE_GS, mode: 4, size: [192, 108], sps: 8, every: 1, poke: 500, ink: PLUM, ink2: PLUM2, u: { u_F: 0.054, u_k: 0.063 } }
   };
+
 
   function compile(gl, type, src) {
     var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
@@ -113,7 +117,7 @@
     var gl = canvas.getContext('webgl2', { antialias: false, alpha: false, preserveDrawingBuffer: false });
     if (!gl || !gl.getExtension('EXT_color_buffer_float')) { canvas.classList.add('no-gl'); return; }
     var W = cfg.size[0], H = cfg.size[1];
-    var stepP = program(gl, cfg.step), viewP = program(gl, VIEW), seedP = cfg.seed ? program(gl, cfg.seed) : null;
+    var stepP = program(gl, cfg.step), viewP = program(gl, VIEW), seedP = cfg.seed ? program(gl, cfg.seed) : null, sprinkleP = cfg.sprinkle ? program(gl, cfg.sprinkle) : null;
     if (!stepP || !viewP) { canvas.classList.add('no-gl'); return; }
     var tex = [makeTex(gl, W, H), makeTex(gl, W, H)], fb = gl.createFramebuffer(), cur = 0, seed = Math.random() * 100, frame = 0;
 
@@ -136,8 +140,10 @@
       else {
         // Lenia: a few Orbium creatures pasted at random spots and rotations
         var data = new Float32Array(W * H * 4);
-        for (var n = 0; n < 4; n++) {
-          var ox = Math.floor(Math.random() * (W - 20)), oy = Math.floor(Math.random() * (H - 20));
+        var slots = 3, slotW = Math.floor(W / slots);
+        for (var n = 0; n < slots; n++) {
+          var ox = n * slotW + 4 + Math.floor(Math.random() * Math.max(1, slotW - 28));
+          var oy = 4 + Math.floor(Math.random() * Math.max(1, H - 28));
           var flipX = Math.random() < 0.5, flipY = Math.random() < 0.5, swap = Math.random() < 0.5;
           for (var y = 0; y < 20; y++) for (var x = 0; x < 20; x++) {
             var sx = flipX ? 19 - x : x, sy = flipY ? 19 - y : y;
@@ -150,6 +156,7 @@
       }
     }
     function step() { bindTarget(1 - cur); run(stepP, cfg.u); cur = 1 - cur; }
+    function poke() { if (!sprinkleP) return; bindTarget(1 - cur); run(sprinkleP, cfg.u); cur = 1 - cur; }
     function draw() {
       gl.bindFramebuffer(gl.FRAMEBUFFER, null);
       var w = canvas.clientWidth | 0, h = canvas.clientHeight | 0, dpr = Math.min(2, window.devicePixelRatio || 1);
@@ -166,10 +173,8 @@
       if (t - last >= 1000 / 60) {
         last = t; tick++;
         if (tick % every === 0) for (var i = 0; i < cfg.sps; i++) { step(); frame++; }
+        if (cfg.poke && tick % cfg.poke === 0) poke();
         draw();
-        // Lenia and Life go stale eventually: start over now and then
-        var life = name === 'kami-hovani' ? 2400 : name === 'bebe-heist' ? 1800 : 0;
-        if (life && frame > life) reseed();
       }
       raf = requestAnimationFrame(loop);
     }
