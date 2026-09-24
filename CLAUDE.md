@@ -110,7 +110,7 @@ The portfolio cards (gif, name, email with copy button, bio, find me on, resume)
   from 16.7MB to 538KB. The scan's table sheet was cut off: model leveled (the scan was
   tilted 18 degrees), everything below 3.5% height dropped, only the biggest piece
   kept, and the open bottom closed with a flat cap. New versions get new file names
-  (`figurine-v3.glb`). The wing holds a `.story` with the name, a line and the
+  (`figurine-v3.glb`). The wing holds a `.story` with the name and the
   printables link ("link to the 3d model").
   The model sits in `.event > .model-wrap` (centered, max 460px, overflow hidden) so it
   pairs with the wing story like other sections. The viewer's own framing leaves empty
