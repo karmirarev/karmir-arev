@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>log options - karmirarev</title>
+  <link rel="stylesheet" href="../site.css?v=24">
+  <style>
+    .options {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 24px;
+      align-items: start;
+    }
+    .options .wing {
+      width: auto;
+      margin: 0;
+      min-height: 330px;
+    }
+    .pick-name {
+      margin: 0 0 10px;
+      color: var(--maroon);
+      font-weight: bold;
+    }
+    .opt ul {
+      list-style: none;
+      margin: 12px 0 0;
+      padding: 0;
+    }
+    .opt li {
+      line-height: 1.5;
+    }
+    .opt time {
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--maroon);
+    }
+
+    .timeline ul {
+      position: relative;
+      margin-left: 7px;
+      padding-left: 20px;
+      border-left: 1px dashed var(--maroon);
+    }
+    .timeline li {
+      position: relative;
+      padding: 0 0 18px;
+    }
+    .timeline li:last-child {
+      padding-bottom: 0;
+    }
+    .timeline li::before {
+      content: '';
+      position: absolute;
+      left: -28px;
+      top: 1px;
+      width: 15px;
+      height: 15px;
+      box-sizing: border-box;
+      border: 1px solid var(--maroon);
+      border-radius: 2px;
+      background: var(--paper);
+    }
+    .timeline li:first-child::before {
+      background: var(--green);
+      border-color: var(--green);
+    }
+    .timeline time {
+      display: block;
+      line-height: 16px;
+      margin-bottom: 2px;
+    }
+
+    .changelog li {
+      display: grid;
+      grid-template-columns: 62px 14px 1fr;
+      padding: 5px 0;
+      font-size: 13px;
+    }
+    .changelog time {
+      font-size: 12px;
+      letter-spacing: 0;
+      line-height: 19.5px;
+    }
+    .changelog .plus {
+      color: var(--green);
+      font-weight: bold;
+    }
+
+    .ledger li {
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px dashed rgba(145, 18, 84, 0.45);
+    }
+    .ledger li:first-child {
+      border-top: 1px dashed rgba(145, 18, 84, 0.45);
+    }
+    .ledger time {
+      line-height: 21px;
+    }
+
+    .stamps li {
+      display: flex;
+      gap: 12px;
+      padding: 8px 0;
+      align-items: flex-start;
+    }
+    .stamps time {
+      flex-shrink: 0;
+      width: 52px;
+      padding: 4px 0;
+      border: 1px solid var(--maroon);
+      border-radius: 3px;
+      box-shadow: 2px 2px 0 #C1BCD7;
+      text-align: center;
+      line-height: 1.2;
+    }
+    .stamps time b {
+      display: block;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+  </style>
+</head>
+<body>
+  <p class="page-title">update log: pick one</p>
+  <p>the sakura line is just an example so you can see a longer list.</p>
+  <div class="options">
+
+    <div class="wing opt timeline">
+      <p class="pick-name">1. timeline</p>
+      <p class="nav-title log-title">update log</p>
+      <ul>
+        <li><time>sep 24, 2026</time>new 3d model added in <a href="#">3d-model-painting</a>: ranni the witch</li>
+        <li><time>sep 20, 2026</time>new drawing added in <a href="#">drawings</a>: sakura</li>
+        <li><time>nov 2025</time>new events added in <a href="#">events-markets-exhibits</a>: byob at hosq.co, exhibit-market at qrchi bazaar</li>
+      </ul>
+    </div>
+
+    <div class="wing opt changelog">
+      <p class="pick-name">2. changelog</p>
+      <p class="nav-title log-title">update log</p>
+      <ul>
+        <li><time>24.09.26</time><span class="plus">+</span><span>3d model in <a href="#">3d-model-painting</a>: ranni the witch</span></li>
+        <li><time>20.09.26</time><span class="plus">+</span><span>drawing in <a href="#">drawings</a>: sakura</span></li>
+        <li><time>11.2025</time><span class="plus">+</span><span>events in <a href="#">events-markets-exhibits</a>: byob at hosq.co, exhibit-market at qrchi bazaar</span></li>
+      </ul>
+    </div>
+
+    <div class="wing opt ledger">
+      <p class="pick-name">3. notebook ledger</p>
+      <p class="nav-title log-title">update log</p>
+      <ul>
+        <li><time>sep 24<br>2026</time><span>new 3d model added in <a href="#">3d-model-painting</a>: ranni the witch</span></li>
+        <li><time>sep 20<br>2026</time><span>new drawing added in <a href="#">drawings</a>: sakura</span></li>
+        <li><time>nov<br>2025</time><span>new events added in <a href="#">events-markets-exhibits</a>: byob at hosq.co, exhibit-market at qrchi bazaar</span></li>
+      </ul>
+    </div>
+
+    <div class="wing opt stamps">
+      <p class="pick-name">4. date stamps</p>
+      <p class="nav-title log-title">update log</p>
+      <ul>
+        <li><time><b>24</b>sep 26</time><span>new 3d model added in <a href="#">3d-model-painting</a>: ranni the witch</span></li>
+        <li><time><b>20</b>sep 26</time><span>new drawing added in <a href="#">drawings</a>: sakura</span></li>
+        <li><time><b>nov</b>2025</time><span>new events added in <a href="#">events-markets-exhibits</a>: byob at hosq.co, exhibit-market at qrchi bazaar</span></li>
+      </ul>
+    </div>
+
+  </div>
+  <style>.log-title::before { display: none; } body { padding: 24px; }</style>
+</body>
+</html>

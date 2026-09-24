@@ -29,6 +29,7 @@
     { label: 'instagram', href: 'https://www.instagram.com/karmirarev__', newTab: true },
     { label: 'itch.io', href: 'https://karmirarev.itch.io/', newTab: true },
     { label: 'letterboxd', href: 'https://letterboxd.com/karmirarev/', newTab: true },
+    { label: 'anilist', href: 'https://anilist.co/user/karmirarev/animelist', newTab: true },
     { label: 'buymeacoffee', href: 'https://buymeacoffee.com/karmirarev', newTab: true }
   ];
 
@@ -40,6 +41,19 @@
   side.appendChild(menu);
   var linksBox = document.createElement('div');
   linksBox.className = 'links-box';
+  var guy = document.createElement('img');
+  guy.className = 'guy';
+  guy.src = '/guy.gif';
+  guy.alt = '';
+  side.appendChild(guy);
+
+  function placeGuy() {
+    var cur = menu.querySelector('a.current');
+    if (!cur || !cur.offsetParent || !guy.offsetHeight) { guy.hidden = !cur || !cur.offsetParent; return; }
+    guy.hidden = false;
+    var r = cur.getBoundingClientRect(), box = side.getBoundingClientRect();
+    guy.style.top = (r.top - box.top + r.height / 2 - guy.offsetHeight * 0.63) + 'px';
+  }
 
   function here() {
     var p = location.pathname;
@@ -89,6 +103,7 @@
         btn.onclick = function () {
           sub.hidden = !sub.hidden;
           btn.textContent = sub.hidden ? '+' : '-';
+          placeGuy();
         };
       }
       ul.appendChild(li);
@@ -118,5 +133,9 @@
   }
 
   render();
-  window.addEventListener('hashchange', render);
+  placeGuy();
+  guy.addEventListener('load', placeGuy);
+  window.addEventListener('load', placeGuy);
+  window.addEventListener('resize', placeGuy);
+  window.addEventListener('hashchange', function () { render(); placeGuy(); });
 })();
