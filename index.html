@@ -6,6 +6,27 @@
   <title>karmirarev</title>
   <link rel="stylesheet" href="site.css?v=24">
   <style>
+    .log-title::before {
+      display: none;
+    }
+    .log.sep li {
+      position: relative;
+      padding-left: 23px;
+    }
+    .log.sep time {
+      line-height: 16px;
+    }
+    .log.sep li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 26px;
+      width: 15px;
+      height: 15px;
+      box-sizing: border-box;
+      border: 1px solid var(--maroon);
+      border-radius: 2px;
+    }
     .log.sep li:nth-child(n+4) {
       display: none;
     }
@@ -20,15 +41,10 @@
 
 <div class="page-layout">
   <div class="wing" id="wing">
-    <p class="nav-title">update log</p>
+    <p class="nav-title log-title">update log</p>
     <ul class="log sep">
-      <li><time>sep 24, 2026</time>the painted figurine is now a 3d model you can spin, in 3d-model-painting.</li>
-      <li><time>sep 23, 2026</time>guestbook gone. elsewhere now lives inside the menu and follows you down the page.</li>
-      <li><time>sep 23, 2026</time>each section's left box has its own tiny purple creatures: ripples, curls and budding dots.</li>
-      <li><time>sep 23, 2026</time>every game got its own page: about, links, facts and a live cover.</li>
-      <li><time>sep 23, 2026</time>drawings split by type. events got a proper layout. a sketch of a new look lives in the lab.</li>
-      <li><time>sep 22, 2026</time>whole site restyled: menu tree, left wing, draggable fish, portfolio under games.</li>
-      <li><time>nov 2025</time>byob at hosq.co and the exhibit-market at qrchi bazaar, both in arts and crafts.</li>
+      <li><time>sep 24, 2026</time>new 3d model added in <a href="/arts-and-crafts/#3d-model-painting">3d-model-painting</a>: ranni the witch</li>
+      <li><time>nov 2025</time>new events added in <a href="/arts-and-crafts/#events-markets-exhibits">events-markets-exhibits</a>: byob at hosq.co, exhibit-market at qrchi bazaar</li>
     </ul>
 
   </div>
