@@ -137,6 +137,7 @@ The portfolio cards (gif, name, email with copy button, bio, find me on, resume)
   space above, so `.model` has negative margins to trim it, and the tilt is locked
   (`min/max-camera-orbit="auto 75deg auto"`) so dragging only spins it and never clips.
   `disable-pan disable-tap` stop a click from moving the model off its spot.
+  `camera-orbit="180deg 75deg auto"` makes it start (and begin spinning) from her front.
 - Essays: `thinking-out-loud/index.html`, `sections`, plus a `nav.js` entry.
   Quotes from other authors go between paragraphs as
   `<div class="cite-spot"><blockquote class="cite">"quote"<cite>author</cite></blockquote></div>`.
