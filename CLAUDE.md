@@ -79,27 +79,47 @@ to copy.
    ```js
    {
      key: 'my-game',                 // url hash and toys.js key
+     jam: true,                      // only for game jam games, listed under "game jams"
      name: 'my game',
      tag: 'mobile game',             // or 'video game'
      blurb: 'one line for the card',
      about: ['paragraph', 'paragraph'],
      did: ['thing i did', 'another'],
-     facts: { year: '', platform: '', engine: '', role: '', team: '', status: '' },
-     made: ['unity', 'aseprite'],
+     facts: { genre: 'top-down puzzle', platform: '', engine: '', status: '', year: '', role: '' },
+     tools: ['aseprite', 'blender'],
      links: { play: '', itch: '', store: '', github: '', ggd: '' },
      shots: ['./shots/my-game-1.png']
    }
    ```
-   Empty fields, links and lists are simply not shown. `play` is the green button.
+   The fact sheet always shows every fact and "additional tools", with `-` for empty
+   ones, so marita can see what is left to fill in. `genre` is what kind of game it
+   is (not "mobile game", that is what `tag` and `platform` are for). `tools` is only
+   for extra tools beyond the engine; never repeat the
+   engine there.
+   Empty fields, links and lists are simply not shown. The way to play is always the green button: `play` if there is one, otherwise `itch`,
+   then `store`, then `appstore`.
    Other link keys: `appstore`, `trailer` (names in `LINK_NAMES`). Design docs and
    screenshots go in `projects/` as files with new names.
-2. In `toys.js`, add a `TOYS[KEY]` entry. Covers are live GPU cellular automata
+2. Either a picture cover: `cover: './covers/KEY.webp'` (16:9, 1280x720 webp in
+   `projects/covers/`, original colours, no filter), shown at the top of the game page. The games grid cards
+   show the live organism cover and swap to the picture while hovered (instantly, no
+   fade), so every game also needs a `TOYS[KEY]` entry.
+   Or a live cover: in `toys.js`, add a `TOYS[KEY]` entry. Covers are live GPU cellular automata
    (WebGL2, ported from snek-git/quickshell-toys). Existing regimes: Gray-Scott with
    `u_F`/`u_k` (mode 4) and Lenia species (mode 0). Keep them purple: `ink: PLUM,
    ink2: PLUM2`. They pause off-screen and reseed on click.
-3. Add `{ label, href: '/projects/#KEY' }` to the `games` children in `nav.js`, same
-   order as `GAMES`.
+3. Add `{ label, href: '/projects/#KEY' }` to the `games` children in `nav.js`, in the
+   order the grid shows them: personal projects first, then game jams.
 4. Bump `toys.js?v=N` in `projects/index.html` and `nav.js?v=N` in all pages.
+
+Unity web builds play inside the game page instead of a new tab: give the entry
+`embed: { build: './games/NAME/Build/FILEPREFIX', width, height }`. The page then loads the game
+straight away (no play button, no cover) in a portrait player box on the left with the
+links and about text on its right (stacked under 700px) and a green loading bar while it
+loads. It loads `FILEPREFIX.loader.js` and calls
+`createUnityInstance` itself, so the export's own `index.html` is never touched. The
+separate "play in browser" link is hidden for embedded games, and `show()` quits the game
+when you leave the page. Pingala uses this.
 
 The portfolio cards (gif, name, email with copy button, bio, find me on, resume) live in
 `wings.games` in `projects/index.html`. The resume is `projects/resume.pdf`.

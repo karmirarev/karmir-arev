@@ -5,9 +5,10 @@
       { label: 'games', href: '/projects/#games', children: [
         { label: 'sandsong', href: '/projects/#sandsong' },
         { label: 'kami hovani', href: '/projects/#kami-hovani' },
-        { label: 'bebe heist', href: '/projects/#bebe-heist' },
         { label: 'pingala', href: '/projects/#pingala' },
-        { label: 'khali', href: '/projects/#khali' }
+        { label: 'khali', href: '/projects/#khali' },
+        { label: 'bebe heist', href: '/projects/#bebe-heist' },
+        { label: 'disco market', href: '/projects/#disco-market' }
       ]},
       { label: 'other', href: '/projects/#other', children: [
         { label: 'mini me and u', href: '/projects/other/mini-me-and-you/' }
