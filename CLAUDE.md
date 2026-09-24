@@ -140,9 +140,13 @@ show creatures: `show()` sets the wing to `wings[key]` or empty and drops `.only
 
 ## Home wing
 
-Every major change to the site gets a line at the top of the update log in
-`index.html` (`<li><time>mon d, yyyy</time>short lowercase line.</li>`), in the same
-change that makes it. Only the newest 3 lines show (CSS hides the rest, no
+The update log in `index.html` is for new things visitors can look at: a new drawing,
+clay piece, figurine, essay, game or event. Log it in the same change that adds it
+in this exact plain form: `<li><time>mon d, yyyy</time>new 3d model added in <a
+href="/arts-and-crafts/#3d-model-painting">3d-model-painting</a>: ranni the witch</li>`
+Every line must say what was added and where it was
+added, with a link to that page. No chatty sentences. Do not log site
+work like layout, menus, fonts, colours, caching or the left-box creatures. Only the newest 3 lines show (CSS hides the rest, no
 "older" button, marita does not want one), so keep new lines at the top.
 
 The home wing is only the update log (`ul.log` with `<time>` lines). Marita removed
