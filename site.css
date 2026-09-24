@@ -73,17 +73,22 @@ a:hover {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  position: relative;
+}
+
+.guy {
+  position: absolute;
+  right: 21px;
+  top: 0;
+  height: 40px;
+  width: auto;
+  z-index: 2;
+  pointer-events: none;
 }
 
 .wing {
   overflow: hidden;
   padding: 26px 24px 20px;
-  background-image:
-    linear-gradient(90deg, transparent 11px, rgba(220, 40, 60, 0.5) 11px, rgba(220, 40, 60, 0.5) 12px, transparent 12px),
-    linear-gradient(90deg, transparent calc(100% - 12px), rgba(220, 40, 60, 0.5) calc(100% - 12px), rgba(220, 40, 60, 0.5) calc(100% - 11px), transparent calc(100% - 11px)),
-    linear-gradient(transparent 11px, var(--maroon) 11px, var(--maroon) 12px, transparent 12px);
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
 }
 
 .wing-toy {
@@ -116,18 +121,25 @@ a:hover {
   background-color: var(--paper);
 }
 
+.menu,
+.links-box {
+  background-image: linear-gradient(90deg, transparent 21px, rgba(220, 40, 60, 0.5) 21px, rgba(220, 40, 60, 0.5) 22px, transparent 22px);
+  background-repeat: no-repeat;
+}
+
 .menu {
   flex: 1;
   display: flex;
   flex-direction: column;
   padding-bottom: 0;
+  padding-left: 34px;
 }
 
 .links-box {
   position: sticky;
   bottom: 21px;
-  margin: auto -20px 0;
-  padding: 14px 20px 16px;
+  margin: auto -20px 0 -34px;
+  padding: 14px 20px 16px 34px;
   border-top: 1px dashed var(--maroon);
   border-radius: 0 0 14px 14px;
   background-color: var(--paper);
@@ -135,6 +147,14 @@ a:hover {
 
 .menu > .nav {
   margin-bottom: 20px;
+  padding-right: 30px;
+  line-height: 1.5;
+}
+
+.menu > .nav a {
+  display: inline;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 

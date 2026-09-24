@@ -4,28 +4,87 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>karmirarev</title>
-  <link rel="stylesheet" href="site.css?v=24">
+  <link rel="stylesheet" href="site.css?v=29">
   <style>
     .log-title::before {
       display: none;
     }
+    .log.sep {
+      position: relative;
+      margin-left: 7px;
+      padding-left: 20px;
+      border-left: 1px dashed var(--maroon);
+    }
     .log.sep li {
       position: relative;
-      padding-left: 23px;
+      padding: 0 0 18px;
     }
-    .log.sep time {
-      line-height: 16px;
+    .log.sep li:last-child,
+    .log.sep li:nth-child(3) {
+      padding-bottom: 0;
     }
     .log.sep li::before {
       content: '';
       position: absolute;
-      left: 0;
-      top: 26px;
+      left: -28px;
+      top: 1px;
       width: 15px;
       height: 15px;
       box-sizing: border-box;
       border: 1px solid var(--maroon);
       border-radius: 2px;
+      background: var(--paper);
+    }
+    .log.sep li:first-child::before {
+      background: var(--green);
+      border-color: var(--green);
+    }
+    .log.sep time {
+      line-height: 16px;
+      margin-bottom: 2px;
+    }
+    .film {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px dashed var(--maroon);
+    }
+    .film-card {
+      display: flex;
+      gap: 14px;
+      margin-top: 12px;
+      color: inherit;
+      text-decoration: none;
+    }
+    .film-poster {
+      width: 76px;
+      aspect-ratio: 2 / 3;
+      object-fit: cover;
+      border: 1px solid var(--maroon);
+      box-shadow: 4px 4px 0 #C1BCD7;
+      filter: url(#sepia);
+      flex-shrink: 0;
+    }
+    .film-card:hover .film-poster {
+      outline: 2px solid var(--green);
+    }
+    .film-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      line-height: 1.5;
+      text-transform: lowercase;
+    }
+    .film-stars {
+      color: var(--maroon);
+      letter-spacing: 2px;
+    }
+    .film-info time {
+      margin-top: auto;
+      line-height: 1;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--maroon);
     }
     .log.sep li:nth-child(n+4) {
       display: none;
@@ -47,6 +106,39 @@
       <li><time>nov 2025</time>new events added in <a href="/arts-and-crafts/#events-markets-exhibits">events-markets-exhibits</a>: byob at hosq.co, exhibit-market at qrchi bazaar</li>
     </ul>
 
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <filter id="sepia" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values="0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0 0 0 1 0"/>
+        <feComponentTransfer>
+          <feFuncR type="table" tableValues="0.145 0.933"/>
+          <feFuncG type="table" tableValues="0.078 0.933"/>
+          <feFuncB type="table" tableValues="0.161 0.859"/>
+        </feComponentTransfer>
+      </filter>
+    </svg>
+    <div class="film" id="film" hidden>
+      <p class="nav-title log-title">last film watched</p>
+      <a class="film-card" id="film-link" target="_blank" rel="noopener">
+        <img class="film-poster" id="film-poster" alt="">
+        <span class="film-info">
+          <span class="film-name" id="film-name"></span>
+          <span class="film-stars" id="film-stars"></span>
+          <time id="film-when"></time>
+        </span>
+      </a>
+    </div>
+    <div class="film" id="anime" hidden>
+      <p class="nav-title log-title">last anime watched</p>
+      <a class="film-card" id="anime-link" target="_blank" rel="noopener">
+        <img class="film-poster" id="anime-poster" alt="">
+        <span class="film-info">
+          <span class="film-name" id="anime-name"></span>
+          <span class="film-stars" id="anime-stars"></span>
+          <time id="anime-when"></time>
+        </span>
+      </a>
+    </div>
+
   </div>
   <div class="content">
         <p class="menu-title">կարմիր արեւ · կանաչ տերեւ</p>
@@ -58,6 +150,33 @@
   <div class="menu" id="menu"></div>
 </div>
 
-<script src="/nav.js?v=13"></script>
+<script src="/nav.js?v=17"></script>
+<script>
+  function showCard(key, c) {
+    const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+    const [y, m, d] = (c.date || '').split('-').map(Number);
+    document.getElementById(key + '-link').href = c.link;
+    document.getElementById(key + '-poster').src = c.poster || '';
+    document.getElementById(key + '-poster').alt = c.title;
+    document.getElementById(key + '-name').textContent = c.title + (c.year ? ' (' + c.year + ')' : '');
+    document.getElementById(key + '-stars').textContent = c.line;
+    document.getElementById(key + '-when').textContent = m ? months[m - 1] + ' ' + d + ', ' + y : '';
+    document.getElementById(key).hidden = false;
+  }
+  function load(file, toCard) {
+    fetch('/' + file + '?t=' + Date.now())
+      .then(r => r.json())
+      .then(data => { if (data && data.title) showCard(...toCard(data)); })
+      .catch(() => {});
+  }
+  load('letterboxd.json', f => ['film', {
+    title: f.title, year: f.year, link: f.link, poster: f.poster, date: f.watched,
+    line: (f.rating == null ? '-' : '★'.repeat(Math.floor(f.rating)) + (f.rating % 1 ? '½' : '')) + (f.liked ? ' ♥' : '')
+  }]);
+  load('anilist.json', a => ['anime', {
+    title: a.title, year: a.year, link: a.link, poster: a.poster, date: a.finished,
+    line: a.score ? a.score + '/10' : '-'
+  }]);
+</script>
 </body>
 </html>

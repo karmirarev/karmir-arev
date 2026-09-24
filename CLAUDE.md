@@ -22,13 +22,14 @@ https://xn--y9aamws5a2fcbv.xn--y9a3aq). Static files, no build step. Pushing to
   - Text is `#1b1b1b`. Links are ink with a thin purple underline. Never bright blue.
 - Boxes (left wing, menu, portfolio cards, game cards): 1px purple border,
   `border-radius: 14px`, the lilac shadow, solid paper background so dots do not show through.
-- The left wing has notebook lines inside it: red verticals near its sides and a purple
-  line across the top (done with background gradients in `.wing`).
+- The left wing is a plain box (marita removed its notebook lines). The menu box has one
+  red notebook margin line 21px in from its left side (menu padding-left 34px), a background gradient on `.menu` and
+  `.links-box` so the sticky elsewhere part keeps it too.
 - Green outline on hover for gallery pictures and event photos. Lightbox on click.
 - Icons: hollow purple squares for sections, green filled square for home and elsewhere,
   hollow circles for the elsewhere links. No emoji anywhere on the site.
 - Things marita rejected, do not bring back: fading/opacity transitions, image tiles on
-  the home page, a map in the menu, an animated character, bright blue links, bold
+  the home page, a map in the menu, bright blue links, bold
   that switches to a different-looking font.
 
 ## Layout
@@ -54,6 +55,18 @@ Sub-pages like `arts-and-crafts/clay/` still exist as files but nothing links to
 means adding an entry there. Links with `newTab: true` open in a new tab (used for all
 outside links). The current page gets the green pill, its
 parents are unfolded.
+
+## The guy in the menu
+
+`guy.gif` (a walking beet, see-through, trimmed from her download) sits at the right edge
+of the menu box, level with the current page's green pill. `placeGuy()` in `nav.js`
+positions him inside `.side` with his body (63% down the image, below the leaf) on the
+row's vertical middle, and he stays anchored to that row: on hash changes he jumps
+straight to the new one (marita did not want him walking up and down), and he hides when
+the current page is folded away. She asked for him, so the old "no animated character" rule does not apply
+to him. The menu tree keeps 30px free on the right for him, and its links are
+`display: inline` with `box-decoration-break: clone`, so a long label that wraps gets a
+pill hugging each line instead of one box stretched to the full width.
 
 ## Adding a game
 
@@ -146,11 +159,27 @@ in this exact plain form: `<li><time>mon d, yyyy</time>new 3d model added in <a
 href="/arts-and-crafts/#3d-model-painting">3d-model-painting</a>: ranni the witch</li>`
 Every line must say what was added and where it was
 added, with a link to that page. No chatty sentences. Do not log site
-work like layout, menus, fonts, colours, caching or the left-box creatures. Only the newest 3 lines show (CSS hides the rest, no
+work like layout, menus, fonts, colours, caching or the left-box creatures. It is drawn as a timeline: a dashed
+purple line down the left with a square per entry, the newest one filled green, date
+above the sentence. Only the newest 3 lines show (CSS hides the rest, no
 "older" button, marita does not want one), so keep new lines at the top.
 
-The home wing is only the update log (`ul.log` with `<time>` lines). Marita removed
-the guestbook, do not add a message form back.
+The home wing holds the update log (`ul.log` with `<time>` lines) and, under a dashed
+line, "last film watched" (her latest Letterboxd film) and "last anime watched" (latest
+completed on AniList, user karmirarev). Marita removed the guestbook, do not
+add a message form back.
+
+Last watched: Letterboxd's RSS has no CORS, so the browser cannot read it. A GitHub
+Action (`.github/workflows/watched.yml`, every 3 hours, also runnable by hand)
+runs `.github/scripts/letterboxd.py` and `.github/scripts/anilist.py` (AniList GraphQL,
+status COMPLETED sorted by finish date then last update, since she often marks several
+done on one day), writes `letterboxd.json` and `anilist.json`, and commits only when
+they changed. `index.html` fetches both and fills the cards with `showCard()`; a card
+whose file is missing stays hidden. The second line is her rating (stars for films,
+score/10 for anime) and just `-` when she has not rated it. Do not log these bot commits in the update log.
+The poster always gets marita's Canva "Sepia" duotone: an inline SVG filter `#sepia`
+in `index.html` (greyscale, then darks to `rgb(37,20,41)` and lights to
+`rgb(238,238,219)`), applied with `filter: url(#sepia)`.
 
 ## Cache
 
