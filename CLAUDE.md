@@ -102,6 +102,20 @@ The portfolio cards (gif, name, email with copy button, bio, find me on, resume)
   `.shots` grid), `wings['events-markets-exhibits']` holds the date, place and story.
   `alignEvents()` lines each story up with its photos. Photo columns are sized from
   the images' real proportions so nothing is cropped.
+- 3D models: `sections['3d-model-painting']` shows `<model-viewer class="model">`
+  (Google model-viewer 4.1.0 from jsdelivr, loaded by `show()` only when the section
+  has one). Shrink scans before adding: textures to 2048 webp (occlusion and
+  metallicRoughness 1024), Draco geometry (model-viewer decodes it natively; meshopt
+  failed to load reliably), smooth normals if the scan has none. The figurine went
+  from 16.7MB to 538KB. The scan's table sheet was cut off: model leveled (the scan was
+  tilted 18 degrees), everything below 3.5% height dropped, only the biggest piece
+  kept, and the open bottom closed with a flat cap. New versions get new file names
+  (`figurine-v3.glb`). The wing holds a `.story` with the name, a line and the
+  printables link ("link to the 3d model").
+  The model sits in `.event > .model-wrap` (centered, max 460px, overflow hidden) so it
+  pairs with the wing story like other sections. The viewer's own framing leaves empty
+  space above, so `.model` has negative margins to trim it, and the tilt is locked
+  (`min/max-camera-orbit="auto 75deg auto"`) so dragging only spins it and never clips.
 - Essays: `thinking-out-loud/index.html`, `sections`, plus a `nav.js` entry.
   Quotes from other authors go between paragraphs as
   `<div class="cite-spot"><blockquote class="cite">"quote"<cite>author</cite></blockquote></div>`.
@@ -142,8 +156,9 @@ game folders and `lab/`). New images get new file names rather than reusing one.
 
 ## Local preview
 
-`python3 -m http.server 8765` from the repo root. `.claude/launch.json` has the same
-for the app's preview button. The browser pane reports itself hidden, so the cover
+`python3 -m http.server 8765` from the repo root. `.claude/launch.json` runs the same
+for the app's preview button, but with `autoPort`, so it takes a free port when 8765 is
+already busy (e.g. a server started in the terminal). The browser pane reports itself hidden, so the cover
 simulations pause there; `?toys=force` in the URL overrides that, and each canvas has
 `.advance(n)` and `.readState()` hooks for checking.
 
