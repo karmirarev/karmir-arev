@@ -116,6 +116,7 @@ The portfolio cards (gif, name, email with copy button, bio, find me on, resume)
   pairs with the wing story like other sections. The viewer's own framing leaves empty
   space above, so `.model` has negative margins to trim it, and the tilt is locked
   (`min/max-camera-orbit="auto 75deg auto"`) so dragging only spins it and never clips.
+  `disable-pan disable-tap` stop a click from moving the model off its spot.
 - Essays: `thinking-out-loud/index.html`, `sections`, plus a `nav.js` entry.
   Quotes from other authors go between paragraphs as
   `<div class="cite-spot"><blockquote class="cite">"quote"<cite>author</cite></blockquote></div>`.
