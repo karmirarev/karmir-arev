@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>projects - karmirarev</title>
-  <link rel="stylesheet" href="../gallery.css?v=5">
-  <link rel="stylesheet" href="../site.css?v=29">
+  <link rel="stylesheet" href="../gallery.css?v=6">
+  <link rel="stylesheet" href="../site.css?v=30">
   <style>
     .content {
       position: relative;
@@ -16,6 +16,16 @@
     }
     .games > :first-child {
       margin-top: 0;
+    }
+    .group-title {
+      margin: 28px 0 12px;
+      padding-top: 16px;
+      border-top: 1px dashed var(--maroon);
+    }
+    .games > .group-title:first-child {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: 0;
     }
     .games-grid {
       display: grid;
@@ -39,10 +49,26 @@
     .game .cover {
       display: block;
       width: 100%;
+      height: auto;
       aspect-ratio: 16 / 9;
       object-fit: cover;
       border-bottom: 1px solid var(--maroon);
       background: var(--paper);
+    }
+    .cover-box {
+      position: relative;
+      display: block;
+    }
+    .cover-pic {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      visibility: hidden;
+    }
+    a.game:hover .cover-pic {
+      visibility: visible;
     }
     .game canvas.cover {
       cursor: pointer;
@@ -194,6 +220,11 @@
       background: var(--paper);
       overflow: hidden;
     }
+    .hero img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
     .hero canvas {
       display: block;
       width: 100%;
@@ -202,6 +233,79 @@
     }
     .hero canvas.no-gl {
       background-image: repeating-linear-gradient(45deg, transparent 0 10px, rgba(145, 18, 84, 0.12) 10px 12px);
+    }
+    .play-row {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      margin-top: 16px;
+    }
+    .player-col {
+      flex: 0 0 min(300px, 45%);
+    }
+    .play-text {
+      flex: 1;
+      min-width: 0;
+    }
+    .play-text > :first-child {
+      margin-top: 0;
+    }
+    .player {
+      position: relative;
+      width: 100%;
+      border: 1px solid var(--maroon);
+      border-radius: 14px;
+      box-shadow: 4px 4px 0 #C1BCD7;
+      background: #231F20;
+      overflow: hidden;
+    }
+    .player canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .player.loading canvas {
+      visibility: hidden;
+    }
+    .player-bar {
+      position: absolute;
+      left: 20%;
+      right: 20%;
+      top: 50%;
+      height: 10px;
+      border: 1px solid var(--maroon);
+      border-radius: 5px;
+      background: var(--paper);
+      overflow: hidden;
+    }
+    .player.running .player-bar {
+      display: none;
+    }
+    .player-bar i {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: var(--green);
+    }
+    .player-error {
+      position: absolute;
+      inset: auto 16px 45%;
+      margin: 0;
+      color: var(--paper);
+      text-align: center;
+      font-size: 13px;
+    }
+    @media (max-width: 700px) {
+      .play-row {
+        flex-direction: column;
+      }
+      .player-col {
+        flex: none;
+        width: min(300px, 100%);
+        margin: 0 auto;
+      }
     }
     .get {
       display: flex;
@@ -229,12 +333,7 @@
       text-decoration: none;
     }
     .block {
-      border: 1px solid var(--maroon);
-      border-radius: 14px;
-      box-shadow: 4px 4px 0 #C1BCD7;
-      background: var(--paper);
-      padding: 16px 20px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
     .block > :first-child {
       margin-top: 0;
@@ -298,7 +397,7 @@
       margin: 0;
       text-align: right;
     }
-    .made span {
+    .tools span {
       display: inline-block;
       margin: 0 6px 6px 0;
       padding: 2px 10px;
@@ -334,8 +433,8 @@
       blurb: 'a top-down mobile puzzle game about playing a flute to shape sand into pattern-paths across a field of a dangerous desert.',
       about: [],
       did: [],
-      facts: { year: '', platform: 'mobile', engine: '', role: '', team: '', status: '' },
-      made: [],
+      facts: { genre: 'top-down puzzle', platform: 'mobile', engine: '', status: '', year: '', role: '' },
+      tools: [],
       links: { play: '', itch: '', store: '', github: '', ggd: '' },
       shots: []
     },
@@ -343,23 +442,26 @@
       key: 'kami-hovani',
       name: 'kami hovani',
       tag: 'video game',
-      blurb: '',
-      about: [],
+      cover: './covers/kami-hovani.webp',
+      blurb: 'a 2d turn-based rpg rooted in armenian mythology, where human emotions become gods.',
+      about: ['kami hovani is a 2d turn-based rpg inspired by ancient armenian mythology and folklore. you play kami, a shepherd from a village near mount nemrut, on a quest to restore balance in a world where human emotions show up as powerful gods.', 'the fights use tarot cards: every god and creature kami meets has its own card, and you lay them out in spreads that grow bigger as the game goes on. each slot in a spread carries an emotion, and matching a card to it makes the card stronger.', 'the world has four areas, hayasa, tigris, the underworld and nemrut, each with its own viewpoints, mini levels and bosses. and yes, you can pet the dog.', 'it started as my capstone project, and the design document went through three drafts.'],
       did: [],
-      facts: { year: '', platform: '', engine: '', role: '', team: '', status: '' },
-      made: [],
-      links: { play: '', itch: '', store: '', github: '', ggd: '' },
+      facts: { genre: 'turn-based rpg, card combat', platform: 'windows', engine: 'unity', status: 'prototype', year: '2025-2026', role: 'art, programming, design' },
+      tools: ['clip studio paint', 'miro'],
+      links: { play: '', itch: 'https://karmirarev.itch.io/kami-hovani', store: '', github: '', ggd: '' },
       shots: []
     },
     {
       key: 'bebe-heist',
+      jam: true,
       name: 'bebe heist',
       tag: 'video game',
-      blurb: '',
-      about: [],
+      cover: './covers/bebe-heist.webp',
+      blurb: 'a stealth game about robbing a bank run by babies while being armed with cheese.',
+      about: ['the theme for global game jam 2026 was "mask".', 'we used the idea of babies not having object permanence, and the player had to sneak into a bank run by babies and freeze them by slapping a slice of cheese on their faces. from babies perspective there is no one there whenever their face is covered, hence the player can steal in peace.', 'object permanence: the cognitive understanding that people and objects still exist even when you cannot see, hear, or touch them.'],
       did: [],
-      facts: { year: '', platform: 'browser', engine: 'javascript', role: '', team: '', status: 'playable' },
-      made: [],
+      facts: { genre: 'stealth heist', platform: 'browser', engine: 'javascript', status: 'playable', year: '2026', role: 'vibecoding, art' },
+      tools: ['clip studio paint'],
       links: { play: './games/bebe-heist/', itch: '', store: '', github: '', ggd: '' },
       shots: []
     },
@@ -367,11 +469,12 @@
       key: 'pingala',
       name: 'pingala',
       tag: 'mobile game',
-      blurb: 'a single player code-breaking game',
-      about: [],
+      blurb: 'a single-player code-breaking game',
+      about: ['a single-player code-breaking game i used to play with my brother, turned into a playable game at his request.'],
       did: [],
-      facts: { year: '', platform: 'mobile, browser', engine: 'unity', role: '', team: '', status: 'playable' },
-      made: ['unity'],
+      facts: { genre: 'code-breaking puzzle', platform: 'mobile, browser', engine: 'unity', status: 'playable', year: '2026', role: 'programmer, game designer' },
+      tools: [],
+      embed: { build: './games/pingala/Build/pingalaweb', width: 405, height: 720 },
       links: { play: './games/pingala/', itch: '', store: '', github: '', ggd: '' },
       shots: []
     },
@@ -382,9 +485,23 @@
       blurb: '',
       about: [],
       did: [],
-      facts: { year: '', platform: '', engine: '', role: '', team: '', status: '' },
-      made: [],
+      facts: { genre: '', platform: '', engine: '', status: '', year: '', role: '' },
+      tools: [],
       links: { play: '', itch: '', store: '', github: '', ggd: '' },
+      shots: []
+    },
+    {
+      key: 'disco-market',
+      jam: true,
+      name: 'disco market',
+      tag: 'video game',
+      cover: './covers/disco-market-v3.webp',
+      blurb: 'a rhythm game about being the best unappreciated dj in a supermarket.',
+      about: ['the theme for gmtk game jam 2025 was "loop".', 'we turned the theme into a music loop where the scanning machine at the supermarket glitches and keeps repeating the scanned object\'s beeps while accidentally making music out of them.', 'we were planning to add a gameplay of customers looking for certain items from their shopping list and making music with them but did not manage to, instead we have the best music making software out there.'],
+      did: [],
+      facts: { genre: 'rhythm', platform: 'windows', engine: 'godot', status: 'released', year: '2025', role: 'art, programming' },
+      tools: ['clip studio paint'],
+      links: { play: '', itch: 'https://thesenpie.itch.io/disco-market', store: '', github: '', ggd: '' },
       shots: []
     }
   ];
@@ -402,7 +519,10 @@
   function gameCard(g) {
     return `
       <a class="game" href="#${g.key}">
-        <canvas class="cover" data-toy="${g.key}"></canvas>
+        <span class="cover-box">
+          <canvas class="cover" data-toy="${g.key}"></canvas>
+          ${g.cover ? `<img class="cover-pic" src="${g.cover}" alt="" loading="lazy">` : ''}
+        </span>
         <div class="body">
           <p class="name">${g.name}</p>
           <span class="tag">${g.tag}</span>
@@ -412,17 +532,13 @@
   }
 
   function gamePage(g) {
-    const links = Object.keys(LINK_NAMES).filter(k => g.links[k]).map(k =>
-      `<a class="${k === 'play' ? 'main' : ''}" href="${g.links[k]}" target="_blank" rel="noopener">${LINK_NAMES[k]}</a>`
+    const keys = Object.keys(LINK_NAMES).filter(k => g.links[k] && !(g.embed && k === 'play'));
+    const main = g.embed ? null : ['play', 'itch', 'store', 'appstore'].find(k => g.links[k]);
+    const links = keys.map(k =>
+      `<a class="${k === main ? 'main' : ''}" href="${g.links[k]}" target="_blank" rel="noopener">${LINK_NAMES[k]}</a>`
     ).join('');
     const about = g.about.length ? g.about.map(t => `<p>${t}</p>`).join('') : `<p>${g.blurb || 'more about this one soon.'}</p>`;
-    return `
-      <p class="back"><a href="#games">&lt; all games</a></p>
-      <div class="detail-head">
-        <p class="page-title">${g.name}</p>
-        <span class="tag">${g.tag}</span>
-      </div>
-      <div class="hero"><canvas data-toy="${g.key}"></canvas></div>
+    const text = `
       ${links ? `<div class="get">${links}</div>` : ''}
       <div class="block">
         <p class="page-title">about</p>
@@ -437,31 +553,51 @@
       <div class="block">
         <p class="page-title">screenshots</p>
         <div class="shots">${g.shots.map(src => `<img src="${src}" alt="${g.name}">`).join('')}</div>
-      </div>` : ''}
+      </div>` : ''}`;
+    return `
+      <p class="back"><a href="#games">&lt; all games</a></p>
+      <div class="detail-head">
+        <p class="page-title">${g.name}</p>
+        <span class="tag">${g.tag}</span>
+      </div>
+      ${g.embed ? `
+      <div class="play-row">
+        <div class="player-col">
+          <div class="player loading" style="aspect-ratio: ${g.embed.width} / ${g.embed.height}">
+            <canvas class="player-game" id="player-game" tabindex="-1"></canvas>
+            <div class="player-bar"><i></i></div>
+          </div>
+        </div>
+        <div class="play-text">${text}</div>
+      </div>` : `
+      <div class="hero">${g.cover ? `<img src="${g.cover}" alt="${g.name}" width="1280" height="720">` : `<canvas data-toy="${g.key}"></canvas>`}</div>
+      ${text}`}
     `;
   }
 
+
   function gameWing(g) {
-    const rows = Object.keys(g.facts).filter(k => g.facts[k]).map(k =>
-      `<div><dt>${k}</dt><dd>${g.facts[k]}</dd></div>`
+    const rows = Object.keys(g.facts).map(k =>
+      `<div><dt>${k}</dt><dd>${g.facts[k] || '-'}</dd></div>`
     ).join('');
     return `
       <p class="page-title">at a glance</p>
-      <dl class="facts">
-        <div><dt>type</dt><dd>${g.tag}</dd></div>
-        ${rows}
-      </dl>
-      ${g.made.length ? `
-      <p class="page-title">made with</p>
-      <p class="made">${g.made.map(t => `<span>${t}</span>`).join('')}</p>` : ''}
+      <dl class="facts">${rows}</dl>
+      <p class="page-title">additional tools</p>
+      <p class="tools">${g.tools.length ? g.tools.map(t => `<span>${t}</span>`).join('') : '-'}</p>
     `;
   }
+
 
   const sections = {
     games: `
       <p class="page-title">games</p>
       <div class="games">
-        <div class="games-grid">${GAMES.map(gameCard).join('')}
+        <p class="page-title group-title">personal projects</p>
+        <div class="games-grid">${GAMES.filter(g => !g.jam).map(gameCard).join('')}
+        </div>
+        <p class="page-title group-title">game jams</p>
+        <div class="games-grid">${GAMES.filter(g => g.jam).map(gameCard).join('')}
         </div>
       </div>
     `,
@@ -517,7 +653,45 @@
   window.addEventListener('hashchange', showFromHash);
   showFromHash();
 
+  var player = null;
+  function stopPlayer() {
+    if (player) player.Quit().catch(() => {});
+    player = null;
+  }
+  function loadScript(src) {
+    return new Promise((ok, fail) => {
+      const js = document.createElement('script');
+      js.src = src;
+      js.onload = ok;
+      js.onerror = fail;
+      document.head.appendChild(js);
+    });
+  }
+  function startPlayer(key) {
+    const g = GAMES.find(x => x.key === key), b = g.embed.build;
+    const box = document.querySelector('.player'), bar = box.querySelector('.player-bar i');
+    const ready = window.createUnityInstance ? Promise.resolve() : loadScript(b + '.loader.js');
+    ready.then(() => createUnityInstance(document.getElementById('player-game'), {
+      dataUrl: b + '.data.unityweb',
+      frameworkUrl: b + '.framework.js.unityweb',
+      codeUrl: b + '.wasm.unityweb',
+      companyName: 'karmirarev',
+      productName: g.name,
+      productVersion: '1.0'
+    }, p => { bar.style.width = (p * 100) + '%'; })).then(inst => {
+      if (!document.getElementById('player-game')) { inst.Quit(); return; }
+      player = inst;
+      box.classList.remove('loading');
+      box.classList.add('running');
+    }).catch(() => {
+      box.classList.remove('loading');
+      box.querySelector('.player-bar').hidden = true;
+      box.insertAdjacentHTML('beforeend', '<p class="player-error">the game could not load, try reloading the page.</p>');
+    });
+  }
+
   function show(section) {
+    stopPlayer();
     document.getElementById('content').innerHTML = sections[section];
     const wing = document.getElementById('wing');
     wing.innerHTML = wings[section] || '';
@@ -529,6 +703,8 @@
       });
     });
     if (GAMES.some(g => g.key === section)) window.scrollTo(0, 0);
+    const game = GAMES.find(g => g.key === section);
+    if (game && game.embed) startPlayer(game.key);
     if (window.startToys) window.startToys();
   }
 
@@ -541,8 +717,8 @@
   }
 </script>
 
-<script src="/nav.js?v=17"></script>
-<script src="/toys.js?v=14"></script>
+<script src="/nav.js?v=20"></script>
+<script src="/toys.js?v=19"></script>
 <script>if (window.startToys) window.startToys();</script>
 </body>
 </html>
