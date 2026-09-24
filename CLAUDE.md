@@ -109,8 +109,15 @@ The portfolio cards (gif, name, email with copy button, bio, find me on, resume)
 - Drawings: `arts-and-crafts/index.html`, `sections.drawings`. Six type blocks
   (game assets, mixed media, digital, traditional, fanarts, sketches) as `.event` divs,
   with matching `.story` titles in `wings.drawings`. Put a
-  `<div class="gallery-item"><img src="./digital-mixed-media/x.png" alt="x"></div>`
-  into the right block. Empty blocks show "nothing here yet".
+  gallery item into the right block. Empty blocks show "nothing here yet".
+- Previews: every drawing and event photo shows a small preview, never the full file.
+  Run `python3 tools/thumb.py arts-and-crafts/digital-mixed-media/x.png` (any number of
+  paths). It writes a 560px-wide webp into `arts-and-crafts/thumbs/` (event photos into
+  `thumbs/events/`, animated gifs stay animated) and prints the tag to paste, e.g.
+  `<div class="gallery-item"><img src="./thumbs/x.webp" data-full="./digital-mixed-media/x.png" width="560" height="700" loading="lazy" alt="x"></div>`.
+  The lightbox opens `data-full`, the original. Keep `width`/`height` (no layout jump)
+  and `loading="lazy"` on gallery items (not on event `.shot`s, they sit at the top).
+  This took the drawings page from 49MB to about 1MB.
 - Events: `sections['events-markets-exhibits']` holds the photo groups (`.event` with a
   `.shots` grid), `wings['events-markets-exhibits']` holds the date, place and story.
   `alignEvents()` lines each story up with its photos. Photo columns are sized from
