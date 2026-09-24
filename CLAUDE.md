@@ -14,7 +14,7 @@ https://xn--y9aamws5a2fcbv.xn--y9a3aq). Static files, no build step. Pushing to
   `unicode-range`, so any Armenian text picks it up and everything else stays Courier.
   Do not use the Antique font: its license forbids hosting it.
 - Colours are CSS variables in `site.css`:
-  - `--maroon: #911254` purple. Lines, titles, chips, dashed dividers, the `+`/`-` squares.
+  - `--maroon: #911254` purple. (marita tried darker plums like #69334e, #854e69, #823c5f, #802e57 and went back to this one.) Lines, titles, chips, dashed dividers, the `+`/`-` squares.
   - `--green: #129150` current page highlight, filled squares next to home and elsewhere.
   - `--lime: #E4F882` hover fill on menu links, copy button hover.
   - `--lilac: #9582F8` accent. Game tag pills are `#C1BCD7`.
