@@ -15,8 +15,7 @@ https://xn--y9aamws5a2fcbv.xn--y9a3aq). Static files, no build step. Pushing to
   `unicode-range`, so any Armenian text picks it up and everything else stays Courier.
   Do not use the Antique font: its license forbids hosting it.
 - Colours are CSS variables in `site.css`:
-  - `--maroon: #52222b` deep wine. Lines, titles, chips, dashed dividers, the `+`/`-`
-    squares. (Palette changed sep 2026: before it was purple `#911254`, green `#129150`,
+  - `--maroon: #52222b` deep wine. Titles, borders, chips, the `+`/`-` squares. (Palette changed sep 2026: before it was purple `#911254`, green `#129150`,
     lime `#E4F882`, lilac `#C1BCD7`. Marita also tried darker plums, an ATNN palette and a
     matcha/velvet one; she kept the beige paper, the blue dots and ink text and took only
     these four colours.)
@@ -28,6 +27,10 @@ https://xn--y9aamws5a2fcbv.xn--y9a3aq). Static files, no build step. Pushing to
     only as the menu's notebook margin line (`rgba(197,110,59,0.6)`).
   - `--lilac: #C1BCD7` the soft lilac-blue marita calls "the light blue". Box shadows
     `4px 4px 0 #C1BCD7`, tag pills, plant drops, essay quote background.
+  - `--orange: #c56e3b`. Every dashed separation line (between sections, events,
+    drawing types, fact sheet rows, the games groups, above "elsewhere") and the menu's
+    notebook line. The update log timeline, the menu tree lines and the essay quote
+    connector lines stay deep wine, they are not separators.
   - Organisms (`toys.js`): `PLUM` is `#52222b`, `PLUM2` `#9a5a66`.
   - Text is `#1b1b1b`. Links are ink with a thin purple underline. Never bright blue.
 - Boxes (left wing, menu, portfolio cards, game cards): 1px purple border,

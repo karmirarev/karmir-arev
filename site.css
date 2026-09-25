@@ -12,6 +12,7 @@
   --green: #b3ae5a;
   --lime: #c4bab5;
   --lilac: #C1BCD7;
+  --orange: #c56e3b;
 }
 
 html {
@@ -137,7 +138,7 @@ a:hover {
   bottom: 21px;
   margin: auto -20px 0 -34px;
   padding: 14px 20px 16px 34px;
-  border-top: 1px dashed var(--maroon);
+  border-top: 1px dashed var(--orange);
   border-radius: 0 0 14px 14px;
   background-color: var(--paper);
 }
