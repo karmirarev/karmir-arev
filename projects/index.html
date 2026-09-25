@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>projects - karmirarev</title>
   <link rel="stylesheet" href="../gallery.css?v=6">
-  <link rel="stylesheet" href="../site.css?v=35">
+  <link rel="stylesheet" href="../site.css?v=36">
   <style>
     .content {
       position: relative;
@@ -220,6 +220,7 @@
       background: var(--paper);
       overflow: hidden;
     }
+    .hero video,
     .hero img {
       display: block;
       width: 100%;
@@ -443,6 +444,7 @@
       name: 'kami hovani',
       tag: 'video game',
       cover: './covers/kami-hovani.webp',
+      video: './covers/kami-hovani.mp4',
       blurb: 'a 2d turn-based rpg rooted in armenian mythology, where human emotions become gods.',
       about: ['kami hovani is a 2d turn-based rpg inspired by ancient armenian mythology and folklore. you play kami, a shepherd from a village near mount nemrut, on a quest to restore balance in a world where human emotions show up as powerful gods.', 'the fights use tarot cards: every god and creature kami meets has its own card, and you lay them out in spreads that grow bigger as the game goes on. each slot in a spread carries an emotion, and matching a card to it makes the card stronger.', 'the world has four areas, hayasa, tigris, the underworld and nemrut, each with its own viewpoints, mini levels and bosses. and yes, you can pet the dog.', 'it started as my capstone project, and the design document went through three drafts.'],
       did: [],
@@ -457,6 +459,7 @@
       name: 'bebe heist',
       tag: 'video game',
       cover: './covers/bebe-heist.webp',
+      video: './covers/bebe-heist.mp4',
       blurb: 'a stealth game about robbing a bank run by babies while being armed with cheese.',
       about: ['the theme for global game jam 2026 was "mask".', 'we used the idea of babies not having object permanence, and the player had to sneak into a bank run by babies and freeze them by slapping a slice of cheese on their faces. from babies perspective there is no one there whenever their face is covered, hence the player can steal in peace.', 'object permanence: the cognitive understanding that people and objects still exist even when you cannot see, hear, or touch them.'],
       did: [],
@@ -522,7 +525,7 @@
       <a class="game" href="#${g.key}">
         <span class="cover-box">
           <canvas class="cover" data-toy="${g.key}"></canvas>
-          ${g.cover ? `<img class="cover-pic" src="${g.cover}" alt="" loading="lazy">` : ''}
+          ${g.video ? `<video class="cover-pic" src="${g.video}" poster="${g.cover}" muted loop playsinline preload="none"></video>` : g.cover ? `<img class="cover-pic" src="${g.cover}" alt="" loading="lazy">` : ''}
         </span>
         <div class="body">
           <p class="name">${g.name}</p>
@@ -571,7 +574,7 @@
         </div>
         <div class="play-text">${text}</div>
       </div>` : `
-      <div class="hero">${g.cover ? `<img src="${g.cover}" alt="${g.name}" width="1280" height="720">` : `<canvas data-toy="${g.key}"></canvas>`}</div>
+      <div class="hero">${g.video ? `<video src="${g.video}" poster="${g.cover}" width="1280" height="720" autoplay muted loop playsinline></video>` : g.cover ? `<img src="${g.cover}" alt="${g.name}" width="1280" height="720">` : `<canvas data-toy="${g.key}"></canvas>`}</div>
       ${text}`}
     `;
   }
@@ -703,6 +706,13 @@
         lightbox.classList.add('active');
       });
     });
+    document.querySelectorAll('.hero video').forEach(v => v.play().catch(() => {}));
+    document.querySelectorAll('a.game').forEach(card => {
+      const v = card.querySelector('video.cover-pic');
+      if (!v) return;
+      card.addEventListener('mouseenter', () => v.play().catch(() => {}));
+      card.addEventListener('mouseleave', () => v.pause());
+    });
     if (GAMES.some(g => g.key === section)) window.scrollTo(0, 0);
     const game = GAMES.find(g => g.key === section);
     if (game && game.embed) startPlayer(game.key);
@@ -718,7 +728,7 @@
   }
 </script>
 
-<script src="/nav.js?v=20"></script>
+<script src="/nav.js?v=27"></script>
 <script src="/toys.js?v=24"></script>
 <script>if (window.startToys) window.startToys();</script>
 </body>
