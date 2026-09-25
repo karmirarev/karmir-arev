@@ -222,6 +222,23 @@ a:hover {
   color: #1b1b1b;
 }
 
+.links-box .support-title {
+  margin-top: 16px;
+}
+
+.support-title.rainbow {
+  animation: rainbow 3s steps(1) infinite;
+}
+
+@keyframes rainbow {
+  0% { color: #b4a64b; }
+  16.66% { color: #591e2a; }
+  33.33% { color: #d2682b; }
+  50% { color: #d6a6b1; }
+  66.66% { color: #464719; }
+  83.33% { color: #98a8d9; }
+}
+
 .links-box .nav a:hover {
   background: var(--lime);
 }
