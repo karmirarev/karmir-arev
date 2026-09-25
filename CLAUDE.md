@@ -61,17 +61,15 @@ parents are unfolded.
 
 Clicking anything clickable (links, buttons, toggles, cards, gallery pictures, organism
 covers, the lightbox, the 3D model; the list is `CLICKABLE` in `nav.js`) plays
-`click-creamy-v2.mp3`: the freesound_community keyboard click (Pixabay, free to use,
-original kept as `click.mp3`) made creamier with ffmpeg (her pick: the "deep" one,
-then quieter and cut to 0.16s): pitched down 12%, highs gently
-shelved down, low mids and bass lifted, a tiny 14ms room echo, light compression. Marita
-disliked a heavily muffled version and a synthesized "bloop"; she wants a real creamy
-mechanical keyboard. Each click is pitched a few percent up or down at random so repeats
-do not sound robotic. Empty space stays silent. Played through Web Audio so quick clicks overlap;
+`click-hard.mp3`: the first click of Mixkit's "mouse hard clicking" (mixkit-mouse-hard-
+clicking-1111, free Mixkit licence), trimmed to 0.13s with a short fade. Marita picked it
+after trying a creamy pitched-down keyboard click, a synthesized "bloop", a clear mouse
+click and a light switch tap. Each click is pitched a few percent up or down at random
+so repeats do not sound robotic. Empty space stays silent. Played through Web Audio so quick clicks overlap;
 fetched when the page loads, and links that load a page (including a reload) wait until
 the pop has finished, plus the speaker delay, before leaving (at most 500ms). Hash links,
-new-tab links and outside links are left alone. `click.mp3` is the earlier keyboard
-click from freesound_community (Pixabay), not used right now.
+new-tab links and outside links are left alone. `click.mp3` is an earlier keyboard
+click (freesound_community, Pixabay), not used right now.
 
 ## The guy in the menu
 

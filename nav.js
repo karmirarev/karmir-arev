@@ -136,7 +136,7 @@
   var clickSound = null, audio = null, soundDone = null;
   try {
     audio = new (window.AudioContext || window.webkitAudioContext)();
-    fetch('/click-creamy-v2.mp3').then(function (r) { return r.arrayBuffer(); })
+    fetch('/click-hard.mp3').then(function (r) { return r.arrayBuffer(); })
       .then(function (b) { return audio.decodeAudioData(b); })
       .then(function (buf) { clickSound = buf; })
       .catch(function () {});
