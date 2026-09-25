@@ -100,9 +100,9 @@
     'float d=bayer(ivec2(gl_FragCoord.xy));float q=step(d,v);o=vec4(mix(u_paper,ink,q),1.0);}';
 
   function hex(h) { return [parseInt(h.slice(1, 3), 16) / 255, parseInt(h.slice(3, 5), 16) / 255, parseInt(h.slice(5, 7), 16) / 255]; }
-  var PAPER = hex('#d4d3c8'), PLUM = hex('#911254'), GREEN = hex('#129150'), LILAC = hex('#9582F8'), INK = hex('#1b1b1b'), LIME = hex('#c9d94a');
+  var PAPER = hex('#d4d3c8'), PLUM = hex('#52222b'), GREEN = hex('#b3ae5a'), LILAC = hex('#cfa8b1'), INK = hex('#1b1b1b'), LIME = hex('#c9d94a');
 
-  var PLUM2 = hex('#c04a86');
+  var PLUM2 = hex('#9a5a66');
   var TOYS = {
     sandsong:      { step: GS, seed: SEED_GS, sprinkle: SPRINKLE_GS, mode: 4, size: [192, 108], sps: 6, every: 1, poke: 900, ink: PLUM, ink2: PLUM2, u: { u_F: 0.029, u_k: 0.057 } },
     'kami-hovani': { step: GS, seed: SEED_GS, sprinkle: SPRINKLE_GS, mode: 4, size: [192, 108], sps: 8, every: 1, poke: 200, ink: PLUM, ink2: PLUM2, u: { u_F: 0.018, u_k: 0.051 } },

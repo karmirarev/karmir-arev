@@ -7,11 +7,11 @@
 
 :root {
   --paper: rgb(212, 211, 200);
-  --maroon: #911254;
+  --maroon: #52222b;
   --link: #1b1b1b;
-  --green: #129150;
-  --lime: #E4F882;
-  --lilac: #9582F8;
+  --green: #b3ae5a;
+  --lime: #c56e3b;
+  --lilac: #cfa8b1;
 }
 
 html {
@@ -114,13 +114,13 @@ a:hover {
   box-sizing: border-box;
   padding: 16px 20px;
   border-radius: 14px;
-  box-shadow: 4px 4px 0 #C1BCD7;
+  box-shadow: 4px 4px 0 #cfa8b1;
   background-color: var(--paper);
 }
 
 .menu,
 .links-box {
-  background-image: linear-gradient(90deg, transparent 21px, rgba(220, 40, 60, 0.5) 21px, rgba(220, 40, 60, 0.5) 22px, transparent 22px);
+  background-image: linear-gradient(90deg, transparent 21px, rgba(197, 110, 59, 0.6) 21px, rgba(197, 110, 59, 0.6) 22px, transparent 22px);
   background-repeat: no-repeat;
 }
 
@@ -273,7 +273,7 @@ a:hover {
 
 .nav a.current {
   background: var(--green);
-  color: #fff;
+  color: #1b1b1b;
 }
 
 .nav a.current:hover {
