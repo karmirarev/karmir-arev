@@ -10,8 +10,8 @@
   --maroon: #52222b;
   --link: #1b1b1b;
   --green: #b3ae5a;
-  --lime: #c56e3b;
-  --lilac: #cfa8b1;
+  --lime: #c4bab5;
+  --lilac: #C1BCD7;
 }
 
 html {
@@ -114,7 +114,7 @@ a:hover {
   box-sizing: border-box;
   padding: 16px 20px;
   border-radius: 14px;
-  box-shadow: 4px 4px 0 #cfa8b1;
+  box-shadow: 4px 4px 0 #C1BCD7;
   background-color: var(--paper);
 }
 

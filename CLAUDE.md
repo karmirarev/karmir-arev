@@ -22,10 +22,12 @@ https://xn--y9aamws5a2fcbv.xn--y9a3aq). Static files, no build step. Pushing to
     these four colours.)
   - `--green: #b3ae5a` olive. Current page pill, green buttons, happy pill; text on it is
     ink `#1b1b1b`, not white (white is unreadable on it).
-  - `--lime: #c56e3b` orange. Hover fill on menu links and buttons; also the menu's
-    notebook margin line (`rgba(197,110,59,0.6)`).
-  - `--lilac: #cfa8b1` dusty pink. Box shadows `4px 4px 0 #cfa8b1`, tag pills, plant
-    drops, essay quote background.
+  - `--lime: #c4bab5` warm grey. Hover fill on menu links and buttons. Picked from a row of
+    swatches after trying lime, light blue, dusty pink, peaches and a paler grey `#d7d0cd`
+    (too close to the paper, invisible) and orange `#c56e3b` (too harsh). Orange stays
+    only as the menu's notebook margin line (`rgba(197,110,59,0.6)`).
+  - `--lilac: #C1BCD7` the soft lilac-blue marita calls "the light blue". Box shadows
+    `4px 4px 0 #C1BCD7`, tag pills, plant drops, essay quote background.
   - Organisms (`toys.js`): `PLUM` is `#52222b`, `PLUM2` `#9a5a66`.
   - Text is `#1b1b1b`. Links are ink with a thin purple underline. Never bright blue.
 - Boxes (left wing, menu, portfolio cards, game cards): 1px purple border,
@@ -188,7 +190,7 @@ The portfolio cards (gif, name, email with copy button, bio, find me on, resume)
   On desktop `show()` copies them into the left box, `alignCites()` lines each one up with
   its spot and draws a straight dashed purple line with a dot to the gap (quotes are square, kept
   inside the box). Under 700px they
-  show inline instead. Quote background is the tag colour `#cfa8b1`.
+  show inline instead. Quote background is the tag colour `#C1BCD7`.
 
 ## Creatures in the left box
 
@@ -247,7 +249,7 @@ plant `{ name, latin, img, size (picture height in px, matching the real plants:
 biggest, silvery ann smallest), every (days between waterings), watered (yyyy-mm-dd),
 fact, care }` and
 `index.html` draws the current plant: pixel picture (`plants/`, white backgrounds removed,
-`image-rendering: pixelated`), name, latin name, five water drops (filled in the dusty pink `#cfa8b1`) that empty as days pass,
+`image-rendering: pixelated`), name, latin name, five water drops (filled in the light blue `#C1BCD7`) that empty as days pass,
 "watered N days ago", "next drink in N days" and a mood pill (green happy, lime thirsty
 soon, purple "water me!", when thirsty the plant gently sways), then a short fun fact and
 care routine. `plants/watering-can.png` is not used right now. Marita always waters on schedule, so the page assumes it: `watered` is just a
