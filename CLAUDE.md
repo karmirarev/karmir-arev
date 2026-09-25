@@ -15,16 +15,23 @@ https://xn--y9aamws5a2fcbv.xn--y9a3aq). Static files, no build step. Pushing to
   `unicode-range`, so any Armenian text picks it up and everything else stays Courier.
   Do not use the Antique font: its license forbids hosting it.
 - Colours are CSS variables in `site.css`:
-  - `--maroon: #911254` purple. (marita tried darker plums like #69334e, #854e69, #823c5f, #802e57 and went back to this one.) Lines, titles, chips, dashed dividers, the `+`/`-` squares.
-  - `--green: #129150` current page highlight, filled squares next to home and elsewhere.
-  - `--lime: #E4F882` hover fill on menu links, copy button hover.
-  - `--lilac: #9582F8` accent. Game tag pills are `#C1BCD7`.
-  - Box shadow on every box is `4px 4px 0 #C1BCD7`.
+  - `--maroon: #52222b` deep wine. Lines, titles, chips, dashed dividers, the `+`/`-`
+    squares. (Palette changed sep 2026: before it was purple `#911254`, green `#129150`,
+    lime `#E4F882`, lilac `#C1BCD7`. Marita also tried darker plums, an ATNN palette and a
+    matcha/velvet one; she kept the beige paper, the blue dots and ink text and took only
+    these four colours.)
+  - `--green: #b3ae5a` olive. Current page pill, green buttons, happy pill; text on it is
+    ink `#1b1b1b`, not white (white is unreadable on it).
+  - `--lime: #c56e3b` orange. Hover fill on menu links and buttons; also the menu's
+    notebook margin line (`rgba(197,110,59,0.6)`).
+  - `--lilac: #cfa8b1` dusty pink. Box shadows `4px 4px 0 #cfa8b1`, tag pills, plant
+    drops, essay quote background.
+  - Organisms (`toys.js`): `PLUM` is `#52222b`, `PLUM2` `#9a5a66`.
   - Text is `#1b1b1b`. Links are ink with a thin purple underline. Never bright blue.
 - Boxes (left wing, menu, portfolio cards, game cards): 1px purple border,
   `border-radius: 14px`, the lilac shadow, solid paper background so dots do not show through.
 - The left wing is a plain box (marita removed its notebook lines). The menu box has one
-  red notebook margin line 21px in from its left side (menu padding-left 34px), a background gradient on `.menu` and
+  orange notebook margin line 21px in from its left side (menu padding-left 34px), a background gradient on `.menu` and
   `.links-box` so the sticky elsewhere part keeps it too.
 - Green outline on hover for gallery pictures and event photos. Lightbox on click.
 - Icons: hollow purple squares for sections, green filled square for home and elsewhere,
@@ -181,7 +188,7 @@ The portfolio cards (gif, name, email with copy button, bio, find me on, resume)
   On desktop `show()` copies them into the left box, `alignCites()` lines each one up with
   its spot and draws a straight dashed purple line with a dot to the gap (quotes are square, kept
   inside the box). Under 700px they
-  show inline instead. Quote background is the tag colour `#C1BCD7`.
+  show inline instead. Quote background is the tag colour `#cfa8b1`.
 
 ## Creatures in the left box
 
@@ -240,7 +247,7 @@ plant `{ name, latin, img, size (picture height in px, matching the real plants:
 biggest, silvery ann smallest), every (days between waterings), watered (yyyy-mm-dd),
 fact, care }` and
 `index.html` draws the current plant: pixel picture (`plants/`, white backgrounds removed,
-`image-rendering: pixelated`), name, latin name, five water drops (filled in the lilac `#C1BCD7`) that empty as days pass,
+`image-rendering: pixelated`), name, latin name, five water drops (filled in the dusty pink `#cfa8b1`) that empty as days pass,
 "watered N days ago", "next drink in N days" and a mood pill (green happy, lime thirsty
 soon, purple "water me!", when thirsty the plant gently sways), then a short fun fact and
 care routine. `plants/watering-can.png` is not used right now. Marita always waters on schedule, so the page assumes it: `watered` is just a
