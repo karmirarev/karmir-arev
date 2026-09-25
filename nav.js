@@ -30,7 +30,10 @@
     { label: 'instagram', href: 'https://www.instagram.com/karmirarev__', newTab: true },
     { label: 'itch.io', href: 'https://karmirarev.itch.io/', newTab: true },
     { label: 'letterboxd', href: 'https://letterboxd.com/karmirarev/', newTab: true },
-    { label: 'anilist', href: 'https://anilist.co/user/karmirarev/animelist', newTab: true },
+    { label: 'anilist', href: 'https://anilist.co/user/karmirarev/animelist', newTab: true }
+  ];
+
+  var SUPPORT = [
     { label: 'buymeacoffee', href: 'https://buymeacoffee.com/karmirarev', newTab: true }
   ];
 
@@ -131,6 +134,15 @@
     var links = build(LINKS, [], null);
     links.className = 'nav links';
     linksBox.appendChild(links);
+
+    var st = document.createElement('p');
+    st.className = 'nav-title c-green support-title';
+    st.textContent = 'support me here';
+    if (location.pathname === '/' || location.pathname === '/index.html') st.classList.add('rainbow');
+    linksBox.appendChild(st);
+    var sup = build(SUPPORT, [], null);
+    sup.className = 'nav links';
+    linksBox.appendChild(sup);
   }
 
   var clickSound = null, audio = null, soundDone = null;

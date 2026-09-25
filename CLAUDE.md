@@ -29,8 +29,8 @@ https://xn--y9aamws5a2fcbv.xn--y9a3aq). Static files, no build step. Pushing to
     `4px 4px 0 #C1BCD7`, tag pills, plant drops, essay quote background.
   - `--orange: #c56e3b`. Every dashed separation line (between sections, events,
     drawing types, fact sheet rows, the games groups, above "elsewhere") and the menu's
-    notebook line. The update log timeline, the menu tree lines and the essay quote
-    connector lines stay deep wine, they are not separators.
+    notebook line. Also the update log's dashed timeline line. The menu tree lines and
+    the essay quote connector lines stay deep wine.
   - Organisms (`toys.js`): `PLUM` is `#52222b`, `PLUM2` `#9a5a66`.
   - Text is `#1b1b1b`. Links are ink with a thin purple underline. Never bright blue.
 - Boxes (left wing, menu, portfolio cards, game cards): 1px purple border,
@@ -64,7 +64,11 @@ Sub-pages like `arts-and-crafts/clay/` still exist as files but nothing links to
 
 ## Menu
 
-`nav.js` holds the whole tree in `NAV` and the outside links in `LINKS`. Adding a page
+`nav.js` holds the whole tree in `NAV` and the outside links in `LINKS`. Buy me a coffee is
+separate, in `SUPPORT`, under its own "support me here" title below the elsewhere links.
+On the home page only, that whole title cycles through, one colour at a time, matcha, velvet, monarch, pink silk, moss and
+cornflower (`#b4a64b #591e2a #d2682b #d6a6b1 #464719 #98a8d9`) (CSS `rainbow`
+keyframes with `steps(1)`, half a second each, switching without fading). Adding a page
 means adding an entry there. Links with `newTab: true` open in a new tab (used for all
 outside links). The current page gets the green pill, its
 parents are unfolded.
@@ -217,7 +221,7 @@ href="/arts-and-crafts/#3d-model-painting">3d-model-painting</a>: ranni the witc
 Every line must say what was added and where it was
 added, with a link to that page. No chatty sentences. Do not log site
 work like layout, menus, fonts, colours, caching or the left-box creatures. It is drawn as a timeline: a dashed
-purple line down the left with a square per entry, the newest one filled green, date
+orange line down the left with a square per entry, the newest one filled green, date
 above the sentence. Only the newest 3 lines show (CSS hides the rest, no
 "older" button, marita does not want one), so keep new lines at the top.
 
