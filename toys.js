@@ -100,7 +100,7 @@
     'float d=bayer(ivec2(gl_FragCoord.xy));float q=step(d,v);o=vec4(mix(u_paper,ink,q),1.0);}';
 
   function hex(h) { return [parseInt(h.slice(1, 3), 16) / 255, parseInt(h.slice(3, 5), 16) / 255, parseInt(h.slice(5, 7), 16) / 255]; }
-  var PAPER = hex('#d4d3c8'), PLUM = hex('#52222b'), GREEN = hex('#b3ae5a'), LILAC = hex('#cfa8b1'), INK = hex('#1b1b1b'), LIME = hex('#c9d94a');
+  var PAPER = hex('#d4d3c8'), PLUM = hex('#52222b'), GREEN = hex('#b3ae5a'), LILAC = hex('#C1BCD7'), INK = hex('#1b1b1b'), LIME = hex('#c9d94a');
 
   var PLUM2 = hex('#9a5a66');
   var TOYS = {
