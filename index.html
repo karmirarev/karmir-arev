@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>karmirarev</title>
-  <link rel="stylesheet" href="site.css?v=35">
+  <link rel="stylesheet" href="site.css?v=36">
   <style>
     .log-title::before {
       display: none;
@@ -83,11 +83,165 @@
       line-height: 1;
       font-size: 11px;
       letter-spacing: 1px;
-      text-transform: uppercase;
       color: var(--maroon);
     }
     .log.sep li:nth-child(n+4) {
       display: none;
+    }
+    .garden-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .garden-head .nav-title {
+      margin: 0;
+    }
+    .slides {
+      position: relative;
+      margin-top: 20px;
+      padding: 14px 22px 16px 16px;
+      border: 1px solid var(--maroon);
+      border-radius: 14px;
+      box-shadow: 4px 4px 0 #C1BCD7;
+      background: var(--paper);
+    }
+    .slides .nav-title {
+      margin: 0;
+    }
+    .slide-next {
+      position: absolute;
+      right: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font: inherit;
+      font-size: 14px;
+      line-height: 1;
+      box-sizing: border-box;
+      width: 22px;
+      height: 22px;
+      padding: 0;
+      border: 1px solid var(--maroon);
+      border-radius: 2px;
+      background: var(--paper);
+      color: var(--maroon);
+      cursor: pointer;
+    }
+    .slide-next:hover {
+      background: var(--lime);
+    }
+    .watch {
+      display: grid;
+      grid-template-columns: 76px 1fr;
+      gap: 0 14px;
+      margin-top: 12px;
+      color: inherit;
+      text-decoration: none;
+    }
+    .watch:hover .film-poster {
+      outline: 2px solid var(--green);
+    }
+    .watch-kind {
+      margin: 0 0 4px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--maroon);
+    }
+    .watch-name {
+      margin: 0;
+      line-height: 1.5;
+    }
+    .watch-line {
+      margin: 4px 0 0;
+      color: var(--maroon);
+      letter-spacing: 2px;
+    }
+    .watch-when {
+      margin: 6px 0 0;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--maroon);
+    }
+    .plant {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 0 14px;
+      margin-top: 12px;
+    }
+    .plant-pic {
+      grid-row: span 6;
+      height: 100px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .plant-pic img {
+      max-width: 100%;
+      image-rendering: pixelated;
+    }
+    .plant.thirsty .plant-pic img {
+      animation: droop 1.6s ease-in-out infinite;
+      transform-origin: 50% 100%;
+    }
+    @keyframes droop {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-3deg); }
+    }
+    .plant-name {
+      margin: 0;
+      color: var(--maroon);
+      font-weight: bold;
+    }
+    .plant-latin {
+      margin: 0 0 6px;
+      font-size: 11px;
+      font-style: italic;
+    }
+    .drops {
+      display: flex;
+      gap: 5px;
+      margin: 2px 0 6px 2px;
+    }
+    .drops i {
+      width: 10px;
+      height: 10px;
+      border: 1px solid var(--maroon);
+      border-radius: 0 50% 50% 50%;
+      transform: rotate(45deg);
+    }
+    .drops i.full {
+      background: #C1BCD7;
+    }
+    .plant-when {
+      margin: 0;
+      font-size: 12px;
+    }
+    .plant-mood {
+      justify-self: start;
+      display: inline-block;
+      margin-top: 6px;
+      padding: 1px 9px;
+      border-radius: 12px;
+      font-size: 12px;
+      border: 1px solid var(--maroon);
+    }
+    .plant-mood.happy {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fff;
+    }
+    .plant-mood.soon {
+      background: var(--lime);
+    }
+    .plant-mood.thirsty {
+      background: var(--maroon);
+      color: #fff;
+    }
+    .plant-note {
+      grid-column: 1 / -1;
+      margin: 10px 0 0;
+      font-size: 12px;
+      line-height: 1.5;
     }
     .content > img {
       display: block;
@@ -117,28 +271,18 @@
         </feComponentTransfer>
       </filter>
     </svg>
-    <div class="film" id="film" hidden>
-      <p class="nav-title log-title">last film watched</p>
-      <a class="film-card" id="film-link" target="_blank" rel="noopener">
-        <img class="film-poster" id="film-poster" alt="">
-        <span class="film-info">
-          <span class="film-name" id="film-name"></span>
-          <span class="film-stars" id="film-stars"></span>
-          <time id="film-when"></time>
-        </span>
-      </a>
+    <div class="slides" id="garden" hidden>
+      <p class="nav-title log-title">plants i am taking care of</p>
+      <div class="slide" id="garden-slide"></div>
+      <button type="button" class="slide-next" id="garden-next" title="next plant">&gt;</button>
     </div>
-    <div class="film" id="anime" hidden>
-      <p class="nav-title log-title">last anime watched</p>
-      <a class="film-card" id="anime-link" target="_blank" rel="noopener">
-        <img class="film-poster" id="anime-poster" alt="">
-        <span class="film-info">
-          <span class="film-name" id="anime-name"></span>
-          <span class="film-stars" id="anime-stars"></span>
-          <time id="anime-when"></time>
-        </span>
-      </a>
+
+    <div class="slides" id="watched" hidden>
+      <p class="nav-title log-title">last watched</p>
+      <div class="slide" id="watched-slide"></div>
+      <button type="button" class="slide-next" id="watched-next" title="next">&gt;</button>
     </div>
+
 
   </div>
   <div class="content">
@@ -151,33 +295,71 @@
   <div class="menu" id="menu"></div>
 </div>
 
-<script src="/nav.js?v=20"></script>
+<script src="/nav.js?v=27"></script>
 <script>
-  function showCard(key, c) {
-    const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-    const [y, m, d] = (c.date || '').split('-').map(Number);
-    document.getElementById(key + '-link').href = c.link;
-    document.getElementById(key + '-poster').src = c.poster || '';
-    document.getElementById(key + '-poster').alt = c.title;
-    document.getElementById(key + '-name').textContent = c.title + (c.year ? ' (' + c.year + ')' : '');
-    document.getElementById(key + '-stars').textContent = c.line;
-    document.getElementById(key + '-when').textContent = m ? months[m - 1] + ' ' + d + ', ' + y : '';
+  function carousel(key, items, card) {
+    let at = 0;
+    const slide = document.getElementById(key + '-slide');
+    const next = document.getElementById(key + '-next');
+    const draw = () => { slide.innerHTML = card(items[at]); };
+    next.onclick = () => { at = (at + 1) % items.length; draw(); };
+    next.hidden = items.length < 2;
+    draw();
     document.getElementById(key).hidden = false;
   }
-  function load(file, toCard) {
-    fetch('/' + file + '?t=' + Date.now())
-      .then(r => r.json())
-      .then(data => { if (data && data.title) showCard(...toCard(data)); })
-      .catch(() => {});
-  }
-  load('letterboxd.json', f => ['film', {
-    title: f.title, year: f.year, link: f.link, poster: f.poster, date: f.watched,
-    line: (f.rating == null ? '-' : '★'.repeat(Math.floor(f.rating)) + (f.rating % 1 ? '½' : '')) + (f.liked ? ' ♥' : '')
-  }]);
-  load('anilist.json', a => ['anime', {
-    title: a.title, year: a.year, link: a.link, poster: a.poster, date: a.finished,
-    line: a.score ? a.score + '/10' : '-'
-  }]);
+  const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+  const nice = iso => { const [y, m, d] = (iso || '').split('-').map(Number); return m ? months[m - 1] + ' ' + d + ', ' + y : ''; };
+  const getJSON = f => fetch('/' + f + '?t=' + Date.now()).then(r => r.json()).catch(() => null);
+  Promise.all([getJSON('letterboxd.json'), getJSON('anilist.json')]).then(([f, a]) => {
+    const items = [];
+    if (f && f.title) items.push({ kind: 'film', title: f.title, year: f.year, link: f.link, poster: f.poster, date: f.watched,
+      line: (f.rating == null ? '-' : '★'.repeat(Math.floor(f.rating)) + (f.rating % 1 ? '½' : '')) + (f.liked ? ' ♥' : '') });
+    if (a && a.title) items.push({ kind: 'anime', title: a.title, year: a.year, link: a.link, poster: a.poster, date: a.finished,
+      line: a.score ? a.score + '/10' : '-' });
+    if (!items.length) return;
+    items.forEach(i => { if (i.poster) new Image().src = i.poster; });
+    carousel('watched', items, w => `
+      <a class="watch" href="${w.link}" target="_blank" rel="noopener">
+        <img class="film-poster" src="${w.poster || ''}" alt="${w.title}">
+        <span>
+          <p class="watch-kind">${w.kind}</p>
+          <p class="watch-name">${w.title}${w.year ? ' (' + w.year + ')' : ''}</p>
+          <p class="watch-line">${w.line}</p>
+          <p class="watch-when">${nice(w.date)}</p>
+        </span>
+      </a>`);
+  });
+  fetch('/plants.json?t=' + Date.now())
+    .then(r => r.json())
+    .then(plants => {
+      const day = 86400000, today = new Date(new Date().toDateString());
+      const card = p => {
+        const total = Math.max(0, Math.round((today - new Date(p.watered + 'T00:00:00')) / day));
+        const dueToday = total > 0 && total % p.every === 0;
+        const since = dueToday ? p.every : total % p.every;
+        const left = p.every - since;
+        const full = Math.max(0, Math.min(5, Math.round(5 * left / p.every)));
+        const mood = left <= 0 ? 'thirsty' : left <= Math.ceil(p.every / 4) ? 'soon' : 'happy';
+        const words = { happy: 'happy', soon: 'thirsty soon', thirsty: 'water me today!' }[mood];
+        const when = since === 0 ? 'watered today' : since === 1 ? 'watered yesterday' : `watered ${since} days ago`;
+        const next = left > 1 ? `next drink in ${left} days` : left === 1 ? 'next drink tomorrow' : 'needs a drink today';
+        return `
+          <div class="plant ${mood}">
+            <div class="plant-pic"><img src="${p.img}" alt="${p.name}" style="height: ${p.size || 96}px"></div>
+            <p class="plant-name">${p.name}</p>
+            <p class="plant-latin">${p.latin}</p>
+            <div class="drops" title="water left">${'<i class="full"></i>'.repeat(full)}${'<i></i>'.repeat(5 - full)}</div>
+            <p class="plant-when">${when}</p>
+            <p class="plant-when">${next}</p>
+            <span class="plant-mood ${mood}">${words}</span>
+            ${p.fact ? `<p class="plant-note">fun fact: ${p.fact}</p>` : ''}
+            ${p.care ? `<p class="plant-note">care: ${p.care}</p>` : ''}
+          </div>`;
+      };
+      plants.forEach(p => { new Image().src = p.img; });
+      carousel('garden', plants, card);
+    })
+    .catch(() => {});
 </script>
 </body>
 </html>

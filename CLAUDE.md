@@ -7,7 +7,8 @@ https://xn--y9aamws5a2fcbv.xn--y9a3aq). Static files, no build step. Pushing to
 ## Look and feel (keep it exactly like this)
 
 - Beige paper `rgb(212,211,200)` with the light-blue dot grid, fixed behind the page.
-- Font: `'Courier New', monospace` everywhere. All text lowercase. Titles are the same
+- Font: `'Courier New', monospace` everywhere. All text lowercase, including dates and small labels (no `text-transform: uppercase`
+  anywhere, marita does not want capitals). Titles are the same
   font, bold, in purple.
 - Armenian letters use FreeMono (`fonts/FreeMono.ttf`, GNU FreeFont, GPL with font
   exception, credit in `fonts/CREDITS.txt`). It is first in the `body` font stack with a
@@ -56,6 +57,22 @@ means adding an entry there. Links with `newTab: true` open in a new tab (used f
 outside links). The current page gets the green pill, its
 parents are unfolded.
 
+## Click sound
+
+Clicking anything clickable (links, buttons, toggles, cards, gallery pictures, organism
+covers, the lightbox, the 3D model; the list is `CLICKABLE` in `nav.js`) plays
+`click-creamy-v2.mp3`: the freesound_community keyboard click (Pixabay, free to use,
+original kept as `click.mp3`) made creamier with ffmpeg (her pick: the "deep" one,
+then quieter and cut to 0.16s): pitched down 12%, highs gently
+shelved down, low mids and bass lifted, a tiny 14ms room echo, light compression. Marita
+disliked a heavily muffled version and a synthesized "bloop"; she wants a real creamy
+mechanical keyboard. Each click is pitched a few percent up or down at random so repeats
+do not sound robotic. Empty space stays silent. Played through Web Audio so quick clicks overlap;
+fetched when the page loads, and links that load a page (including a reload) wait until
+the pop has finished, plus the speaker delay, before leaving (at most 500ms). Hash links,
+new-tab links and outside links are left alone. `click.mp3` is the earlier keyboard
+click from freesound_community (Pixabay), not used right now.
+
 ## The guy in the menu
 
 `guy.gif` (a walking beet, see-through, trimmed from her download) sits at the right edge
@@ -101,7 +118,9 @@ to copy.
    Other link keys: `appstore`, `trailer` (names in `LINK_NAMES`). Design docs and
    screenshots go in `projects/` as files with new names.
 2. Either a picture cover: `cover: './covers/KEY.webp'` (16:9, 1280x720 webp in
-   `projects/covers/`, original colours, no filter), shown at the top of the game page. The games grid cards
+   `projects/covers/`, original colours, no filter), shown at the top of the game page. For an animated cover also add
+   `video: './covers/KEY.mp4'` (1280x720 h264, no sound, short loop; the webp stays as its
+   poster): it autoplays muted and looping on the game page and plays on card hover. The games grid cards
    show the live organism cover and swap to the picture while hovered (instantly, no
    fade), so every game also needs a `TOYS[KEY]` entry.
    Or a live cover: in `toys.js`, add a `TOYS[KEY]` entry. Covers are live GPU cellular automata
@@ -192,9 +211,9 @@ purple line down the left with a square per entry, the newest one filled green, 
 above the sentence. Only the newest 3 lines show (CSS hides the rest, no
 "older" button, marita does not want one), so keep new lines at the top.
 
-The home wing holds the update log (`ul.log` with `<time>` lines) and, under a dashed
-line, "last film watched" (her latest Letterboxd film) and "last anime watched" (latest
-completed on AniList, user karmirarev). Marita removed the guestbook, do not
+The home wing holds the update log (`ul.log` with `<time>` lines), the plant box and the
+"last watched" box (latest Letterboxd film and latest completed AniList anime, user
+karmirarev). Marita removed the guestbook, do not
 add a message form back.
 
 Last watched: Letterboxd's RSS has no CORS, so the browser cannot read it. A GitHub
@@ -202,12 +221,37 @@ Action (`.github/workflows/watched.yml`, every 3 hours, also runnable by hand)
 runs `.github/scripts/letterboxd.py` and `.github/scripts/anilist.py` (AniList GraphQL,
 status COMPLETED sorted by finish date then last update, since she often marks several
 done on one day), writes `letterboxd.json` and `anilist.json`, and commits only when
-they changed. `index.html` fetches both and fills the cards with `showCard()`; a card
-whose file is missing stays hidden. The second line is her rating (stars for films,
+they changed. `index.html` fetches both and feeds them to the "last watched" carousel; an item whose
+file is missing is skipped. The second line is her rating (stars for films,
 score/10 for anime) and just `-` when she has not rated it. Do not log these bot commits in the update log.
 The poster always gets marita's Canva "Sepia" duotone: an inline SVG filter `#sepia`
 in `index.html` (greyscale, then darks to `rgb(37,20,41)` and lights to
 `rgb(238,238,219)`), applied with `filter: url(#sepia)`.
+
+## Plant tracker
+
+The home page left box, under the update log, has two carousel boxes (`.slides`, own
+border and shadow, built by `carousel(key, items, card)`): first "plants i am taking care
+of", then "last watched". Each shows one item; a small square `>` button sitting on the
+middle of the box's right edge cycles through them in a loop. "last watched" holds the
+latest film (Letterboxd) and anime (AniList), poster left, a small kind label ("film",
+"anime"), title, rating and date; a tv show can be added the same way as another item.
+Dashed dividers only separate different topics, never a plant from its own facts. The
+fun fact and care lines are plain text ("fun fact: ...", "care: ..."). `plants.json` in the repo root lists each
+plant `{ name, latin, img, size (picture height in px, matching the real plants: peace lily
+biggest, silvery ann smallest), every (days between waterings), watered (yyyy-mm-dd),
+fact, care }` and
+`index.html` draws the current plant: pixel picture (`plants/`, white backgrounds removed,
+`image-rendering: pixelated`), name, latin name, five water drops (filled in the lilac `#C1BCD7`) that empty as days pass,
+"watered N days ago", "next drink in N days" and a mood pill (green happy, lime thirsty
+soon, purple "water me!", when thirsty the plant gently sways), then a short fun fact and
+care routine. `plants/watering-can.png` is not used right now. Marita always waters on schedule, so the page assumes it: `watered` is just a
+starting date, and every `every` days a new cycle begins by itself. On the due day the
+plant shows "water me today!" (purple, swaying), and from the next day it counts as
+freshly watered again. Nobody needs to update `watered`; only change it if the schedule
+itself shifts. The
+intervals are rough guesses (peace lily 7, calathea 6, silvery ann 12); change `every` if
+her plants disagree.
 
 ## Cache
 

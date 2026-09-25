@@ -1,0 +1,20 @@
+[
+  {
+    "name": "peace lily", "latin": "spathiphyllum", "img": "/plants/peace-lily.png", "size": 96,
+    "every": 7, "watered": "2026-09-22",
+    "fact": "not a real lily at all. it droops dramatically when thirsty, then perks right back up after a drink.",
+    "care": "water about once a week, bright indirect light, dust its leaves now and then."
+  },
+  {
+    "name": "calathea", "latin": "calathea makoyana", "img": "/plants/calathea.png", "size": 74,
+    "every": 6, "watered": "2026-09-22",
+    "fact": "also called the peacock plant. its leaves fold up at night and open again in the morning.",
+    "care": "keep the soil lightly moist, use filtered water, keep it humid and out of direct sun."
+  },
+  {
+    "name": "silvery ann", "latin": "scindapsus pictus", "img": "/plants/silvery-ann.png", "size": 54,
+    "every": 12, "watered": "2026-09-22",
+    "fact": "not a real pothos, even though everyone calls it one. the silver spots are tiny air pockets that catch the light.",
+    "care": "let the soil dry out between drinks, medium light. curling leaves mean it is thirsty."
+  }
+]

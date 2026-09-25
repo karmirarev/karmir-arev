@@ -133,6 +133,45 @@
     linksBox.appendChild(links);
   }
 
+  var clickSound = null, audio = null, soundDone = null;
+  try {
+    audio = new (window.AudioContext || window.webkitAudioContext)();
+    fetch('/click-creamy-v2.mp3').then(function (r) { return r.arrayBuffer(); })
+      .then(function (b) { return audio.decodeAudioData(b); })
+      .then(function (buf) { clickSound = buf; })
+      .catch(function () {});
+  } catch (e) {}
+
+  var CLICKABLE = 'a[href], button, summary, label, input, select, [onclick], [role="button"], .gallery-item img, .shot, canvas[data-toy], .lightbox, model-viewer';
+  function playClick(e) {
+    if (!audio || !clickSound) return;
+    var t = e && e.target;
+    if (!t || !t.closest || !t.closest(CLICKABLE)) return;
+    if (audio.state === 'suspended') audio.resume();
+    var src = audio.createBufferSource(), vol = audio.createGain();
+    vol.gain.value = 0.6;
+    src.buffer = clickSound;
+    src.playbackRate.value = 0.97 + Math.random() * 0.06;
+    src.connect(vol).connect(audio.destination);
+    soundDone = new Promise(function (ok) { src.onended = ok; });
+    src.start();
+  }
+  document.addEventListener('pointerdown', playClick, true);
+
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    if (a.target && a.target !== '_self') return;
+    var url = new URL(a.href, location.href);
+    if (url.origin !== location.origin) return;
+    if (url.pathname === location.pathname && url.search === location.search && url.hash) return;
+    e.preventDefault();
+    var go = function () { location.href = url.href; go = function () {}; };
+    var lag = audio ? ((audio.outputLatency || 0) + (audio.baseLatency || 0)) * 1000 : 0;
+    if (soundDone) soundDone.then(function () { setTimeout(function () { go(); }, 30 + lag); });
+    setTimeout(function () { go(); }, 500);
+  });
+
   render();
   placeGuy();
   guy.addEventListener('load', placeGuy);
