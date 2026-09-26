@@ -60,6 +60,30 @@ inline in one `index.html`: a `sections` object of template strings keyed by nam
 matching `wings` object for what goes in the left box, and `show(key)` swaps
 `#content` and `#wing`. The URL hash picks the section (`/projects/#games`).
 
+The landing view of each section page (no hash) shows its subpages as folder cards
+(`<div class="folders" data-folders="/projects/">`): `folders()` in `nav.js` fills
+them from that page's `NAV` children, so a new menu entry gets a folder by itself.
+The home page has the same (`data-folders="/"`), made from the top-level entries
+except home, under the walking gif behind a dashed orange line (`.home-folders`).
+`.folders` has 64px of room on top so a lifted tab never touches that line.
+They look like a stack of library index cards (from marita's reference): each card
+overlaps the one above, a tab with the name pokes out, tabs step from left to right,
+and hovering any card (the front one too) slides it up a little. Every card is a plain
+colour from `COLORS` in `nav.js`, no picture (sep 2026 the cards had old prints and
+fabric scraps in them; marita took them off and keeps them in
+`~/Documents/folder-pictures`, the colours were picked from those pictures). A `NAV`
+entry can set its own colour with `tint: '#e0a9a0'`; otherwise it is picked by
+the parent page and position so it stays the same on every visit. On
+arts-and-crafts the animal parade sits in the flow under them (`.content` is a flex
+column there) so they never overlap.
+Cards are 320x260, lined up on the left. From each tab a dashed orange line runs to
+the right to a small note: the item count and the last update. The count is the
+number of children, or for a section on its own page the gallery pictures (else 3d
+models, else events) in `sections`; an empty gallery says "(empty)". The date comes
+from `updated: 'yyyy-mm-dd'` (or `'yyyy-mm'`) on the `NAV` entry; a parent shows the
+newest date among its children. When new work goes into a section, bump its
+`updated`. The first dates were guessed from git history, so marita may correct them.
+
 Sub-pages like `arts-and-crafts/clay/` still exist as files but nothing links to them.
 
 ## Menu
@@ -68,7 +92,8 @@ Sub-pages like `arts-and-crafts/clay/` still exist as files but nothing links to
 separate, in `SUPPORT`, under its own "support me here" title below the elsewhere links.
 On the home page only, that whole title cycles through, one colour at a time, matcha, velvet, monarch, pink silk, moss and
 cornflower (`#b4a64b #591e2a #d2682b #d6a6b1 #464719 #98a8d9`) (CSS `rainbow`
-keyframes with `steps(1)`, half a second each, switching without fading). Adding a page
+keyframes with `steps(1)`, half a second each, switching without fading). Its square
+follows along (`background: currentColor`). Adding a page
 means adding an entry there. Links with `newTab: true` open in a new tab (used for all
 outside links). The current page gets the green pill, its
 parents are unfolded.
@@ -226,15 +251,16 @@ above the sentence. Only the newest 3 lines show (CSS hides the rest, no
 "older" button, marita does not want one), so keep new lines at the top.
 
 The home wing holds the update log (`ul.log` with `<time>` lines), the plant box and the
-"last watched" box (latest Letterboxd film and latest completed AniList anime, user
+"last consumed" box (it was "last watched" before books were added) (latest Letterboxd film and latest completed AniList anime, user
 karmirarev). Marita removed the guestbook, do not
 add a message form back.
 
 Last watched: Letterboxd's RSS has no CORS, so the browser cannot read it. A GitHub
 Action (`.github/workflows/watched.yml`, every 3 hours, also runnable by hand)
-runs `.github/scripts/letterboxd.py` and `.github/scripts/anilist.py` (AniList GraphQL,
+runs `.github/scripts/letterboxd.py`, `.github/scripts/anilist.py` and `.github/scripts/goodreads.py`
+(latest book on her goodreads "read" shelf, user 156882035, by read date then date added, RSS) (AniList GraphQL,
 status COMPLETED sorted by finish date then last update, since she often marks several
-done on one day), writes `letterboxd.json` and `anilist.json`, and commits only when
+done on one day), writes `letterboxd.json`, `anilist.json`, `anilist-manga.json` (latest completed manga, same query with type MANGA) and `goodreads.json`, and commits only when
 they changed. `index.html` fetches both and feeds them to the "last watched" carousel; an item whose
 file is missing is skipped. The second line is her rating (stars for films,
 score/10 for anime) and just `-` when she has not rated it. Do not log these bot commits in the update log.

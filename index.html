@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>karmirarev</title>
-  <link rel="stylesheet" href="site.css?v=47">
+  <link rel="stylesheet" href="site.css?v=61">
   <style>
     .log-title::before {
       display: none;
@@ -151,6 +151,10 @@
       margin: 0;
       line-height: 1.5;
     }
+    .watch-by {
+      margin: 2px 0 0;
+      font-size: 12px;
+    }
     .watch-line {
       margin: 4px 0 0;
       color: var(--maroon);
@@ -248,6 +252,9 @@
       max-width: 100%;
       margin-top: 20px;
     }
+    .home-folders {
+      border-top: 1px dashed var(--orange);
+    }
   </style>
 </head>
 <body>
@@ -278,7 +285,7 @@
     </div>
 
     <div class="slides" id="watched" hidden>
-      <p class="nav-title log-title">last watched</p>
+      <p class="nav-title log-title">last consumed</p>
       <div class="slide" id="watched-slide"></div>
       <button type="button" class="slide-next" id="watched-next" title="next">&gt;</button>
     </div>
@@ -290,12 +297,13 @@
         <p>this is the website of marita/karmirarev</p>
         <p>i do game dev, arts and crafts, thinkering, etc</p>
         <img src="walkin.gif" alt="walking animation">
+        <div class="folders home-folders" data-folders="/"></div>
   </div>
 
   <div class="menu" id="menu"></div>
 </div>
 
-<script src="/nav.js?v=36"></script>
+<script src="/nav.js?v=50"></script>
 <script>
   function carousel(key, items, card) {
     let at = 0;
@@ -310,12 +318,16 @@
   const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
   const nice = iso => { const [y, m, d] = (iso || '').split('-').map(Number); return m ? months[m - 1] + ' ' + d + ', ' + y : ''; };
   const getJSON = f => fetch('/' + f + '?t=' + Date.now()).then(r => r.json()).catch(() => null);
-  Promise.all([getJSON('letterboxd.json'), getJSON('anilist.json')]).then(([f, a]) => {
+  Promise.all([getJSON('letterboxd.json'), getJSON('anilist.json'), getJSON('anilist-manga.json'), getJSON('goodreads.json')]).then(([f, a, m, b]) => {
     const items = [];
     if (f && f.title) items.push({ kind: 'film', title: f.title, year: f.year, link: f.link, poster: f.poster, date: f.watched,
       line: (f.rating == null ? '-' : '★'.repeat(Math.floor(f.rating)) + (f.rating % 1 ? '½' : '')) + (f.liked ? ' ♥' : '') });
     if (a && a.title) items.push({ kind: 'anime', title: a.title, year: a.year, link: a.link, poster: a.poster, date: a.finished,
       line: a.score ? a.score + '/10' : '-' });
+    if (m && m.title) items.push({ kind: 'manga', title: m.title, year: m.year, link: m.link, poster: m.poster, date: m.finished,
+      line: m.score ? m.score + '/10' : '-' });
+    if (b && b.title) items.push({ kind: 'book', title: b.title, year: b.year, by: b.author, link: b.link, poster: b.poster, date: b.read,
+      line: b.rating ? '★'.repeat(b.rating) : '-' });
     if (!items.length) return;
     items.forEach(i => { if (i.poster) new Image().src = i.poster; });
     carousel('watched', items, w => `
@@ -324,6 +336,7 @@
         <span>
           <p class="watch-kind">${w.kind}</p>
           <p class="watch-name">${w.title}${w.year ? ' (' + w.year + ')' : ''}</p>
+          ${w.by ? `<p class="watch-by">${w.by}</p>` : ''}
           <p class="watch-line">${w.line}</p>
           <p class="watch-when">${nice(w.date)}</p>
         </span>
