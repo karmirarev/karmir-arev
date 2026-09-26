@@ -76,7 +76,7 @@ entry can set its own colour with `tint: '#e0a9a0'`; otherwise it is picked by
 the parent page and position so it stays the same on every visit. On
 arts-and-crafts the animal parade sits in the flow under them (`.content` is a flex
 column there) so they never overlap.
-Cards are 320x260, lined up on the left. From each tab a dashed orange line runs to
+Cards are 280x160, overlapping so 60px of each shows,, lined up on the left. From each tab a dashed orange line runs to
 the right to a small note: the item count and the last update. The count is the
 number of children, or for a section on its own page the gallery pictures (else 3d
 models, else events) in `sections`; an empty gallery says "(empty)". The date comes
