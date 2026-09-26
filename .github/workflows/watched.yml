@@ -1,4 +1,4 @@
-name: latest film and anime
+name: latest film, anime, manga and book
 
 on:
   schedule:
@@ -15,10 +15,11 @@ jobs:
       - uses: actions/checkout@v4
       - run: python3 .github/scripts/letterboxd.py
       - run: python3 .github/scripts/anilist.py
+      - run: python3 .github/scripts/goodreads.py
       - run: |
-          if git diff --quiet letterboxd.json anilist.json; then exit 0; fi
+          if [ -z "$(git status --porcelain -- letterboxd.json anilist.json anilist-manga.json goodreads.json)" ]; then exit 0; fi
           git config user.name 'site bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add letterboxd.json anilist.json
-          git commit -m 'latest film and anime'
+          git add letterboxd.json anilist.json $(ls anilist-manga.json goodreads.json 2>/dev/null)
+          git commit -m 'latest film, anime, manga and book'
           git push

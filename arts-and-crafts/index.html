@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>arts and crafts - karmirarev</title>
   <link rel="stylesheet" href="../gallery.css?v=6">
-  <link rel="stylesheet" href="../site.css?v=47">
+  <link rel="stylesheet" href="../site.css?v=61">
   <style>
     .model-wrap {
       max-width: 460px;
@@ -25,11 +25,13 @@
       position: relative;
       overflow: hidden;
     }
+    .content:has(.parade) {
+      display: flex;
+      flex-direction: column;
+    }
     .parade {
-      position: absolute;
-      left: 20px;
-      right: 20px;
-      bottom: 12px;
+      margin: auto 0 -8px;
+      padding-top: 24px;
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
@@ -129,6 +131,7 @@
   <div class="content" id="content">
         <p class="page-title">arts and crafts</p>
         <p>artsy stuff i am working/worked on</p>
+    <div class="folders" data-folders="/arts-and-crafts/"></div>
     <div class="parade">
       <img src="./deco/seal.png" alt="" style="--w:9.4%;width:var(--w)">
       <img src="./deco/moth.png" alt="" style="--w:14.5%;width:var(--w)">
@@ -327,7 +330,7 @@
   });
 </script>
 
-<script src="/nav.js?v=36"></script>
+<script src="/nav.js?v=50"></script>
 <script src="/toys.js?v=25"></script>
 <script>if (window.startToys) window.startToys();</script>
 </body>
