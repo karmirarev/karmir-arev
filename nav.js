@@ -2,7 +2,7 @@
   var NAV = [
     { label: 'home', href: '/', color: 'green', strong: true },
     { label: 'projects', href: '/projects/', color: 'lilac', children: [
-      { label: 'games', href: '/projects/#games', updated: '2026-09-24', children: [
+      { label: 'games', href: '/projects/#games', children: [
         { label: 'sandsong', href: '/projects/#sandsong' },
         { label: 'kami hovani', href: '/projects/#kami-hovani' },
         { label: 'pingala', href: '/projects/#pingala' },
@@ -10,19 +10,19 @@
         { label: 'bebe heist', href: '/projects/#bebe-heist' },
         { label: 'disco market', href: '/projects/#disco-market' }
       ]},
-      { label: 'other', href: '/projects/#other', updated: '2026-04-07', children: [
+      { label: 'other', href: '/projects/#other', children: [
         { label: 'mini me and u', href: '/projects/other/mini-me-and-you/' }
       ]}
     ]},
     { label: 'arts-and-crafts', href: '/arts-and-crafts/', color: 'lime', children: [
-      { label: 'drawings', href: '/arts-and-crafts/#drawings', updated: '2026-04-21' },
-      { label: 'clay', href: '/arts-and-crafts/#clay', tint: '#9da06a' },
-      { label: 'papercraft', href: '/arts-and-crafts/#papercraft', updated: '2026-04-07' },
-      { label: '3d-model-painting', href: '/arts-and-crafts/#3d-model-painting', updated: '2026-09-24' },
-      { label: 'events-markets-exhibits', href: '/arts-and-crafts/#events-markets-exhibits', tint: '#e0a9a0', updated: '2025-11' }
+      { label: 'drawings', href: '/arts-and-crafts/#drawings' },
+      { label: 'clay', href: '/arts-and-crafts/#clay' },
+      { label: 'papercraft', href: '/arts-and-crafts/#papercraft' },
+      { label: '3d-model-painting', href: '/arts-and-crafts/#3d-model-painting' },
+      { label: 'events-markets-exhibits', href: '/arts-and-crafts/#events-markets-exhibits' }
     ]},
     { label: 'thinking-out-loud', href: '/thinking-out-loud/', color: 'lilac', children: [
-      { label: 'on-art-evolution-ai-and-consciousness', href: '/thinking-out-loud/#on-art-evolution-ai-and-consciousness', updated: '2026-04-07' }
+      { label: 'on-art-evolution-ai-and-consciousness', href: '/thinking-out-loud/#on-art-evolution-ai-and-consciousness' }
     ]}
   ];
 
@@ -146,33 +146,6 @@
     linksBox.appendChild(sup);
   }
 
-  var M = '#52222b';
-  var COLORS = ['#b8b09a', '#b98d7e', '#e2c77a', '#9da06a', '#d9b98a', '#e0a9a0', '#c98a5e', '#c49aa6',
-    '#d8cf9a', '#d8c190', '#c9a58c'];
-
-  var SHOULDER = '<svg class="shoulder" viewBox="0 0 22 32"><path fill="var(--c)" d="M0 32C12 32 6 1 17 .5H22V32Z"/>' +
-    '<path fill="none" stroke="' + M + '" d="M0 31.5C12 31.5 6 1 17 .5H22"/></svg>';
-
-  function hash(s) {
-    var h = 0;
-    for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
-    return h;
-  }
-
-  var MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-
-  function newest(it) {
-    return (it.children || []).reduce(function (d, k) {
-      var n = newest(k);
-      return n > d ? n : d;
-    }, it.updated || '');
-  }
-
-  function nice(d) {
-    var p = d.split('-');
-    return MONTHS[p[1] - 1] + ' ' + (p[2] ? +p[2] + ', ' : '') + p[0];
-  }
-
   function count(it) {
     if (it.children) return it.children.length;
     var html = typeof sections !== 'undefined' && sections[it.href.split('#')[1]];
@@ -188,27 +161,22 @@
       var parent = trail(NAV, key, []);
       var kids = key === '/' ? NAV.filter(function (it) { return it.href !== '/'; })
         : parent ? parent[parent.length - 1].children || [] : [];
-      var h = hash(key);
       box.innerHTML = '';
-      kids.forEach(function (it, i) {
+      kids.forEach(function (it) {
         var a = document.createElement('a');
         a.className = 'folder';
         a.href = it.href;
-        a.style.setProperty('--c', it.tint || COLORS[(h + i * 3) % COLORS.length]);
-        a.style.setProperty('--t', kids.length > 1 ? (i / (kids.length - 1)).toFixed(2) : 0);
-        var tab = document.createElement('span');
-        tab.className = 'folder-tab';
         var name = document.createElement('span');
         name.className = 'folder-name';
         name.textContent = it.label;
-        tab.innerHTML = SHOULDER;
-        tab.appendChild(name);
-        tab.insertAdjacentHTML('beforeend', SHOULDER);
-        var n = count(it), d = newest(it), bits = [];
-        if (n !== null) bits.push(n ? '(' + n + (n === 1 ? ' item)' : ' items)') : '(empty)');
-        if (d) bits.push('updated ' + nice(d));
-        if (bits.length) tab.insertAdjacentHTML('beforeend', '<span class="folder-info"><i></i><span><span>' + bits.join('</span><span>') + '</span></span></span>');
-        a.appendChild(tab);
+        a.appendChild(name);
+        var n = count(it);
+        if (n !== null) {
+          var c = document.createElement('span');
+          c.className = 'folder-count';
+          c.textContent = n ? n + (n === 1 ? ' item' : ' items') : 'empty';
+          a.appendChild(c);
+        }
         box.appendChild(a);
       });
     });

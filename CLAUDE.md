@@ -65,24 +65,16 @@ The landing view of each section page (no hash) shows its subpages as folder car
 them from that page's `NAV` children, so a new menu entry gets a folder by itself.
 The home page has the same (`data-folders="/"`), made from the top-level entries
 except home, under the walking gif behind a dashed orange line (`.home-folders`).
-`.folders` has 64px of room on top so a lifted tab never touches that line.
-They look like a stack of library index cards (from marita's reference): each card
-overlaps the one above, a tab with the name pokes out, tabs step from left to right,
-and hovering any card (the front one too) slides it up a little. Every card is a plain
-colour from `COLORS` in `nav.js`, no picture (sep 2026 the cards had old prints and
-fabric scraps in them; marita took them off and keeps them in
-`~/Documents/folder-pictures`, the colours were picked from those pictures). A `NAV`
-entry can set its own colour with `tint: '#e0a9a0'`; otherwise it is picked by
-the parent page and position so it stays the same on every visit. On
-arts-and-crafts the animal parade sits in the flow under them (`.content` is a flex
-column there) so they never overlap.
-Cards are 280x160, overlapping so 60px of each shows,, lined up on the left. From each tab a dashed orange line runs to
-the right to a small note: the item count and the last update. The count is the
-number of children, or for a section on its own page the gallery pictures (else 3d
-models, else events) in `sections`; an empty gallery says "(empty)". The date comes
-from `updated: 'yyyy-mm-dd'` (or `'yyyy-mm'`) on the `NAV` entry; a parent shows the
-newest date among its children. When new work goes into a section, bump its
-`updated`. The first dates were guessed from git history, so marita may correct them.
+They are plain file-explorer folders in a grid: paper fill, wine outline, a small
+tab on top (`::before`), the lilac shadow, warm grey on hover. Each shows only the
+name and how many items are inside: the number of children, or for a section on its
+own page the gallery pictures (else 3d models, else events) in `sections`; an empty
+gallery says "empty". On arts-and-crafts the animal parade sits in the flow under
+them (`.content` is a flex column there) so they never overlap.
+Marita tried and dropped (sep 2026): a stack of coloured library index cards with
+stepped tabs, old prints and fabric scraps as pictures (kept in
+`~/Documents/folder-pictures`), and a dashed line to an item count and last update
+date. Do not bring those back.
 
 Sub-pages like `arts-and-crafts/clay/` still exist as files but nothing links to them.
 
