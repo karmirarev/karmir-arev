@@ -22,7 +22,7 @@
       { label: 'events-markets-exhibits', href: '/arts-and-crafts/#events-markets-exhibits' }
     ]},
     { label: 'thinking-out-loud', href: '/thinking-out-loud/', color: 'lilac', children: [
-      { label: 'on-art-evolution-ai-and-consciousness', href: '/thinking-out-loud/#on-art-evolution-ai-and-consciousness' }
+      { label: 'on-art-evolution-ai-and-consciousness', href: '/thinking-out-loud/#on-art-evolution-ai-and-consciousness', doc: true }
     ]}
   ];
 
@@ -164,7 +164,7 @@
       box.innerHTML = '';
       kids.forEach(function (it) {
         var a = document.createElement('a');
-        a.className = 'folder';
+        a.className = it.doc ? 'folder doc' : 'folder';
         a.href = it.href;
         var name = document.createElement('span');
         name.className = 'folder-name';

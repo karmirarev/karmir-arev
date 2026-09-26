@@ -69,7 +69,9 @@ They are plain file-explorer folders in a grid: paper fill, wine outline, a smal
 tab on top (`::before`), the lilac shadow, warm grey on hover. Each shows only the
 name and how many items are inside: the number of children, or for a section on its
 own page the gallery pictures (else 3d models, else events) in `sections`; an empty
-gallery says "empty". On arts-and-crafts the animal parade sits in the flow under
+gallery says "empty". Entries that are texts, not folders (essays), have
+`doc: true` in `NAV` and show as a page with a folded top-right corner instead
+(`.folder.doc`). On arts-and-crafts the animal parade sits in the flow under
 them (`.content` is a flex column there) so they never overlap.
 Marita tried and dropped (sep 2026): a stack of coloured library index cards with
 stepped tabs, old prints and fabric scraps as pictures (kept in

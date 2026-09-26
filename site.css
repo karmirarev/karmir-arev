@@ -459,6 +459,23 @@ a:hover {
   background: var(--lime);
   text-decoration: none;
 }
+.folder.doc {
+  border-radius: 4px;
+  padding-right: 30px;
+}
+.folder.doc::before,
+.folder.doc:hover::before {
+  left: auto;
+  right: -1px;
+  top: -1px;
+  width: 20px;
+  height: 20px;
+  border: 0;
+  border-left: 1px solid var(--maroon);
+  border-bottom: 1px solid var(--maroon);
+  border-radius: 0 0 0 4px;
+  background: linear-gradient(225deg, var(--paper) calc(50% - 1px), var(--maroon) calc(50% - 1px), var(--maroon) 50%, var(--lilac) 50%);
+}
 .folder-name {
   display: block;
   color: var(--maroon);
