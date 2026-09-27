@@ -459,22 +459,47 @@ a:hover {
   background: var(--lime);
   text-decoration: none;
 }
-.folder.doc {
-  border-radius: 4px;
-  padding-right: 30px;
-}
-.folder.doc::before,
-.folder.doc:hover::before {
-  left: auto;
-  right: -1px;
-  top: -1px;
-  width: 20px;
-  height: 20px;
+.folder.doc,
+.folder.doc:hover {
+  min-height: 0;
+  padding: 0;
   border: 0;
-  border-left: 1px solid var(--maroon);
-  border-bottom: 1px solid var(--maroon);
-  border-radius: 0 0 0 4px;
-  background: linear-gradient(225deg, var(--paper) calc(50% - 1px), var(--maroon) calc(50% - 1px), var(--maroon) 50%, var(--lilac) 50%);
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
+}
+.folder.doc::before {
+  display: none;
+}
+.doc-icon {
+  display: block;
+  width: 97px;
+  height: 121px;
+  overflow: visible;
+  filter: drop-shadow(4px 4px 0 var(--lilac));
+  stroke: var(--maroon);
+}
+.doc-page {
+  fill: var(--paper);
+}
+.folder.doc:hover .doc-page {
+  fill: var(--lime);
+}
+.doc-fold {
+  fill: var(--lilac);
+  stroke-linejoin: round;
+}
+.doc-icon line {
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 0 5;
+}
+.folder.doc .folder-name {
+  width: 160px;
+  margin-top: 10px;
+  font-weight: normal;
+  font-size: 12px;
+  color: #1b1b1b;
 }
 .folder-name {
   display: block;

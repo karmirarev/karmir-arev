@@ -146,6 +146,12 @@
     linksBox.appendChild(sup);
   }
 
+  var DOC = '<svg class="doc-icon" viewBox="0 0 97 121"><path class="doc-page" d="M4.5 .5H73.5L96.5 23.5V116.5a4 4 0 0 1-4 4H4.5a4 4 0 0 1-4-4V4.5a4 4 0 0 1 4-4Z"/>' +
+    '<path class="doc-fold" d="M73.5 .5V19.5a4 4 0 0 0 4 4H96.5Z"/>' +
+    [[34, 82], [45, 72], [56, 80], [67, 76], [78, 82], [89, 50]].map(function (l) {
+      return '<line x1="16" x2="' + l[1] + '" y1="' + l[0] + '" y2="' + l[0] + '"/>';
+    }).join('') + '</svg>';
+
   function count(it) {
     if (it.children) return it.children.length;
     var html = typeof sections !== 'undefined' && sections[it.href.split('#')[1]];
@@ -166,6 +172,7 @@
         var a = document.createElement('a');
         a.className = it.doc ? 'folder doc' : 'folder';
         a.href = it.href;
+        if (it.doc) a.insertAdjacentHTML('beforeend', DOC);
         var name = document.createElement('span');
         name.className = 'folder-name';
         name.textContent = it.label;
