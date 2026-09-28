@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>thinking out loud - karmirarev</title>
-  <link rel="stylesheet" href="../site.css?v=69">
+  <link rel="stylesheet" href="../site.css?v=71">
   <style>
     .content p {
       max-width: 100%;
@@ -106,9 +106,23 @@
     `,
   };
 
+  const landing = {
+    content: [...document.getElementById('content').childNodes],
+    wing: [...document.getElementById('wing').childNodes]
+  };
+  function showLanding() {
+    document.getElementById('content').replaceChildren(...landing.content);
+    const wing = document.getElementById('wing');
+    wing.replaceChildren(...landing.wing);
+    wing.classList.add('only-toy');
+    wing.classList.remove('cites');
+    if (window.startToys) window.startToys();
+  }
+
   function showFromHash() {
     var key = location.hash.slice(1);
     if (sections[key]) show(key);
+    else showLanding();
   }
   window.addEventListener('hashchange', showFromHash);
   showFromHash();

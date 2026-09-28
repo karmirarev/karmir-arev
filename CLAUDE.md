@@ -59,6 +59,9 @@ Section pages (`projects`, `arts-and-crafts`, `thinking-out-loud`) keep every su
 inline in one `index.html`: a `sections` object of template strings keyed by name, a
 matching `wings` object for what goes in the left box, and `show(key)` swaps
 `#content` and `#wing`. The URL hash picks the section (`/projects/#games`).
+With no hash (or an unknown one) `showLanding()` puts the page's first view back
+(the landing nodes are kept in `landing` at load), so the browser back button from a
+section returns to the landing page.
 
 The landing view of each section page (no hash) shows its subpages as folder cards
 (`<div class="folders" data-folders="/projects/">`): `folders()` in `nav.js` fills
@@ -71,7 +74,7 @@ name and how many items are inside: the number of children, or for a section on 
 own page the gallery pictures (else 3d models, else events) in `sections`; an empty
 gallery says "empty". Entries that are texts, not folders (essays), have
 `doc: true` in `NAV` and show as a small document icon instead (`DOC` svg in
-`nav.js`: page with a folded lilac corner, dotted fake text lines, shadow that follows
+`nav.js`: page with a folded lilac corner, solid fake text lines (marita asked for continuous, not dotted), shadow that follows
 the cut corner), with the name underneath like a file name, small and not bold. On arts-and-crafts the animal parade sits in the flow under
 them (`.content` is a flex column there) so they never overlap.
 Marita tried and dropped (sep 2026): a stack of coloured library index cards with
@@ -211,6 +214,8 @@ The portfolio cards (gif, name, email with copy button, bio, find me on, resume)
   (`min/max-camera-orbit="auto 75deg auto"`) so dragging only spins it and never clips.
   `disable-pan disable-tap` stop a click from moving the model off its spot.
   `camera-orbit="180deg 75deg auto"` makes it start (and begin spinning) from her front.
+  Until it has loaded, `.model-loading` shows "loading the 3d model..." with a green
+  bar fed by model-viewer's `progress` event, so a slow load never looks empty.
 - Essays: `thinking-out-loud/index.html`, `sections`, plus a `nav.js` entry.
   Quotes from other authors go between paragraphs as
   `<div class="cite-spot"><blockquote class="cite">"quote"<cite>author</cite></blockquote></div>`.
@@ -279,10 +284,10 @@ fact, care }` and
 `index.html` draws the current plant: pixel picture (`plants/`, white backgrounds removed,
 `image-rendering: pixelated`), name, latin name, five water drops (filled in the light blue `#C1BCD7`) that empty as days pass,
 "watered N days ago", "next drink in N days" and a mood pill (green happy, lime thirsty
-soon, purple "water me!", when thirsty the plant gently sways), then a short fun fact and
+soon, purple "water me!"; the plant picture always stays still, marita did not want it swaying), then a short fun fact and
 care routine. `plants/watering-can.png` is not used right now. Marita always waters on schedule, so the page assumes it: `watered` is just a
 starting date, and every `every` days a new cycle begins by itself. On the due day the
-plant shows "water me today!" (purple, swaying), and from the next day it counts as
+plant shows "water me today!" (purple), and from the next day it counts as
 freshly watered again. Nobody needs to update `watered`; only change it if the schedule
 itself shifts. The
 intervals are rough guesses (peace lily 7, calathea 6, silvery ann 12); change `every` if

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>projects - karmirarev</title>
   <link rel="stylesheet" href="../gallery.css?v=6">
-  <link rel="stylesheet" href="../site.css?v=69">
+  <link rel="stylesheet" href="../site.css?v=71">
   <style>
     .content {
       position: relative;
@@ -651,9 +651,24 @@
     if (e.key === 'Escape') closeLightbox();
   });
 
+  const landing = {
+    content: [...document.getElementById('content').childNodes],
+    wing: [...document.getElementById('wing').childNodes]
+  };
+  function showLanding() {
+    stopPlayer();
+    document.getElementById('content').replaceChildren(...landing.content);
+    const wing = document.getElementById('wing');
+    wing.replaceChildren(...landing.wing);
+    wing.classList.add('only-toy');
+    wing.classList.remove('cites');
+    if (window.startToys) window.startToys();
+  }
+
   function showFromHash() {
     var key = location.hash.slice(1);
     if (sections[key]) show(key);
+    else showLanding();
   }
   window.addEventListener('hashchange', showFromHash);
   showFromHash();

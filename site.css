@@ -490,9 +490,8 @@ a:hover {
   stroke-linejoin: round;
 }
 .doc-icon line {
-  stroke-width: 2;
+  stroke-width: 1;
   stroke-linecap: round;
-  stroke-dasharray: 0 5;
 }
 .folder.doc .folder-name {
   width: 160px;

@@ -5,12 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>arts and crafts - karmirarev</title>
   <link rel="stylesheet" href="../gallery.css?v=6">
-  <link rel="stylesheet" href="../site.css?v=69">
+  <link rel="stylesheet" href="../site.css?v=71">
   <style>
     .model-wrap {
+      position: relative;
       max-width: 460px;
       margin: 0 auto;
       overflow: hidden;
+    }
+    .model-loading {
+      position: absolute;
+      left: 20%;
+      right: 20%;
+      top: 45%;
+      margin: 0;
+      text-align: center;
+      font-size: 13px;
+      color: var(--maroon);
+      pointer-events: none;
+    }
+    .model-loading[hidden] {
+      display: none;
+    }
+    .model-bar {
+      display: block;
+      height: 10px;
+      margin-top: 8px;
+      border: 1px solid var(--maroon);
+      border-radius: 5px;
+      background: var(--paper);
+      overflow: hidden;
+    }
+    .model-bar i {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: var(--green);
     }
     .model {
       display: block;
@@ -208,7 +238,7 @@
     '3d-model-painting': `
       <p class="page-title">3d-model-painting</p>
       <div class="event keep-line">
-        <div class="model-wrap"><model-viewer class="model" camera-orbit="180deg 75deg auto" min-camera-orbit="auto 75deg auto" max-camera-orbit="auto 75deg auto" src="./3d-model-painting/figurine-v3.glb" alt="3d printed figurine, painted by hand" camera-controls disable-pan disable-tap auto-rotate auto-rotate-delay="0" rotation-per-second="18deg" disable-zoom touch-action="pan-y" interaction-prompt="none" shadow-intensity="0.6" exposure="1.05"></model-viewer></div>
+        <div class="model-wrap"><model-viewer class="model" camera-orbit="180deg 75deg auto" min-camera-orbit="auto 75deg auto" max-camera-orbit="auto 75deg auto" src="./3d-model-painting/figurine-v3.glb" alt="3d printed figurine, painted by hand" camera-controls disable-pan disable-tap auto-rotate auto-rotate-delay="0" rotation-per-second="18deg" disable-zoom touch-action="pan-y" interaction-prompt="none" shadow-intensity="0.6" exposure="1.05"></model-viewer><p class="model-loading">loading the 3d model...<span class="model-bar"><i></i></span></p></div>
       </div>
     `,
     'events-markets-exhibits': `
@@ -263,10 +293,24 @@
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
 
+  const landing = {
+    content: [...document.getElementById('content').childNodes],
+    wing: [...document.getElementById('wing').childNodes]
+  };
+  function showLanding() {
+    document.getElementById('content').replaceChildren(...landing.content);
+    const wing = document.getElementById('wing');
+    wing.replaceChildren(...landing.wing);
+    wing.classList.add('only-toy');
+    wing.classList.remove('cites');
+    if (window.startToys) window.startToys();
+  }
+
   function showFromHash() {
     var key = location.hash.slice(1);
     if (key === 'digital-mixed-media') key = 'drawings';
     if (sections[key]) show(key);
+    else showLanding();
   }
   window.addEventListener('hashchange', showFromHash);
   showFromHash();
@@ -302,6 +346,12 @@
     });
     alignEvents();
     if (window.startToys) window.startToys();
+    document.querySelectorAll('#content model-viewer').forEach(mv => {
+      const note = mv.parentNode.querySelector('.model-loading'), bar = note.querySelector('i');
+      mv.addEventListener('progress', e => { bar.style.width = (e.detail.totalProgress * 100) + '%'; });
+      mv.addEventListener('load', () => { note.hidden = true; });
+      mv.addEventListener('error', () => { note.firstChild.textContent = 'the 3d model could not load, try reloading the page.'; });
+    });
     if (document.querySelector('#content model-viewer') && !document.getElementById('mv-js')) {
       const js = document.createElement('script');
       js.id = 'mv-js';
