@@ -278,10 +278,10 @@ latest film (Letterboxd) and anime (AniList), poster left, a small kind label ("
 "anime"), title, rating and date; a tv show can be added the same way as another item.
 Dashed dividers only separate different topics, never a plant from its own facts. The
 fun fact and care lines are plain text ("fun fact: ...", "care: ..."). `plants.json` in the repo root lists each
-plant `{ name, latin, img, size (picture height in px, matching the real plants: peace lily
-biggest, silvery ann smallest), every (days between waterings), watered (yyyy-mm-dd),
+plant `{ name, latin, img, size (picture height in px: marita's 30x30 pixel drawings, cropped to the plant and
+shown at 4 screen pixels per drawing pixel, so size = drawing rows x 4), every (days between waterings), watered (yyyy-mm-dd),
 fact, care }` and
-`index.html` draws the current plant: pixel picture (`plants/`, white backgrounds removed,
+`index.html` draws the current plant: pixel picture (`plants/`, centred in its cell,
 `image-rendering: pixelated`), name, latin name, five water drops (filled in the light blue `#C1BCD7`) that empty as days pass,
 "watered N days ago", "next drink in N days" and a mood pill (green happy, lime thirsty
 soon, purple "water me!"; the plant picture always stays still, marita did not want it swaying), then a short fun fact and
