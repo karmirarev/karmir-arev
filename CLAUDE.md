@@ -214,7 +214,7 @@ The portfolio cards (gif, name, email with copy button, bio, find me on, resume)
   (`min/max-camera-orbit="auto 75deg auto"`) so dragging only spins it and never clips.
   `disable-pan disable-tap` stop a click from moving the model off its spot.
   `camera-orbit="180deg 75deg auto"` makes it start (and begin spinning) from her front.
-  Until it has loaded, `.model-loading` shows "loading the 3d model..." with a green
+  Until it has loaded, `.model-loading` shows "loading" with a green
   bar fed by model-viewer's `progress` event, so a slow load never looks empty.
 - Essays: `thinking-out-loud/index.html`, `sections`, plus a `nav.js` entry.
   Quotes from other authors go between paragraphs as
