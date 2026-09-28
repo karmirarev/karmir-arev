@@ -143,19 +143,6 @@ a:hover {
   background-color: var(--paper);
 }
 
-.menu:has(.walkers) > .nav {
-  margin-bottom: 175px;
-}
-
-.walkers {
-  position: absolute;
-  left: 34px;
-  bottom: 100%;
-  width: min(180px, calc(100% - 54px));
-  height: auto;
-  pointer-events: none;
-}
-
 .menu > .nav {
   margin-bottom: 20px;
   padding-right: 30px;

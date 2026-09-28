@@ -265,9 +265,9 @@ orange line down the left with a square per entry, the newest one filled green, 
 above the sentence. Only the newest 3 lines show (CSS hides the rest, no
 "older" button, marita does not want one), so keep new lines at the top.
 
-On the home page only, `walkin.gif` (the walking party) sits in the menu box right
-above the dashed line over "elsewhere" (`.walkers`, 180px wide, made by `nav.js`,
-rides along with the sticky links).
+`walkin.gif` (the walking party) sits under the folders on the home page, full size
+(316px wide, `.walkers`). Tried and dropped: in the menu above "elsewhere", and small
+next to the "last consumed" title.
 
 The home wing holds the update log (`ul.log` with `<time>` lines), the plant box and the
 "last consumed" box (it was "last watched" before books were added) (latest Letterboxd film and latest completed AniList anime, user

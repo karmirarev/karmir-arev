@@ -135,13 +135,6 @@
     menu.appendChild(linksBox);
 
     linksBox.innerHTML = '';
-    if (home) {
-      var walk = document.createElement('img');
-      walk.className = 'walkers';
-      walk.src = '/walkin.gif';
-      walk.alt = 'walking animation';
-      linksBox.appendChild(walk);
-    }
     var lt = document.createElement('p');
     lt.className = 'nav-title c-green';
     lt.textContent = 'elsewhere';
