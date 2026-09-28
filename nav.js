@@ -178,6 +178,35 @@
     return n || page.querySelector('.gallery, .empty-note') ? n : null;
   }
 
+  function fileRow(it) {
+    var a = document.createElement('a');
+    a.className = 'file-row';
+    a.href = it.href;
+    a.insertAdjacentHTML('beforeend', DOC);
+    var html = typeof sections !== 'undefined' && sections[it.href.split('#')[1]];
+    var text = [];
+    if (html) {
+      var box = document.createElement('template');
+      box.innerHTML = html;
+      [].forEach.call(box.content.querySelectorAll('p:not(.page-title)'), function (p) {
+        if (p.textContent.trim()) text.push(p.textContent.trim());
+      });
+    }
+    var words = text.join(' ').split(/\s+/).filter(Boolean).length;
+    var main = document.createElement('span');
+    main.className = 'file-main';
+    var name = document.createElement('span');
+    name.className = 'file-name';
+    name.textContent = it.label;
+    main.appendChild(name);
+    a.appendChild(main);
+    var meta = document.createElement('span');
+    meta.className = 'file-meta';
+    meta.innerHTML = words ? '<span>' + words + ' words</span><span>' + Math.max(1, Math.round(words / 200)) + ' min read</span>' : '';
+    a.appendChild(meta);
+    return a;
+  }
+
   function folders() {
     document.querySelectorAll('.folders[data-folders]').forEach(function (box) {
       var key = box.getAttribute('data-folders');
@@ -185,6 +214,10 @@
       var kids = key === '/' ? NAV.filter(function (it) { return it.href !== '/'; })
         : parent ? parent[parent.length - 1].children || [] : [];
       box.innerHTML = '';
+      if (box.classList.contains('content-view')) {
+        kids.forEach(function (it) { box.appendChild(fileRow(it)); });
+        return;
+      }
       kids.forEach(function (it) {
         var a = document.createElement('a');
         a.className = it.doc ? 'folder doc' : 'folder';

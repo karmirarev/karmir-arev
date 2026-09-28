@@ -76,7 +76,12 @@ own page the gallery pictures (else 3d models, else events) in `sections`; an em
 gallery says "empty". Entries that are texts, not folders (essays), have
 `doc: true` in `NAV` and show as a small document icon instead (`DOC` svg in
 `nav.js`: page with a folded lilac corner, solid fake text lines (marita asked for continuous, not dotted), shadow that follows
-the cut corner), with the name underneath like a file name, small and not bold. On arts-and-crafts the animal parade sits in the flow under
+the cut corner), with the name underneath like a file name, small and not bold.
+The thinking-out-loud landing uses a file-explorer "content view" instead
+(`.folders.content-view`, `fileRow()` in `nav.js`): one row per essay between dashed
+orange lines, a small document icon, the name, and on the right the word count and the
+reading time (200 words a minute), worked out from `sections`. No text preview and no
+"essay" label (marita removed them). Rows fill warm grey on hover. On arts-and-crafts the animal parade sits in the flow under
 them (`.content` is a flex column there) so they never overlap.
 Marita tried and dropped (sep 2026): a stack of coloured library index cards with
 stepped tabs, old prints and fabric scraps as pictures (kept in
