@@ -226,6 +226,40 @@
     .plant-when {
       font-size: 12px;
     }
+    .plant-more {
+      margin-top: 10px;
+    }
+    .plant-more summary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--maroon);
+      cursor: pointer;
+      list-style: none;
+    }
+    .plant-more summary::-webkit-details-marker {
+      display: none;
+    }
+    .plant-more summary::before {
+      content: '+';
+      box-sizing: border-box;
+      width: 15px;
+      height: 15px;
+      border: 1px solid var(--maroon);
+      border-radius: 2px;
+      font-size: 13px;
+      line-height: 13px;
+      text-align: center;
+    }
+    .plant-more[open] summary::before {
+      content: '-';
+    }
+    .plant-more summary:hover::before {
+      background: var(--maroon);
+      color: #fff;
+    }
     .plant-fact {
       margin: 10px 0 0;
       font-size: 12px;
@@ -337,6 +371,7 @@
         </span>
       </a>`);
   });
+  let plantMore = false;
   fetch('/plants.json?h=' + hour)
     .then(r => r.json())
     .then(plants => {
@@ -353,12 +388,15 @@
             <p class="plant-name">${p.name}</p>
             <p class="plant-latin">${p.latin}</p>
             <div class="plant-water"><div class="drops" title="water left">${'<i class="full"></i>'.repeat(full)}${'<i></i>'.repeat(5 - full)}</div><span class="plant-when">every ${p.every} days</span></div>
-            ${p.fact ? `<p class="plant-fact">fun fact: ${p.fact}</p>` : ''}
-            ${p.care ? `<p class="plant-note">care: ${p.care}</p>` : ''}
+            <details class="plant-more"${plantMore ? ' open' : ''}><summary>fun fact and care</summary>
+              ${p.fact ? `<p class="plant-fact">fun fact: ${p.fact}</p>` : ''}
+              ${p.care ? `<p class="plant-note">care: ${p.care}</p>` : ''}
+            </details>
           </div>`;
       };
       plants.forEach(p => { new Image().src = p.img; });
       carousel('garden', plants, card);
+      document.getElementById('garden-slide').addEventListener('toggle', e => { plantMore = e.target.open; }, true);
     })
     .catch(() => {});
 </script>
