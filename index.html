@@ -174,14 +174,10 @@
       color: var(--maroon);
     }
     .plant {
-      display: grid;
-      grid-template-columns: 110px 1fr;
-      gap: 0 14px;
       margin-top: 12px;
     }
     .plant-pic {
-      grid-row: span 6;
-      height: 120px;
+      height: 124px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -194,11 +190,13 @@
       margin: 0;
       color: var(--maroon);
       font-weight: bold;
+      text-align: center;
     }
     .plant-latin {
       margin: 0 0 6px;
       font-size: 11px;
       font-style: italic;
+      text-align: center;
     }
     .drops {
       display: flex;
@@ -215,9 +213,23 @@
     .drops i.full {
       background: #C1BCD7;
     }
+    .plant-water {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin: 2px 0 6px;
+    }
+    .plant-water .drops {
+      margin: 0 0 0 2px;
+    }
     .plant-when {
-      margin: 0;
       font-size: 12px;
+    }
+    .plant-fact {
+      margin: 10px 0 0;
+      font-size: 12px;
+      line-height: 1.5;
     }
     .plant-note {
       grid-column: 1 / -1;
@@ -287,11 +299,15 @@
     let at = 0;
     const slide = document.getElementById(key + '-slide');
     const next = document.getElementById(key + '-next');
-    const draw = () => { slide.innerHTML = card(items[at]); };
+    const draw = () => {
+      slide.innerHTML = card(items[at]);
+      const pin = slide.querySelector('.plant-pic');
+      if (pin) next.style.top = (pin.offsetTop + pin.offsetHeight / 2) + 'px';
+    };
     next.onclick = () => { at = (at + 1) % items.length; draw(); };
     next.hidden = items.length < 2;
-    draw();
     document.getElementById(key).hidden = false;
+    draw();
   }
   const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
   const nice = iso => { const [y, m, d] = (iso || '').split('-').map(Number); return m ? months[m - 1] + ' ' + d + ', ' + y : ''; };
@@ -336,9 +352,8 @@
             <div class="plant-pic"><img src="${p.img}" alt="${p.name}" style="height: ${p.size || 96}px"></div>
             <p class="plant-name">${p.name}</p>
             <p class="plant-latin">${p.latin}</p>
-            <div class="drops" title="water left">${'<i class="full"></i>'.repeat(full)}${'<i></i>'.repeat(5 - full)}</div>
-            <p class="plant-when">water: every ${p.every} days</p>
-            ${p.fact ? `<p class="plant-note">fun fact: ${p.fact}</p>` : ''}
+            <div class="plant-water"><div class="drops" title="water left">${'<i class="full"></i>'.repeat(full)}${'<i></i>'.repeat(5 - full)}</div><span class="plant-when">every ${p.every} days</span></div>
+            ${p.fact ? `<p class="plant-fact">fun fact: ${p.fact}</p>` : ''}
             ${p.care ? `<p class="plant-note">care: ${p.care}</p>` : ''}
           </div>`;
       };

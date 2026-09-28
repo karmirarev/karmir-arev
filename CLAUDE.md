@@ -300,7 +300,7 @@ shown at 4 screen pixels per drawing pixel, so size = drawing rows x 4), every (
 fact, care }` and
 `index.html` draws the current plant: pixel picture (`plants/`, centred in its cell,
 `image-rendering: pixelated`), name, latin name, five water drops (filled in the light blue `#C1BCD7`) that empty as days pass,
-"water: every N days" (the `every` value; marita did not want "watered N days ago / next drink in N days") (no mood tag: marita waters when all five drops are empty; the plant picture always stays still, she did not want it swaying), then a short fun fact and
+"every N days" right next to the drops (the `every` value; marita did not want "watered N days ago / next drink in N days"). Layout (picked from a side by side test, option c): the picture centred on top in a fixed 124px area, then name, latin name and the drops row centred, then the fun fact and care. The `>` arrow is pinned level with the picture (`carousel()` sets its `top` from `.plant-pic`), so it never moves between plants (no mood tag: marita waters when all five drops are empty; the plant picture always stays still, she did not want it swaying), then a short fun fact and
 care info, written as general facts about the plant, not as instructions to the reader. Marita always waters on schedule, so the page assumes it: `watered` is just a
 starting date, and every `every` days a new cycle begins by itself. On the due day the
 drops are empty, and from the next day it counts as
