@@ -116,6 +116,8 @@
     return ul;
   }
 
+  var home = location.pathname === '/' || location.pathname === '/index.html';
+
   function render() {
     var cur = here();
     var path = trail(NAV, cur, []) || trail(NAV, cur.split('#')[0], []) || [];
@@ -128,6 +130,13 @@
     menu.appendChild(linksBox);
 
     linksBox.innerHTML = '';
+    if (home) {
+      var walk = document.createElement('img');
+      walk.className = 'walkers';
+      walk.src = '/walkin.gif';
+      walk.alt = 'walking animation';
+      linksBox.appendChild(walk);
+    }
     var lt = document.createElement('p');
     lt.className = 'nav-title c-green';
     lt.textContent = 'elsewhere';
@@ -139,7 +148,7 @@
     var st = document.createElement('p');
     st.className = 'nav-title c-green support-title';
     st.textContent = 'support me here';
-    if (location.pathname === '/' || location.pathname === '/index.html') st.classList.add('rainbow');
+    if (home) st.classList.add('rainbow');
     linksBox.appendChild(st);
     var sup = build(SUPPORT, [], null);
     sup.className = 'nav links';

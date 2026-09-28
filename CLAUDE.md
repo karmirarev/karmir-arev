@@ -52,7 +52,7 @@ right which holds `.menu`, one box with the page tree and, at its bottom, `.link
 ("elsewhere"), both rendered by `nav.js`. The links sit under a dashed line and are
 `position: sticky; bottom: 21px` (the page padding plus the border, so they sit exactly
 where they sit on a short page), so on long pages they ride along the bottom of the
-screen and settle at the bottom of the menu box at the end (static under 700px). Wing and menu are `min(400px, 28vw)` wide and stretch to the full page
+screen and settle at the bottom of the menu box at the end (not sticky under 700px). Wing and menu are `min(400px, 28vw)` wide and stretch to the full page
 height. Under 700px the order is menu, content, wing, and an empty wing is hidden.
 
 Section pages (`projects`, `arts-and-crafts`, `thinking-out-loud`) keep every subsection
@@ -249,6 +249,10 @@ work like layout, menus, fonts, colours, caching or the left-box creatures. It i
 orange line down the left with a square per entry, the newest one filled green, date
 above the sentence. Only the newest 3 lines show (CSS hides the rest, no
 "older" button, marita does not want one), so keep new lines at the top.
+
+On the home page only, `walkin.gif` (the walking party) sits in the menu box right
+above the dashed line over "elsewhere" (`.walkers`, 180px wide, made by `nav.js`,
+rides along with the sticky links).
 
 The home wing holds the update log (`ul.log` with `<time>` lines), the plant box and the
 "last consumed" box (it was "last watched" before books were added) (latest Letterboxd film and latest completed AniList anime, user
