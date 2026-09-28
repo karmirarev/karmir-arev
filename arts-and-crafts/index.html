@@ -5,13 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>arts and crafts - karmirarev</title>
   <link rel="stylesheet" href="../gallery.css?v=6">
-  <link rel="stylesheet" href="../site.css?v=74">
+  <link rel="stylesheet" href="../site.css?v=78">
   <style>
     .model-wrap {
       position: relative;
       max-width: 460px;
       margin: 0 auto;
       overflow: hidden;
+    }
+    .credit {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 6px 12px;
+      margin: 10px 0 0;
+      line-height: 1.5;
+    }
+    .credit dt {
+      color: var(--maroon);
+      font-size: 12px;
+      line-height: 1.9;
+    }
+    .credit dd {
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+    .piece {
+      max-width: 460px;
+      margin: 0 auto;
+      padding-bottom: 18px;
+    }
+    .piece img {
+      display: block;
+      width: 100%;
+      height: auto;
+      cursor: pointer;
+    }
+    .piece img:hover {
+      outline: 2px solid var(--green);
     }
     .model-loading {
       position: absolute;
@@ -191,22 +221,22 @@
       </div>
       <div class="event">
         <div class="gallery">
-          <div class="gallery-item"><img src="./thumbs/teinik.webp" data-full="./digital-mixed-media/teinik.png" width="560" height="700" loading="lazy" alt="teinik"></div>
-          <div class="gallery-item"><img src="./thumbs/artemis.webp" data-full="./digital-mixed-media/artemis.png" width="560" height="448" loading="lazy" alt="artemis"></div>
-          <div class="gallery-item"><img src="./thumbs/astral.webp" data-full="./digital-mixed-media/astral.png" width="560" height="700" loading="lazy" alt="astral"></div>
-          <div class="gallery-item"><img src="./thumbs/ballladies.webp" data-full="./digital-mixed-media/ballladies.png" width="560" height="792" loading="lazy" alt="ballladies"></div>
-          <div class="gallery-item"><img src="./thumbs/blob.webp" data-full="./digital-mixed-media/blob.png" width="560" height="407" loading="lazy" alt="blob"></div>
-          <div class="gallery-item"><img src="./thumbs/boyfriend.webp" data-full="./digital-mixed-media/boyfriend.png" width="560" height="726" loading="lazy" alt="boyfriend"></div>
-          <div class="gallery-item"><img src="./thumbs/horselady.webp" data-full="./digital-mixed-media/horselady.png" width="560" height="792" loading="lazy" alt="horselady"></div>
-          <div class="gallery-item"><img src="./thumbs/howmybfseesme.webp" data-full="./digital-mixed-media/howmybfseesme.png" width="560" height="327" loading="lazy" alt="howmybfseesme"></div>
-          <div class="gallery-item"><img src="./thumbs/icanseeyourface.webp" data-full="./digital-mixed-media/icanseeyourface.png" width="560" height="641" loading="lazy" alt="icanseeyourface"></div>
-          <div class="gallery-item"><img src="./thumbs/knightlady.webp" data-full="./digital-mixed-media/knightlady.png" width="560" height="792" loading="lazy" alt="knightlady"></div>
+          <div class="gallery-item"><img src="./thumbs/teinik.webp" data-full="./digital-mixed-media/teinik.webp" width="560" height="700" loading="lazy" alt="teinik"></div>
+          <div class="gallery-item"><img src="./thumbs/artemis.webp" data-full="./digital-mixed-media/artemis.webp" width="560" height="448" loading="lazy" alt="artemis"></div>
+          <div class="gallery-item"><img src="./thumbs/astral.webp" data-full="./digital-mixed-media/astral.webp" width="560" height="700" loading="lazy" alt="astral"></div>
+          <div class="gallery-item"><img src="./thumbs/ballladies.webp" data-full="./digital-mixed-media/ballladies.webp" width="560" height="792" loading="lazy" alt="ballladies"></div>
+          <div class="gallery-item"><img src="./thumbs/blob.webp" data-full="./digital-mixed-media/blob.webp" width="560" height="407" loading="lazy" alt="blob"></div>
+          <div class="gallery-item"><img src="./thumbs/boyfriend.webp" data-full="./digital-mixed-media/boyfriend.webp" width="560" height="726" loading="lazy" alt="boyfriend"></div>
+          <div class="gallery-item"><img src="./thumbs/horselady.webp" data-full="./digital-mixed-media/horselady.webp" width="560" height="792" loading="lazy" alt="horselady"></div>
+          <div class="gallery-item"><img src="./thumbs/howmybfseesme.webp" data-full="./digital-mixed-media/howmybfseesme.webp" width="560" height="327" loading="lazy" alt="howmybfseesme"></div>
+          <div class="gallery-item"><img src="./thumbs/icanseeyourface.webp" data-full="./digital-mixed-media/icanseeyourface.webp" width="560" height="641" loading="lazy" alt="icanseeyourface"></div>
+          <div class="gallery-item"><img src="./thumbs/knightlady.webp" data-full="./digital-mixed-media/knightlady.webp" width="560" height="792" loading="lazy" alt="knightlady"></div>
           <div class="gallery-item"><img src="./thumbs/pilote.webp" data-full="./digital-mixed-media/pilote.gif" width="560" height="420" loading="lazy" alt="pilote"></div>
-          <div class="gallery-item"><img src="./thumbs/prettylady.webp" data-full="./digital-mixed-media/prettylady.png" width="560" height="641" loading="lazy" alt="prettylady"></div>
-          <div class="gallery-item"><img src="./thumbs/sakura.webp" data-full="./digital-mixed-media/sakura.png" width="560" height="709" loading="lazy" alt="sakura"></div>
-          <div class="gallery-item"><img src="./thumbs/spaceseal.webp" data-full="./digital-mixed-media/spaceseal.png" width="560" height="641" loading="lazy" alt="spaceseal"></div>
-          <div class="gallery-item"><img src="./thumbs/theboyandtheheroin.webp" data-full="./digital-mixed-media/theboyandtheheroin.png" width="560" height="698" loading="lazy" alt="theboyandtheheroin"></div>
-          <div class="gallery-item"><img src="./thumbs/theyellowwallpaper.webp" data-full="./digital-mixed-media/theyellowwallpaper.png" width="560" height="792" loading="lazy" alt="theyellowwallpaper"></div>
+          <div class="gallery-item"><img src="./thumbs/prettylady.webp" data-full="./digital-mixed-media/prettylady.webp" width="560" height="641" loading="lazy" alt="prettylady"></div>
+          <div class="gallery-item"><img src="./thumbs/sakura.webp" data-full="./digital-mixed-media/sakura.webp" width="560" height="709" loading="lazy" alt="sakura"></div>
+          <div class="gallery-item"><img src="./thumbs/spaceseal.webp" data-full="./digital-mixed-media/spaceseal.webp" width="560" height="641" loading="lazy" alt="spaceseal"></div>
+          <div class="gallery-item"><img src="./thumbs/theboyandtheheroin.webp" data-full="./digital-mixed-media/theboyandtheheroin.webp" width="560" height="698" loading="lazy" alt="theboyandtheheroin"></div>
+          <div class="gallery-item"><img src="./thumbs/theyellowwallpaper.webp" data-full="./digital-mixed-media/theyellowwallpaper.webp" width="560" height="792" loading="lazy" alt="theyellowwallpaper"></div>
         </div>
       </div>
       <div class="event">
@@ -230,9 +260,8 @@
     `,
     'papercraft': `
       <p class="page-title">papercraft</p>
-      <br>
-      <div class="gallery" id="gallery">
-        <div class="gallery-item"><img src="./thumbs/saber.webp" data-full="./papercraft/saber.jpg" width="560" height="315" loading="lazy" alt="saber"></div>
+      <div class="event keep-line">
+        <div class="piece"><img class="shot" src="./papercraft/saber.jpg" width="960" height="540" alt="saber papercraft, folded from paper"></div>
       </div>
     `,
     '3d-model-painting': `
@@ -262,10 +291,22 @@
   };
 
   const wings = {
+    'papercraft': `
+      <div class="story keep-line">
+        <p class="page-title">saber</p>
+        <dl class="credit">
+          <dt>franchise</dt><dd>fate/stay night</dd>
+          <dt>source</dt><dd><a href="https://mypapercraft.net/fate-stay-night-saber-papercraft/" target="_blank" rel="noopener">mypapercraft.net</a></dd>
+        </dl>
+      </div>
+    `,
     '3d-model-painting': `
       <div class="story keep-line">
         <p class="page-title">ranni the witch</p>
-        <p><a href="https://www.printables.com/model/278192-ranni-the-witch" target="_blank" rel="noopener">link to the 3d model</a></p>
+        <dl class="credit">
+          <dt>franchise</dt><dd>elden ring</dd>
+          <dt>source</dt><dd><a href="https://www.printables.com/model/278192-ranni-the-witch" target="_blank" rel="noopener">printables.com</a></dd>
+        </dl>
       </div>
     `,
     'drawings': `
@@ -380,7 +421,7 @@
   });
 </script>
 
-<script src="/nav.js?v=59"></script>
+<script src="/nav.js?v=65"></script>
 <script src="/toys.js?v=25"></script>
 <script>if (window.startToys) window.startToys();</script>
 </body>

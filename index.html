@@ -4,10 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>karmirarev</title>
-  <link rel="stylesheet" href="site.css?v=74">
+  <link rel="stylesheet" href="site.css?v=78">
   <style>
     .log-title::before {
       display: none;
+    }
+    .pikmin {
+      width: auto;
+      height: 26px;
+      vertical-align: -6px;
+      margin-left: 4px;
+      image-rendering: pixelated;
     }
     .log.sep {
       position: relative;
@@ -272,7 +279,7 @@
       </filter>
     </svg>
     <div class="slides" id="garden" hidden>
-      <p class="nav-title log-title">plants i am taking care of</p>
+      <p class="nav-title log-title">plants i am taking care of <img class="pikmin" src="/pikmin.webp" alt="pikmin" width="233" height="112"></p>
       <div class="slide" id="garden-slide"></div>
       <button type="button" class="slide-next" id="garden-next" title="next plant">&gt;</button>
     </div>
@@ -295,7 +302,7 @@
   <div class="menu" id="menu"></div>
 </div>
 
-<script src="/nav.js?v=59"></script>
+<script src="/nav.js?v=65"></script>
 <script>
   function carousel(key, items, card) {
     let at = 0;
@@ -309,7 +316,8 @@
   }
   const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
   const nice = iso => { const [y, m, d] = (iso || '').split('-').map(Number); return m ? months[m - 1] + ' ' + d + ', ' + y : ''; };
-  const getJSON = f => fetch('/' + f + '?t=' + Date.now()).then(r => r.json()).catch(() => null);
+  const hour = Math.floor(Date.now() / 3600000);
+  const getJSON = f => fetch('/' + f + '?h=' + hour).then(r => r.json()).catch(() => null);
   Promise.all([getJSON('letterboxd.json'), getJSON('anilist.json'), getJSON('anilist-manga.json'), getJSON('goodreads.json')]).then(([f, a, m, b]) => {
     const items = [];
     if (f && f.title) items.push({ kind: 'film', title: f.title, year: f.year, link: f.link, poster: f.poster, date: f.watched,
@@ -334,7 +342,7 @@
         </span>
       </a>`);
   });
-  fetch('/plants.json?t=' + Date.now())
+  fetch('/plants.json?h=' + hour)
     .then(r => r.json())
     .then(plants => {
       const day = 86400000, today = new Date(new Date().toDateString());

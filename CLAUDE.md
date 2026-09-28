@@ -10,8 +10,9 @@ https://xn--y9aamws5a2fcbv.xn--y9a3aq). Static files, no build step. Pushing to
 - Font: `'Courier New', monospace` everywhere. All text lowercase, including dates and small labels (no `text-transform: uppercase`
   anywhere, marita does not want capitals). Titles are the same
   font, bold, in purple.
-- Armenian letters use FreeMono (`fonts/FreeMono.ttf`, GNU FreeFont, GPL with font
-  exception, credit in `fonts/CREDITS.txt`). It is first in the `body` font stack with a
+- Armenian letters use FreeMono (`fonts/FreeMono-armenian.woff2`, GNU FreeFont, GPL with font
+  exception, credit in `fonts/CREDITS.txt`), cut down to only the Armenian letters (20KB
+  instead of the 584KB full font, made with fontTools `pyftsubset`). It is first in the `body` font stack with a
   `unicode-range`, so any Armenian text picks it up and everything else stays Courier.
   Do not use the Antique font: its license forbids hosting it.
 - Colours are CSS variables in `site.css`:
@@ -82,12 +83,17 @@ stepped tabs, old prints and fabric scraps as pictures (kept in
 `~/Documents/folder-pictures`), and a dashed line to an item count and last update
 date. Do not bring those back.
 
-Sub-pages like `arts-and-crafts/clay/` still exist as files but nothing links to them.
+The old separate sub-page files (`arts-and-crafts/clay/index.html` and the like) were
+deleted (sep 2026); their folders only hold the pictures the section pages use.
 
 ## Menu
 
 `nav.js` holds the whole tree in `NAV` and the outside links in `LINKS`. Buy me a coffee is
 separate, in `SUPPORT`, under its own "support me here" title below the elsewhere links.
+The last menu entry is "credits" (`/credits/`, its own page with a small table
+`table.credits`, what / from). Its menu children link straight to the sources (the
+creatures from github.com/snek-git/quickshell-toys, the mixkit click, free mono on
+fonter.am). Add a table row and a child entry when something new is borrowed.
 On the home page only, that whole title cycles through, one colour at a time, matcha, velvet, monarch, pink silk, moss and
 cornflower (`#b4a64b #591e2a #d2682b #d6a6b1 #464719 #98a8d9`) (CSS `rainbow`
 keyframes with `steps(1)`, half a second each, switching without fading). Its square
@@ -107,8 +113,7 @@ click and a light switch tap. Each click is pitched a few percent up or down at 
 so repeats do not sound robotic. Empty space stays silent. Played through Web Audio so quick clicks overlap;
 fetched when the page loads, and links that load a page (including a reload) wait until
 the pop has finished, plus the speaker delay, before leaving (at most 500ms). Hash links,
-new-tab links and outside links are left alone. `click.mp3` is an earlier keyboard
-click (freesound_community, Pixabay), not used right now.
+new-tab links and outside links are left alone.
 
 ## The guy in the menu
 
@@ -187,11 +192,12 @@ The portfolio cards (gif, name, email with copy button, bio, find me on, resume)
   with matching `.story` titles in `wings.drawings`. Put a
   gallery item into the right block. Empty blocks show "nothing here yet".
 - Previews: every drawing and event photo shows a small preview, never the full file.
-  Run `python3 tools/thumb.py arts-and-crafts/digital-mixed-media/x.png` (any number of
+  Run `python3 tools/thumb.py arts-and-crafts/digital-mixed-media/x.webp` (any number of
   paths). It writes a 560px-wide webp into `arts-and-crafts/thumbs/` (event photos into
   `thumbs/events/`, animated gifs stay animated) and prints the tag to paste, e.g.
-  `<div class="gallery-item"><img src="./thumbs/x.webp" data-full="./digital-mixed-media/x.png" width="560" height="700" loading="lazy" alt="x"></div>`.
-  The lightbox opens `data-full`, the original. Keep `width`/`height` (no layout jump)
+  `<div class="gallery-item"><img src="./thumbs/x.webp" data-full="./digital-mixed-media/x.webp" width="560" height="700" loading="lazy" alt="x"></div>`.
+  The lightbox opens `data-full`, the full picture. Save full drawings as webp (quality 90),
+  not png: the pngs were up to 11MB each, 45MB in total, the webps 6.5MB. Keep `width`/`height` (no layout jump)
   and `loading="lazy"` on gallery items (not on event `.shot`s, they sit at the top).
   This took the drawings page from 49MB to about 1MB.
 - Events: `sections['events-markets-exhibits']` holds the photo groups (`.event` with a
@@ -206,8 +212,8 @@ The portfolio cards (gif, name, email with copy button, bio, find me on, resume)
   from 16.7MB to 538KB. The scan's table sheet was cut off: model leveled (the scan was
   tilted 18 degrees), everything below 3.5% height dropped, only the biggest piece
   kept, and the open bottom closed with a flat cap. New versions get new file names
-  (`figurine-v3.glb`). The wing holds a `.story` with the name and the
-  printables link ("link to the 3d model").
+  (`figurine-v3.glb`). The wing holds a `.story` with the name and a
+  `dl.credit`: franchise (elden ring) and source (the printables link).
   The model sits in `.event > .model-wrap` (centered, max 460px, overflow hidden) so it
   pairs with the wing story like other sections. The viewer's own framing leaves empty
   space above, so `.model` has negative margins to trim it, and the tilt is locked
@@ -216,6 +222,12 @@ The portfolio cards (gif, name, email with copy button, bio, find me on, resume)
   `camera-orbit="180deg 75deg auto"` makes it start (and begin spinning) from her front.
   Until it has loaded, `.model-loading` shows "loading" with a green
   bar fed by model-viewer's `progress` event, so a slow load never looks empty.
+- Papercraft: laid out like the 3d model section. Each piece is an `.event.keep-line`
+  with a `.piece` (centered, max 460px, the photo itself, lightbox on click) and a
+  matching `.story.keep-line` in `wings.papercraft` with the name and a `dl.credit`:
+  "franchise" (where the character is from, just the name) and "source" (link to
+  the pattern, saber: mypapercraft.net). A 3d model of saber may replace
+  the photo later.
 - Essays: `thinking-out-loud/index.html`, `sections`, plus a `nav.js` entry.
   Quotes from other authors go between paragraphs as
   `<div class="cite-spot"><blockquote class="cite">"quote"<cite>author</cite></blockquote></div>`.
@@ -227,15 +239,13 @@ The portfolio cards (gif, name, email with copy button, bio, find me on, resume)
 ## Creatures in the left box
 
 Only the main pages `projects`, `arts-and-crafts` and `thinking-out-loud` (no hash) show `<canvas class="wing-toy" data-toy="wing-PAGE">`, sized to the box. Each page has
-its own, picked by marita from `lab/creatures.html` (a numbered grid of every
-option, `pick-N` in `toys.js`): projects is 11 (pale ripples, Gray-Scott F 0.014 k 0.054),
+its own, picked by marita from a numbered grid of every option (`pick-N` in
+`toys.js`; the picker page `lab/creatures.html` was deleted, it is in git history): projects is 11 (pale ripples, Gray-Scott F 0.014 k 0.054),
 arts is 9 (rings and curls, F 0.03 k 0.062), thinking is 10 (budding dots, F 0.078
 k 0.061). Keep them small (`cols: 220`) and never reuse a game banner's creature. She
 disliked the spinning Gyrorbium in the wings. Subpages (any hash) never
 show creatures: `show()` sets the wing to `wings[key]` or empty and drops `.only-toy`
 (which hides the landing box under 700px).
-
-`deco.js` (draggable `.deco` gifs) is no longer used by any page.
 
 ## Home wing
 
@@ -274,6 +284,9 @@ in `index.html` (greyscale, then darks to `rgb(37,20,41)` and lights to
 
 ## Plant tracker
 
+The "plants i am taking care of" title has a small row of walking pikmin after it
+(`pikmin.webp`, animated, white background removed from marita's download, 26px tall).
+
 The home page left box, under the update log, has two carousel boxes (`.slides`, own
 border and shadow, built by `carousel(key, items, card)`): first "plants i am taking care
 of", then "last watched". Each shows one item; a small square `>` button sitting on the
@@ -289,7 +302,7 @@ fact, care }` and
 `image-rendering: pixelated`), name, latin name, five water drops (filled in the light blue `#C1BCD7`) that empty as days pass,
 "watered N days ago", "next drink in N days" and a mood pill (green happy, lime thirsty
 soon, purple "water me!"; the plant picture always stays still, marita did not want it swaying), then a short fun fact and
-care routine. `plants/watering-can.png` is not used right now. Marita always waters on schedule, so the page assumes it: `watered` is just a
+care routine. Marita always waters on schedule, so the page assumes it: `watered` is just a
 starting date, and every `every` days a new cycle begins by itself. On the due day the
 plant shows "water me today!" (purple), and from the next day it counts as
 freshly watered again. Nobody needs to update `watered`; only change it if the schedule
@@ -299,10 +312,15 @@ her plants disagree.
 
 ## Cache
 
-The host caches files for four hours and ignores `_headers`. Every page loads
+The home page data files (`letterboxd.json` and the rest, `plants.json`) are fetched with
+`?h=<hour number>`, so they are fresh within the hour but not downloaded again on
+every visit.
+
+
+The host caches files for four hours and ignores `_headers` (so there is none). Every page loads
 `site.css?v=N`, `nav.js?v=N`, `toys.js?v=N`. Bump the number in all
 pages whenever that file changes (a one-line sed across `**/index.html`, skipping the
-game folders and `lab/`). New images get new file names rather than reusing one.
+game folders). New images get new file names rather than reusing one.
 
 ## Local preview
 
@@ -314,7 +332,6 @@ simulations pause there; `?toys=force` in the URL overrides that, and each canva
 
 ## Not part of the site
 
-`lab/` holds design sketches (`index.html` is the latest, `v1.html` the first) and
-`creatures.html`, the creature picker. Do not
-link them from the menu. `projects/games/pingala/` and `bebe-heist/` are built game
+Anything no page shows gets deleted (sep 2026: `lab/`, `deco.js`, `click.mp3`, old
+sub-pages, unused pictures), git history keeps it. `projects/games/pingala/` and `bebe-heist/` are built game
 exports, leave their files alone.

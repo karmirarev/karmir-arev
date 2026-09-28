@@ -23,6 +23,11 @@
     ]},
     { label: 'thinking-out-loud', href: '/thinking-out-loud/', color: 'lilac', children: [
       { label: 'on-art-evolution-ai-and-consciousness', href: '/thinking-out-loud/#on-art-evolution-ai-and-consciousness', doc: true }
+    ]},
+    { label: 'credits', href: '/credits/', color: 'lilac', children: [
+      { label: 'creatures', href: 'https://github.com/snek-git/quickshell-toys', newTab: true },
+      { label: 'click sound', href: 'https://mixkit.co/free-sound-effects/click/', newTab: true },
+      { label: 'armenian font', href: 'https://fonter.am/en/fonts/free-mono', newTab: true }
     ]}
   ];
 
@@ -165,9 +170,12 @@
     if (it.children) return it.children.length;
     var html = typeof sections !== 'undefined' && sections[it.href.split('#')[1]];
     if (!html) return null;
-    var n = (html.match(/gallery-item/g) || []).length || (html.match(/<model-viewer/g) || []).length ||
-      (html.match(/class="event"/g) || []).length - (html.match(/empty-note/g) || []).length;
-    return n || /empty-note|class="gallery"/.test(html) ? n : null;
+    var box = document.createElement('template');
+    box.innerHTML = html;
+    var page = box.content;
+    var events = [].filter.call(page.querySelectorAll('.event'), function (e) { return !e.querySelector('.empty-note'); });
+    var n = page.querySelectorAll('.gallery-item').length || page.querySelectorAll('model-viewer').length || events.length;
+    return n || page.querySelector('.gallery, .empty-note') ? n : null;
   }
 
   function folders() {
