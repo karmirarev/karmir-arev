@@ -219,27 +219,6 @@
       margin: 0;
       font-size: 12px;
     }
-    .plant-mood {
-      justify-self: start;
-      display: inline-block;
-      margin-top: 6px;
-      padding: 1px 9px;
-      border-radius: 12px;
-      font-size: 12px;
-      border: 1px solid var(--maroon);
-    }
-    .plant-mood.happy {
-      background: var(--green);
-      border-color: var(--green);
-      color: #1b1b1b;
-    }
-    .plant-mood.soon {
-      background: var(--lime);
-    }
-    .plant-mood.thirsty {
-      background: var(--maroon);
-      color: #fff;
-    }
     .plant-note {
       grid-column: 1 / -1;
       margin: 10px 0 0;
@@ -352,19 +331,13 @@
         const since = dueToday ? p.every : total % p.every;
         const left = p.every - since;
         const full = Math.max(0, Math.min(5, Math.round(5 * left / p.every)));
-        const mood = left <= 0 ? 'thirsty' : left <= Math.ceil(p.every / 4) ? 'soon' : 'happy';
-        const words = { happy: 'happy', soon: 'thirsty soon', thirsty: 'water me today!' }[mood];
-        const when = since === 0 ? 'watered today' : since === 1 ? 'watered yesterday' : `watered ${since} days ago`;
-        const next = left > 1 ? `next drink in ${left} days` : left === 1 ? 'next drink tomorrow' : 'needs a drink today';
         return `
-          <div class="plant ${mood}">
+          <div class="plant">
             <div class="plant-pic"><img src="${p.img}" alt="${p.name}" style="height: ${p.size || 96}px"></div>
             <p class="plant-name">${p.name}</p>
             <p class="plant-latin">${p.latin}</p>
             <div class="drops" title="water left">${'<i class="full"></i>'.repeat(full)}${'<i></i>'.repeat(5 - full)}</div>
-            <p class="plant-when">${when}</p>
-            <p class="plant-when">${next}</p>
-            <span class="plant-mood ${mood}">${words}</span>
+            <p class="plant-when">water: every ${p.every} days</p>
             ${p.fact ? `<p class="plant-note">fun fact: ${p.fact}</p>` : ''}
             ${p.care ? `<p class="plant-note">care: ${p.care}</p>` : ''}
           </div>`;
