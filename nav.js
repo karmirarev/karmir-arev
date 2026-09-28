@@ -24,7 +24,7 @@
     { label: 'thinking-out-loud', href: '/thinking-out-loud/', color: 'lilac', children: [
       { label: 'on-art-evolution-ai-and-consciousness', href: '/thinking-out-loud/#on-art-evolution-ai-and-consciousness', doc: true }
     ]},
-    { label: 'credits', href: '/credits/', color: 'lilac', children: [
+    { label: 'credits', href: '/credits/', color: 'lilac', noFolder: true, children: [
       { label: 'creatures', href: 'https://github.com/snek-git/quickshell-toys', newTab: true },
       { label: 'click sound', href: 'https://mixkit.co/free-sound-effects/click/', newTab: true },
       { label: 'armenian font', href: 'https://fonter.am/en/fonts/free-mono', newTab: true }
@@ -211,7 +211,7 @@
     document.querySelectorAll('.folders[data-folders]').forEach(function (box) {
       var key = box.getAttribute('data-folders');
       var parent = trail(NAV, key, []);
-      var kids = key === '/' ? NAV.filter(function (it) { return it.href !== '/'; })
+      var kids = key === '/' ? NAV.filter(function (it) { return it.href !== '/' && !it.noFolder; })
         : parent ? parent[parent.length - 1].children || [] : [];
       box.innerHTML = '';
       if (box.classList.contains('content-view')) {

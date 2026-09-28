@@ -68,7 +68,7 @@ The landing view of each section page (no hash) shows its subpages as folder car
 (`<div class="folders" data-folders="/projects/">`): `folders()` in `nav.js` fills
 them from that page's `NAV` children, so a new menu entry gets a folder by itself.
 The home page has the same (`data-folders="/"`), made from the top-level entries
-except home, under the walking gif behind a dashed orange line (`.home-folders`).
+except home and credits (`noFolder: true`, it is a footnote, not a section), under the walking gif behind a dashed orange line (`.home-folders`).
 They are plain file-explorer folders in a grid: paper fill, wine outline, a small
 tab on top (`::before`), the lilac shadow, warm grey on hover. Each shows only the
 name and how many items are inside: the number of children, or for a section on its
