@@ -188,8 +188,9 @@ separate "play in browser" link is hidden for embedded games, and `show()` quits
 when you leave the page. Pingala uses this.
 
 `projects/#other` uses the same card grid as games, built from the `OTHER` list in
-`projects/index.html` (`{ name, tag, blurb, href, cover }`, picture cover only, no live
-creature). Mini me and u links to its own page `/projects/other/mini-me-and-you/`; its
+`projects/index.html` (`{ key, name, tag, blurb, href, cover }`); like the game cards they show a live
+creature (`TOYS[key]` in `toys.js`) and swap to the picture while hovered. Mini me and u
+has two Lenia Orbium gliders (her and felix). Mini me and u links to its own page `/projects/other/mini-me-and-you/`; its
 cover `covers/mini-me-and-you-v7.webp` is felix alone in the middle, falling (frame 4)
 in the piplup hat (`felix2.png`). Tried and dropped: standing sprites, the drawn heads on
 black, and marita and felix at different heights.

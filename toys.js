@@ -110,6 +110,7 @@
     'disco-market': { step: GEN, seed: SEED_NOISE, mode: 0, size: [160, 90], sps: 1, every: 3, life: 2400, ink: PLUM, ink2: PLUM2, u: { u_birth: 4, u_surv: 0, u_states: 3, u_fill: 0.25 } },
     pingala:       { step: GS, seed: SEED_GS, sprinkle: SPRINKLE_GS, mode: 4, size: [192, 108], sps: 8, every: 1, poke: 400, ink: PLUM, ink2: PLUM2, u: { u_F: 0.0367, u_k: 0.0649 } },
     khali:         { step: LENIA, creature: GYRORBIUM, mode: 0, size: [128, 72], sps: 1, every: 1, life: 1400, ink: PLUM, ink2: PLUM2, u: { u_R: 13, u_T: 10, u_mu: 0.156, u_sigma: 0.0224, u_nb: 1, u_beta: [1, 0, 0, 0] } },
+    'mini-me-and-you': { step: LENIA, creature: { w: 20, h: 20, cells: ORBIUM }, scatter: 2, gap: 12, mode: 0, size: [128, 72], sps: 1, every: 1, life: 4000, ink: PLUM, ink2: PLUM2, u: { u_R: 13, u_T: 10, u_mu: 0.15, u_sigma: 0.015, u_nb: 1, u_beta: [1, 0, 0, 0] } },
     'wing-projects': { step: GS, seed: SEED_GS, sprinkle: SPRINKLE_GS, mode: 4, cols: 220, sps: 8, poke: 300, ink: PLUM, ink2: PLUM2, u: { u_F: 0.014, u_k: 0.054 } },
     'wing-arts': { step: GS, seed: SEED_GS, sprinkle: SPRINKLE_GS, mode: 4, cols: 220, sps: 8, poke: 500, ink: PLUM, ink2: PLUM2, u: { u_F: 0.03, u_k: 0.062 } },
     'wing-thinking': { step: GS, seed: SEED_GS, sprinkle: SPRINKLE_GS, mode: 4, cols: 220, sps: 8, poke: 600, life: 6000, ink: PLUM, ink2: PLUM2, u: { u_F: 0.078, u_k: 0.061 } }

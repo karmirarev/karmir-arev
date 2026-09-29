@@ -58,6 +58,10 @@
     .cover-box {
       position: relative;
       display: block;
+      border-bottom: 1px solid var(--maroon);
+    }
+    .cover-box .cover {
+      border-bottom: 0;
     }
     .cover-pic {
       position: absolute;
@@ -523,6 +527,7 @@
 
   const OTHER = [
     {
+      key: 'mini-me-and-you',
       name: 'mini me and u',
       tag: 'browser extension',
       blurb: 'me and felix hanging out on the screen.',
@@ -534,7 +539,10 @@
   function otherCard(o) {
     return `
       <a class="game" href="${o.href}">
-        <img class="cover" src="${o.cover}" alt="${o.name}" width="1280" height="720" loading="lazy">
+        <span class="cover-box">
+          <canvas class="cover" data-toy="${o.key}"></canvas>
+          <img class="cover-pic" src="${o.cover}" alt="" loading="lazy">
+        </span>
         <div class="body">
           <p class="name">${o.name}</p>
           <span class="tag">${o.tag}</span>
@@ -774,7 +782,7 @@
 </script>
 
 <script src="/nav.js?v=73"></script>
-<script src="/toys.js?v=25"></script>
+<script src="/toys.js?v=26"></script>
 <script>if (window.startToys) window.startToys();</script>
 </body>
 </html>
