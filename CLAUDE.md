@@ -195,7 +195,9 @@ in the piplup hat (`felix2.png`). Tried and dropped: standing sprites, the drawn
 black, and marita and felix at different heights.
 
 The portfolio cards (gif, name, email with copy button, bio, find me on, resume) live in
-`wings.games` in `projects/index.html`. The "other" section shows the same left box (`wings.other = wings.games`). The resume is `projects/resume.pdf`.
+`wings.games` in `projects/index.html`. The "other" section and the projects landing page show the same left box
+(`wings.other = wings.games`, and the landing wing is filled with it on load), so the
+projects landing has no creature any more. The resume is `projects/resume.pdf`.
 
 ## Adding drawings, events, essays
 

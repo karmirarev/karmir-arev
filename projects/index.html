@@ -679,6 +679,8 @@
     if (e.key === 'Escape') closeLightbox();
   });
 
+  document.getElementById('wing').innerHTML = wings.games;
+  document.getElementById('wing').classList.remove('only-toy');
   const landing = {
     content: [...document.getElementById('content').childNodes],
     wing: [...document.getElementById('wing').childNodes]
@@ -688,7 +690,6 @@
     document.getElementById('content').replaceChildren(...landing.content);
     const wing = document.getElementById('wing');
     wing.replaceChildren(...landing.wing);
-    wing.classList.add('only-toy');
     wing.classList.remove('cites');
     if (window.startToys) window.startToys();
   }
