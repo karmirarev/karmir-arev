@@ -267,8 +267,10 @@ projects landing has no creature any more. The resume is `projects/resume.pdf`.
 Only the main pages `projects`, `arts-and-crafts` and `thinking-out-loud` (no hash) show `<canvas class="wing-toy" data-toy="wing-PAGE">`, sized to the box. Each page has
 its own, picked by marita from a numbered grid of every option (`pick-N` in
 `toys.js`; the picker page `lab/creatures.html` was deleted, it is in git history): projects is 11 (pale ripples, Gray-Scott F 0.014 k 0.054),
-arts is 9 (rings and curls, F 0.03 k 0.062), thinking is 10 (budding dots, F 0.078
-k 0.061). Keep them small (`cols: 220`) and never reuse a game banner's creature. She
+arts is 9 (rings and curls, F 0.03 k 0.062). Thinking-out-loud has no creature (sep
+2026): its landing box shows lowercase Armenian letters (FreeMono) popping in and out
+on an invisible 34px grid, about 5% of the cells at once, each for 5 to 10 seconds (some already showing when the page opens), no
+fading (`.letters` and its script in `thinking-out-loud/index.html`). Keep them small (`cols: 220`) and never reuse a game banner's creature. She
 disliked the spinning Gyrorbium in the wings. Subpages (any hash) never
 show creatures: `show()` sets the wing to `wings[key]` or empty and drops `.only-toy`
 (which hides the landing box under 700px).
