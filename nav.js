@@ -53,12 +53,33 @@
   guy.alt = '';
   side.appendChild(guy);
 
+  var notch = document.createElement('div');
+  notch.className = 'theme-notch';
+  notch.innerHTML = '<button class="theme-toggle" aria-label="switch light and dark mode">' +
+    '<svg class="sun" viewBox="0 0 22 22"><circle cx="11" cy="11" r="3.2"/><path d="M11 3.5v2M11 16.5v2M3.5 11h2M16.5 11h2M5.7 5.7l1.4 1.4M14.9 14.9l1.4 1.4M5.7 16.3l1.4-1.4M14.9 7.1l1.4-1.4"/></svg>' +
+    '<svg class="moon" viewBox="0 0 22 22"><path d="M13.8 5.2a6 6 0 1 0 3 9.4a5 5 0 0 1-3-9.4z"/></svg></button>';
+  var wingBox = document.getElementById('wing');
+  if (wingBox && wingBox.parentNode.classList.contains('page-layout')) {
+    var wrap = document.createElement('div');
+    wrap.className = 'wing-wrap';
+    wingBox.parentNode.insertBefore(wrap, wingBox);
+    wrap.appendChild(wingBox);
+    wrap.appendChild(notch);
+  } else side.appendChild(notch);
+  notch.firstChild.onclick = function () {
+    var root = document.documentElement, dark = root.dataset.theme !== 'dark';
+    if (dark) root.dataset.theme = 'dark'; else delete root.dataset.theme;
+    try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch (e) {}
+  };
+
   function placeGuy() {
     var cur = menu.querySelector('a.current');
     if (!cur || !cur.offsetParent || !guy.offsetHeight) { guy.hidden = !cur || !cur.offsetParent; return; }
     guy.hidden = false;
     var r = cur.getBoundingClientRect(), box = side.getBoundingClientRect();
-    guy.style.top = (r.top - box.top + r.height / 2 - guy.offsetHeight * 0.63) + 'px';
+    var top = r.top - box.top + r.height / 2 - guy.offsetHeight * 0.63;
+    guy.style.top = top + 'px';
+    guy.style.right = notch.parentNode === side && top < notch.offsetHeight ? (notch.offsetWidth + 2) + 'px' : '';
   }
 
   function here() {

@@ -33,7 +33,18 @@ https://xn--y9aamws5a2fcbv.xn--y9a3aq). Static files, no build step. Pushing to
     notebook line. Also the update log's dashed timeline line. The menu tree lines and
     the essay quote connector lines stay deep wine.
   - Organisms (`toys.js`): `PLUM` is `#52222b`, `PLUM2` `#9a5a66`.
-  - Text is `#1b1b1b`. Links are ink with a thin purple underline. Never bright blue.
+  - Text is `#1b1b1b` (`--ink`). Links are ink with a thin purple underline. Never bright blue.
+- Dark mode (sep 2026), the default (marita loved it): `:root[data-theme="dark"]` in
+  `site.css` swaps the variables (paper `#221d1f`, ink `#e2dfd3`, `--maroon` becomes pink
+  silk `#d6a6b1`, hover `#3d3538`, lilac `#4a4562`, dots `#2c6470`); green and orange
+  stay. So new colours must be variables, never hard-coded (text on the green pill stays
+  `#1b1b1b`). The switch is `.theme-notch` from `nav.js`: the left box's top right corner
+  is cut inward and holds a sun and a moon in squares, the current one filled green.
+  `nav.js` wraps `#wing` in `.wing-wrap` so the notch survives `show()` replacing the
+  wing; pages without a left box (credits) get it on the menu instead (it was on the
+  menu first, but it got in the guy's way). Light only when `localStorage` `theme` is
+  `light`; a one-line script in every page's `<head>` sets it before the page draws, so
+  there is no flash. `toys.js` draws the creatures on the dark paper in pink when dark.
 - Boxes (left wing, menu, portfolio cards, game cards): 1px purple border,
   `border-radius: 14px`, the lilac shadow, solid paper background so dots do not show through.
 - The left wing is a plain box (marita removed its notebook lines). The menu box has one

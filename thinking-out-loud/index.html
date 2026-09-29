@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>thinking out loud - karmirarev</title>
-  <link rel="stylesheet" href="../site.css?v=84">
+  <script>(function(){var t;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='light')document.documentElement.dataset.theme='dark'})()</script>
+  <link rel="stylesheet" href="../site.css?v=86">
   <style>
     .content p {
       max-width: 100%;
@@ -16,7 +17,7 @@
     .cite {
       margin: 0;
       padding: 10px 12px;
-      background: #C1BCD7;
+      background: var(--lilac);
       font-size: 13px;
       line-height: 1.5;
     }
@@ -176,8 +177,8 @@
   if (document.fonts) document.fonts.ready.then(alignCites);
 </script>
 
-<script src="/nav.js?v=73"></script>
-<script src="/toys.js?v=26"></script>
+<script src="/nav.js?v=75"></script>
+<script src="/toys.js?v=27"></script>
 <script>if (window.startToys) window.startToys();</script>
 </body>
 </html>

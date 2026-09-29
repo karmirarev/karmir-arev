@@ -103,6 +103,7 @@
   var PAPER = hex('#d4d3c8'), PLUM = hex('#52222b'), GREEN = hex('#b3ae5a'), LILAC = hex('#C1BCD7'), INK = hex('#1b1b1b'), LIME = hex('#c9d94a');
 
   var PLUM2 = hex('#9a5a66');
+  var DARK_PAPER = hex('#221d1f'), DARK_PLUM = hex('#d6a6b1');
   var TOYS = {
     sandsong:      { step: GS, seed: SEED_GS, sprinkle: SPRINKLE_GS, mode: 4, size: [192, 108], sps: 6, every: 1, poke: 900, ink: PLUM, ink2: PLUM2, u: { u_F: 0.029, u_k: 0.057 } },
     'kami-hovani': { step: GS, seed: SEED_GS, sprinkle: SPRINKLE_GS, mode: 4, size: [192, 108], sps: 8, every: 1, poke: 200, ink: PLUM, ink2: PLUM2, u: { u_F: 0.018, u_k: 0.051 } },
@@ -247,7 +248,8 @@
       var w = canvas.clientWidth | 0, h = canvas.clientHeight | 0, dpr = Math.min(2, window.devicePixelRatio || 1);
       if (canvas.width !== w * dpr || canvas.height !== h * dpr) { canvas.width = w * dpr; canvas.height = h * dpr; }
       gl.viewport(0, 0, canvas.width, canvas.height);
-      run(viewP, { u_res: [canvas.width, canvas.height], u_paper: PAPER, u_ink: cfg.ink, u_ink2: cfg.ink2, u_mode: cfg.mode });
+      var dark = document.documentElement.dataset.theme === 'dark';
+      run(viewP, { u_res: [canvas.width, canvas.height], u_paper: dark ? DARK_PAPER : PAPER, u_ink: dark && cfg.ink === PLUM ? DARK_PLUM : cfg.ink, u_ink2: cfg.ink2, u_mode: cfg.mode });
     }
 
     var visible = false, raf = 0, last = 0, tick = 0;

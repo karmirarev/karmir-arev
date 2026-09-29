@@ -13,6 +13,19 @@
   --lime: #c4bab5;
   --lilac: #C1BCD7;
   --orange: #c56e3b;
+  --ink: #1b1b1b;
+  --dots: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22><rect x=%229%22 y=%229%22 width=%222%22 height=%222%22 fill=%22%235CD0E6%22/></svg>');
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #221d1f;
+  --maroon: #d6a6b1;
+  --link: #e2dfd3;
+  --lime: #3d3538;
+  --lilac: #4a4562;
+  --ink: #e2dfd3;
+  --dots: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22><rect x=%229%22 y=%229%22 width=%222%22 height=%222%22 fill=%22%232c6470%22/></svg>');
 }
 
 html {
@@ -25,7 +38,7 @@ body {
   min-height: 100vh;
   box-sizing: border-box;
   font-family: 'FreeMono', 'Courier New', monospace;
-  color: #1b1b1b;
+  color: var(--ink);
 }
 
 body::before {
@@ -34,7 +47,7 @@ body::before {
   inset: 0;
   z-index: -1;
   background-color: var(--paper);
-  background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22><rect x=%229%22 y=%229%22 width=%222%22 height=%222%22 fill=%22%235CD0E6%22/></svg>');
+  background-image: var(--dots);
   pointer-events: none;
 }
 
@@ -115,7 +128,7 @@ a:hover {
   box-sizing: border-box;
   padding: 16px 20px;
   border-radius: 14px;
-  box-shadow: 4px 4px 0 #C1BCD7;
+  box-shadow: 4px 4px 0 var(--lilac);
   background-color: var(--paper);
 }
 
@@ -219,7 +232,7 @@ a:hover {
   padding: 2px 10px;
   border: 1px solid var(--maroon);
   border-radius: 12px;
-  color: #1b1b1b;
+  color: var(--ink);
 }
 
 .links-box .support-title {
@@ -230,12 +243,25 @@ a:hover {
   animation: rainbow 3s steps(1) infinite;
 }
 
+:root[data-theme="dark"] .support-title.rainbow {
+  animation-name: rainbow-dark;
+}
+
 @keyframes rainbow {
   0% { color: #b4a64b; }
   16.66% { color: #591e2a; }
   33.33% { color: #d2682b; }
   50% { color: #d6a6b1; }
   66.66% { color: #464719; }
+  83.33% { color: #98a8d9; }
+}
+
+@keyframes rainbow-dark {
+  0% { color: #b4a64b; }
+  16.66% { color: #b0606f; }
+  33.33% { color: #d2682b; }
+  50% { color: #d6a6b1; }
+  66.66% { color: #8f9140; }
   83.33% { color: #98a8d9; }
 }
 
@@ -281,7 +307,7 @@ a:hover {
   display: inline-block;
   padding: 2px 6px;
   border-radius: 3px;
-  color: #1b1b1b;
+  color: var(--ink);
 }
 
 .nav a:hover {
@@ -317,7 +343,7 @@ a:hover {
 
 .nav .toggle:hover {
   background: var(--maroon) !important;
-  color: #fff;
+  color: var(--paper);
 }
 
 .nav > li.has-kids::before {
@@ -428,6 +454,7 @@ a:hover {
   .wing.only-toy {
     display: none;
   }
+
 }
 
 .folders {
@@ -505,7 +532,7 @@ a:hover {
   margin-top: 10px;
   font-weight: normal;
   font-size: 12px;
-  color: #1b1b1b;
+  color: var(--ink);
 }
 .folder-name {
   display: block;
@@ -599,4 +626,114 @@ a:hover {
     padding-left: 56px;
     text-align: left;
   }
+}
+
+.wing-wrap {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  width: min(400px, 28vw);
+  margin-top: 17px;
+}
+
+.wing-wrap > .wing {
+  flex: 1;
+  min-width: 0;
+  width: auto;
+  margin-top: 0;
+}
+
+@media (max-width: 700px) {
+  .wing-wrap {
+    order: 2;
+    width: 100%;
+    margin-top: 0;
+  }
+  .wing-wrap:has(> .wing:empty),
+  .wing-wrap:has(> .wing.only-toy),
+  .wing-wrap:has(> .wing.cites) {
+    display: none;
+  }
+}
+
+.theme-notch {
+  position: absolute;
+  top: 0;
+  right: -5px;
+  z-index: 3;
+  box-sizing: border-box;
+  width: 67px;
+  height: 40px;
+  padding-right: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid var(--maroon);
+  border-bottom: 1px solid var(--maroon);
+  border-bottom-left-radius: 12px;
+  background: var(--paper) var(--dots) fixed;
+}
+
+.theme-notch::before,
+.theme-notch::after {
+  content: '';
+  position: absolute;
+  height: 13px;
+  background:
+    radial-gradient(circle at 0 100%, transparent 12px, var(--maroon) 12px, var(--maroon) 13px, transparent 13px),
+    radial-gradient(circle at 0 100%, var(--paper) 12.5px, transparent 12.5px),
+    var(--paper) var(--dots) fixed;
+}
+
+.theme-notch::before {
+  left: -13px;
+  top: 0;
+  width: 13px;
+}
+
+.theme-notch::after {
+  right: 0;
+  top: 100%;
+  width: 18px;
+  height: 17px;
+  background:
+    radial-gradient(circle at 0 13px, transparent 12px, var(--maroon) 12px, var(--maroon) 13px, transparent 13px) 0 0 / 100% 13px no-repeat,
+    radial-gradient(circle at 0 13px, var(--paper) 12.5px, transparent 12.5px) 0 0 / 100% 13px no-repeat,
+    linear-gradient(90deg, var(--paper) 12px, var(--maroon) 12px, var(--maroon) 13px, transparent 13px) 0 13px / 100% 4px no-repeat,
+    radial-gradient(circle at 4px 17px, var(--lilac) 13px, transparent 13px),
+    var(--paper) var(--dots) fixed;
+}
+
+.theme-toggle {
+  display: flex;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--maroon);
+  cursor: pointer;
+}
+
+.theme-toggle svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--maroon);
+  border-radius: 2px;
+  box-sizing: border-box;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.3;
+  stroke-linecap: round;
+}
+
+.theme-toggle:hover svg {
+  background: var(--lime);
+}
+
+:root:not([data-theme="dark"]) .theme-toggle .sun,
+:root[data-theme="dark"] .theme-toggle .moon {
+  background: var(--green);
+  border-color: var(--green);
+  color: #1b1b1b;
 }
