@@ -660,6 +660,8 @@
     `,
   };
 
+  wings.other = wings.games;
+
   GAMES.forEach(g => {
     sections[g.key] = gamePage(g);
     wings[g.key] = gameWing(g);
