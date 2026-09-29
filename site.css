@@ -346,6 +346,13 @@ a:hover {
 .nav > li.c-green::before,
 .nav-title.c-green::before { background: var(--green); }
 .support-title.rainbow::before { background: currentColor; }
+.nav > li.plus::before {
+  content: '+';
+  font-size: 13px;
+  line-height: 13px;
+  text-align: center;
+  color: var(--maroon);
+}
 
 .content img,
 .content video {

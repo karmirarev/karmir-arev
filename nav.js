@@ -24,7 +24,7 @@
     { label: 'thinking-out-loud', href: '/thinking-out-loud/', color: 'lilac', children: [
       { label: 'on-art-evolution-ai-and-consciousness', href: '/thinking-out-loud/#on-art-evolution-ai-and-consciousness', doc: true }
     ]},
-    { label: 'credits', href: '/credits/', color: 'lilac', noFolder: true }
+    { label: 'credits', href: '/credits/', color: 'lilac', noFolder: true, plus: true }
   ];
 
   var LINKS = [
@@ -85,6 +85,7 @@
     items.forEach(function (it) {
       var li = document.createElement('li');
       if (it.color) li.className = 'c-' + it.color;
+      if (it.plus) li.className += ' plus';
       var a = document.createElement('a');
       a.href = it.href;
       a.textContent = it.label;

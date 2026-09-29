@@ -96,7 +96,8 @@ deleted (sep 2026); their folders only hold the pictures the section pages use.
 `nav.js` holds the whole tree in `NAV` and the outside links in `LINKS`. Buy me a coffee is
 separate, in `SUPPORT`, under its own "support me here" title below the elsewhere links.
 The last menu entry is "credits" (`/credits/`, its own page with a small table
-`table.credits`: what / where on the site / from). It has no children in the menu (marita removed them). Add a table row when
+`table.credits`: what / where on the site / from). It has no children in the menu (marita removed them) but always shows a `+` in its
+square (`plus: true`, `.nav > li.plus::before`). Add a table row when
 something new is borrowed.
 On the home page only, that whole title cycles through, one colour at a time, matcha, velvet, monarch, pink silk, moss and
 cornflower (`#b4a64b #591e2a #d2682b #d6a6b1 #464719 #98a8d9`) (CSS `rainbow`
@@ -185,6 +186,13 @@ loads. It loads `FILEPREFIX.loader.js` and calls
 `createUnityInstance` itself, so the export's own `index.html` is never touched. The
 separate "play in browser" link is hidden for embedded games, and `show()` quits the game
 when you leave the page. Pingala uses this.
+
+`projects/#other` uses the same card grid as games, built from the `OTHER` list in
+`projects/index.html` (`{ name, tag, blurb, href, cover }`, picture cover only, no live
+creature). Mini me and u links to its own page `/projects/other/mini-me-and-you/`; its
+cover `covers/mini-me-and-you-v7.webp` is felix alone in the middle, falling (frame 4)
+in the piplup hat (`felix2.png`). Tried and dropped: standing sprites, the drawn heads on
+black, and marita and felix at different heights.
 
 The portfolio cards (gif, name, email with copy button, bio, find me on, resume) live in
 `wings.games` in `projects/index.html`. The resume is `projects/resume.pdf`.

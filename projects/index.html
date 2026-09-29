@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>projects - karmirarev</title>
   <link rel="stylesheet" href="../gallery.css?v=6">
-  <link rel="stylesheet" href="../site.css?v=83">
+  <link rel="stylesheet" href="../site.css?v=84">
   <style>
     .content {
       position: relative;
@@ -521,6 +521,28 @@
     trailer: 'trailer'
   };
 
+  const OTHER = [
+    {
+      name: 'mini me and u',
+      tag: 'browser extension',
+      blurb: 'me and felix hanging out on the screen.',
+      href: '/projects/other/mini-me-and-you/',
+      cover: './covers/mini-me-and-you-v7.webp'
+    }
+  ];
+
+  function otherCard(o) {
+    return `
+      <a class="game" href="${o.href}">
+        <img class="cover" src="${o.cover}" alt="${o.name}" width="1280" height="720" loading="lazy">
+        <div class="body">
+          <p class="name">${o.name}</p>
+          <span class="tag">${o.tag}</span>
+          ${o.blurb ? `<p>${o.blurb}</p>` : ''}
+        </div>
+      </a>`;
+  }
+
   function gameCard(g) {
     return `
       <a class="game" href="#${g.key}">
@@ -608,7 +630,11 @@
     `,
     other: `
       <p class="page-title">other</p>
-      <p>some other silly things i am working/worked on</p>
+      <div class="games">
+        <p>some other silly things i am working/worked on</p>
+        <div class="games-grid">${OTHER.map(otherCard).join('')}
+        </div>
+      </div>
     `,
   };
 
@@ -744,7 +770,7 @@
   }
 </script>
 
-<script src="/nav.js?v=72"></script>
+<script src="/nav.js?v=73"></script>
 <script src="/toys.js?v=25"></script>
 <script>if (window.startToys) window.startToys();</script>
 </body>
