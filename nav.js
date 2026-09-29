@@ -27,7 +27,9 @@
     { label: 'credits', href: '/credits/', color: 'lilac', noFolder: true, children: [
       { label: 'creatures', href: 'https://github.com/snek-git/quickshell-toys', newTab: true },
       { label: 'click sound', href: 'https://mixkit.co/free-sound-effects/click/', newTab: true },
-      { label: 'armenian font', href: 'https://fonter.am/en/fonts/free-mono', newTab: true }
+      { label: 'armenian font', href: 'https://fonter.am/en/fonts/free-mono', newTab: true },
+      { label: 'pikmin gif', href: 'https://www.pinterest.com/pin/386746686769659591/', newTab: true },
+      { label: 'hylics gif', href: 'https://www.pinterest.com/pin/705235622896150615/', newTab: true }
     ]}
   ];
 

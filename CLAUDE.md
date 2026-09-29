@@ -96,9 +96,11 @@ deleted (sep 2026); their folders only hold the pictures the section pages use.
 `nav.js` holds the whole tree in `NAV` and the outside links in `LINKS`. Buy me a coffee is
 separate, in `SUPPORT`, under its own "support me here" title below the elsewhere links.
 The last menu entry is "credits" (`/credits/`, its own page with a small table
-`table.credits`, what / from). Its menu children link straight to the sources (the
-creatures from github.com/snek-git/quickshell-toys, the mixkit click, free mono on
-fonter.am). Add a table row and a child entry when something new is borrowed.
+`table.credits`: what / where on the site / from). Its menu children link straight to
+the sources: the creatures (github.com/snek-git/quickshell-toys), the mixkit click,
+free mono on fonter.am, the walking pikmin in the menu (`guy.gif`, pinterest) and the
+walking party on home (`walkin.gif`, hylics 2, pinterest). Add a table row and a child
+entry when something new is borrowed.
 On the home page only, that whole title cycles through, one colour at a time, matcha, velvet, monarch, pink silk, moss and
 cornflower (`#b4a64b #591e2a #d2682b #d6a6b1 #464719 #98a8d9`) (CSS `rainbow`
 keyframes with `steps(1)`, half a second each, switching without fading). Its square

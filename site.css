@@ -529,7 +529,10 @@ a:hover {
   font-weight: bold;
 }
 .credits td:first-child {
-  width: 40%;
+  width: 28%;
+}
+.credits td:nth-child(2) {
+  width: 32%;
 }
 
 .folders.content-view {
