@@ -79,7 +79,7 @@ The landing view of each section page (no hash) shows its subpages as folder car
 (`<div class="folders" data-folders="/projects/">`): `folders()` in `nav.js` fills
 them from that page's `NAV` children, so a new menu entry gets a folder by itself.
 The home page has the same (`data-folders="/"`), made from the top-level entries
-except home and credits (`noFolder: true`, it is a footnote, not a section), under the walking gif behind a dashed orange line (`.home-folders`).
+except home and credits (`noFolder: true`, it is a footnote, not a section), behind a dashed orange line (`.home-folders`).
 They are plain file-explorer folders in a grid: paper fill, wine outline, a small
 tab on top (`::before`), the lilac shadow, warm grey on hover. Each shows only the
 name and how many items are inside: the number of children, or for a section on its
@@ -288,9 +288,9 @@ orange line down the left with a square per entry, the newest one filled green, 
 above the sentence. Only the newest 3 lines show (CSS hides the rest, no
 "older" button, marita does not want one), so keep new lines at the top.
 
-`walkin.gif` (the walking party) sits under the folders on the home page, full size
-(316px wide, `.walkers`). Tried and dropped: in the menu above "elsewhere", and small
-next to the "last consumed" title.
+The hylics walking gif (`walkin.gif`) was removed from the home page (sep 2026). Tried
+and dropped before that: in the menu above "elsewhere", and small next to the "last
+consumed" title.
 
 The home wing holds the update log (`ul.log` with `<time>` lines), the plant box and the
 "last consumed" box (it was "last watched" before books were added) (latest Letterboxd film and latest completed AniList anime, user
