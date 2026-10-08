@@ -320,7 +320,7 @@
       gap: 8px;
       margin: 0 0 20px;
     }
-    .get a {
+    .get a, .get span {
       padding: 3px 12px;
       border: 1px solid var(--maroon);
       border-radius: 12px;
@@ -522,7 +522,9 @@
     itch: 'itch.io',
     store: 'google play',
     appstore: 'app store',
-    trailer: 'trailer'
+    trailer: 'trailer',
+    github: 'codebase',
+    gdd: 'gdd'
   };
 
   const OTHER = [
@@ -567,10 +569,12 @@
   }
 
   function gamePage(g) {
-    const keys = Object.keys(LINK_NAMES).filter(k => g.links[k] && !(g.embed && k === 'play'));
+    const always = ['github', 'gdd'];
+    const keys = Object.keys(LINK_NAMES).filter(k => (g.links[k] || always.includes(k)) && !(g.embed && k === 'play'));
     const main = g.embed ? null : ['play', 'itch', 'store', 'appstore'].find(k => g.links[k]);
-    const links = keys.map(k =>
-      `<a class="${k === main ? 'main' : ''}" href="${g.links[k]}" target="_blank" rel="noopener">${LINK_NAMES[k]}</a>`
+    const links = keys.map(k => g.links[k]
+      ? `<a class="${k === main ? 'main' : ''}" href="${g.links[k]}" target="_blank" rel="noopener">${LINK_NAMES[k]}</a>`
+      : `<span>${LINK_NAMES[k]} -</span>`
     ).join('');
     const about = g.about.length ? g.about.map(t => `<p>${t}</p>`).join('') : `<p>${g.blurb || 'more about this one soon.'}</p>`;
     const text = `
@@ -584,14 +588,6 @@
         <p class="page-title">what i did</p>
         <ul class="did">${g.did.map(t => `<li>${t}</li>`).join('')}</ul>
       </div>` : ''}
-      <div class="block">
-        <p class="page-title">codebase</p>
-        <p>${g.links.github ? `<a href="${g.links.github}" target="_blank" rel="noopener">${g.links.github.replace(/^https?:\/\//, '').toLowerCase()}</a>` : '-'}</p>
-      </div>
-      <div class="block">
-        <p class="page-title">game design doc</p>
-        <p>${g.links.gdd ? `<a href="${g.links.gdd}" target="_blank" rel="noopener">game design doc (pdf)</a>` : '-'}</p>
-      </div>
       ${g.shots.length ? `
       <div class="block">
         <p class="page-title">screenshots</p>

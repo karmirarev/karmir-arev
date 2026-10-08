@@ -174,8 +174,8 @@ to copy.
    Empty fields, links and lists are simply not shown. The way to play is always the green button: `play` if there is one, otherwise `itch`,
    then `store`, then `appstore`.
    Other link keys: `appstore`, `trailer` (names in `LINK_NAMES`).
-   `github` and `gdd` are not buttons: every game page has a "codebase" and a "game design
-   doc" section that shows the link, or `-` when it is empty. Design docs and
+   `github` and `gdd` show as "codebase" and "gdd" pills at the end of the link row on every
+   game page; when empty they still show, as a plain pill with `-` ("codebase -"). Design docs and
    screenshots go in `projects/` as files with new names.
 2. Either a picture cover: `cover: './covers/KEY.webp'` (16:9, 1280x720 webp in
    `projects/covers/`, original colours, no filter), shown at the top of the game page. For an animated cover also add
