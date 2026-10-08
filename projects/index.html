@@ -443,7 +443,7 @@
       did: [],
       facts: { genre: 'top-down puzzle', platform: 'mobile', engine: '', status: '', year: '', role: '' },
       tools: [],
-      links: { play: '', itch: '', store: '', github: '', ggd: '' },
+      links: { play: '', itch: '', store: '', github: '', gdd: '' },
       shots: []
     },
     {
@@ -457,7 +457,7 @@
       did: [],
       facts: { genre: 'turn-based rpg, card combat', platform: 'windows', engine: 'unity', status: 'prototype', year: '2025-2026', role: 'art, programming, design' },
       tools: ['clip studio paint', 'miro'],
-      links: { play: '', itch: 'https://karmirarev.itch.io/kami-hovani', store: '', github: '', ggd: '' },
+      links: { play: '', itch: 'https://karmirarev.itch.io/kami-hovani', store: '', github: '', gdd: '' },
       shots: []
     },
     {
@@ -472,7 +472,7 @@
       did: [],
       facts: { genre: 'stealth heist', platform: 'browser', engine: 'javascript', status: 'playable', year: '2026', role: 'vibecoding, art' },
       tools: ['clip studio paint'],
-      links: { play: './games/bebe-heist/', itch: '', store: '', github: '', ggd: '' },
+      links: { play: './games/bebe-heist/', itch: '', store: '', github: '', gdd: '' },
       shots: []
     },
     {
@@ -486,7 +486,7 @@
       facts: { genre: 'code-breaking puzzle', platform: 'mobile, browser', engine: 'unity', status: 'playable', year: '2026', role: 'programmer, game designer' },
       tools: [],
       embed: { page: './games/pingala/', width: 284, height: 648 },
-      links: { play: './games/pingala/', itch: '', store: '', github: '', ggd: '' },
+      links: { play: './games/pingala/', itch: '', store: '', github: '', gdd: '' },
       shots: []
     },
     {
@@ -498,7 +498,7 @@
       did: [],
       facts: { genre: '', platform: '', engine: '', status: '', year: '', role: '' },
       tools: [],
-      links: { play: '', itch: '', store: '', github: '', ggd: '' },
+      links: { play: '', itch: '', store: '', github: '', gdd: '' },
       shots: []
     },
     {
@@ -512,7 +512,7 @@
       did: [],
       facts: { genre: 'rhythm', platform: 'windows', engine: 'godot', status: 'released', year: '2025', role: 'art, programming' },
       tools: ['clip studio paint'],
-      links: { play: '', itch: 'https://thesenpie.itch.io/disco-market', store: '', github: '', ggd: '' },
+      links: { play: '', itch: 'https://thesenpie.itch.io/disco-market', store: '', github: 'https://github.com/TheSenPie/disco-market', gdd: '' },
       shots: []
     }
   ];
@@ -522,8 +522,6 @@
     itch: 'itch.io',
     store: 'google play',
     appstore: 'app store',
-    github: 'github',
-    ggd: 'game design doc (pdf)',
     trailer: 'trailer'
   };
 
@@ -586,6 +584,14 @@
         <p class="page-title">what i did</p>
         <ul class="did">${g.did.map(t => `<li>${t}</li>`).join('')}</ul>
       </div>` : ''}
+      <div class="block">
+        <p class="page-title">codebase</p>
+        <p>${g.links.github ? `<a href="${g.links.github}" target="_blank" rel="noopener">${g.links.github.replace(/^https?:\/\//, '').toLowerCase()}</a>` : '-'}</p>
+      </div>
+      <div class="block">
+        <p class="page-title">game design doc</p>
+        <p>${g.links.gdd ? `<a href="${g.links.gdd}" target="_blank" rel="noopener">game design doc (pdf)</a>` : '-'}</p>
+      </div>
       ${g.shots.length ? `
       <div class="block">
         <p class="page-title">screenshots</p>

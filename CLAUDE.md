@@ -162,7 +162,7 @@ to copy.
      did: ['thing i did', 'another'],
      facts: { genre: 'top-down puzzle', platform: '', engine: '', status: '', year: '', role: '' },
      tools: ['aseprite', 'blender'],
-     links: { play: '', itch: '', store: '', github: '', ggd: '' },
+     links: { play: '', itch: '', store: '', github: '', gdd: '' },
      shots: ['./shots/my-game-1.png']
    }
    ```
@@ -173,7 +173,9 @@ to copy.
    engine there.
    Empty fields, links and lists are simply not shown. The way to play is always the green button: `play` if there is one, otherwise `itch`,
    then `store`, then `appstore`.
-   Other link keys: `appstore`, `trailer` (names in `LINK_NAMES`). Design docs and
+   Other link keys: `appstore`, `trailer` (names in `LINK_NAMES`).
+   `github` and `gdd` are not buttons: every game page has a "codebase" and a "game design
+   doc" section that shows the link, or `-` when it is empty. Design docs and
    screenshots go in `projects/` as files with new names.
 2. Either a picture cover: `cover: './covers/KEY.webp'` (16:9, 1280x720 webp in
    `projects/covers/`, original colours, no filter), shown at the top of the game page. For an animated cover also add
