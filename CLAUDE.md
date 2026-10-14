@@ -205,7 +205,7 @@ self-contained `index.html` copied from `~/Projects/pingala/ascii/`).
 `projects/#other` uses the same card grid as games, built from the `OTHER` list in
 `projects/index.html` (`{ key, name, tag, blurb, href, cover }`); like the game cards they show a live
 creature (`TOYS[key]` in `toys.js`) and swap to the picture while hovered. Mini me and u
-has two Lenia Orbium gliders (her and felix). Mini me and u links to its own page `/projects/other/mini-me-and-you/`; its
+has two Lenia Orbium gliders (her and felix). Craft mall is the second card (see "Craft mall"). Mini me and u links to its own page `/projects/other/mini-me-and-you/`; its
 cover `covers/mini-me-and-you-v7.webp` is felix alone in the middle, falling (frame 4)
 in the piplup hat (`felix2.png`). Tried and dropped: standing sprites, the drawn heads on
 black, and marita and felix at different heights.
@@ -340,6 +340,55 @@ freshly watered again. Nobody needs to update `watered`; only change it if the s
 itself shifts. The
 intervals are rough guesses (peace lily 7, calathea 6, silvery ann 12); change `every` if
 her plants disagree.
+
+## Craft mall
+
+`/projects/other/craft-mall/` is a mockup of marita's craft mall idea (repo
+`karmirarev/craft-mall`): a virtual mall where picked artists show work for a week, then it
+all moves down to the archive. It is a card in `projects/#other` (`OTHER` entry, cover
+`covers/craft-mall.webp` made from the scene itself, creature `TOYS['craft-mall']`: MNCA
+discs, like pick-8) and sits under "other" in the menu; it is not a top-level page any more.
+All of it is in its `index.html`, no images.
+
+- The page is the mall only: the left box and the menu are hidden (`.side` is
+  `display: none`, `#menu` stays so `nav.js` still runs for the click sound). One full-window
+  box holds the scene, a top-left panel ("back" pill to `/projects/#other`, title), a
+  top-right panel (`+`/`-` zoom squares and the sun/moon toggle, moved there from `nav.js`
+  on load) and a bottom-left info card that folds with the square `-` (folded under 700px).
+- Look: Floor796 pixel style, structure after marita's references (the isometric
+  "welcome" building drawing): floors float at different heights and are joined by stairs
+  like a net, every floor reachable more than one way, no two-branch look. The floors sit on a
+  3x3 grid: column widths 22/14/10 and row depths 14/10/8 make them big and small, and each
+  floor's height is the sum of the column and row rises, so every stair is 8px a step and
+  loops always meet. `FLOORS` lists each floor (tile `x y`, height `z`, size `w d`, wall
+  height `h`, `walls`, `point` for its sign arrow) and its `sections`; `STAIRS` is
+  `[from, to, 'x' | 'y', offset]`, leaving through a gap in the lower floor's back wall and
+  landing on the upper floor's open front edge.
+- The gallery and the museum are one open room each, not split into sections: every piece
+  carries its own tags instead (`tags` on the floor for the card, `items` places small tags
+  next to pieces). Cinema has short films and animation, closet has fashion and jewelry,
+  the roof pit has free format, topics and suggestions.
+- Ground floor: the lobby and the gift shop in one room, split by a shoji (paper sliding
+  wall, `shoji()`), the calendar hanging on the lobby wall, "welcome" stairs out the front
+  and stairs in the floor down to the archive (bigger, 28x18, joined by dashed orange lines).
+- Room names are pointer signs: arrow boards (`.board`, `clip-path`) on a post standing on
+  the floor's back corner; the ground floor's post has two boards, gift shop and lobby.
+  Sections get small lilac arrow tags, shown from 1.7x zoom up.
+- The beet (`guy.gif`) starts in the lobby and walks to whatever is picked: `route()` finds
+  the stairs (breadth first), `walkTo()` queues the points, `tick()` moves him (he flips to
+  face where he walks, and jumps the gap down to the archive).
+- Zoom is smooth and only scales the scene: the canvases sit in `.mall-layer` scaled with a
+  transform, labels are moved by hand at their own size, panels never move. Drag or
+  two-finger scroll to move, pinch or ctrl + scroll zooms at the cursor, a mouse wheel zooms
+  with easing, `+`/`-` ease 1.5x. Picking from the card flies the view there at 2x.
+- The scene is drawn by hand into an `ImageData` (own polygon fill and Bresenham lines,
+  so edges stay hard pixels). Colours are mixed from the CSS variables, so it redraws on the
+  theme switch. Floors and stairs are drawn back to front by x + y + z/4; inside a floor
+  `DECOR[key]` has `back()` (wall art, holes), `stuff()` (objects, sorted by `put(key, fn)`),
+  `under()` (hanging plants) and `front()`. Every pixel stores its section id (`ids`) for
+  clicks and the green outline. The hash picks a floor or section (`#gallery/photography`).
+- Never name a global `top`, `screenX`, `screenY` or `find`: they clash with `window` and
+  kill the whole script. Keep `data-zoom` only on the zoom buttons (clicks look for it).
 
 ## Cache
 

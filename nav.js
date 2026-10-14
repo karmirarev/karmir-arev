@@ -11,7 +11,8 @@
         { label: 'disco market', href: '/projects/#disco-market' }
       ]},
       { label: 'other', href: '/projects/#other', children: [
-        { label: 'mini me and u', href: '/projects/other/mini-me-and-you/' }
+        { label: 'mini me and u', href: '/projects/other/mini-me-and-you/' },
+        { label: 'craft mall', href: '/projects/other/craft-mall/' }
       ]}
     ]},
     { label: 'arts-and-crafts', href: '/arts-and-crafts/', color: 'lime', children: [
@@ -259,7 +260,7 @@
       .catch(function () {});
   } catch (e) {}
 
-  var CLICKABLE = 'a[href], button, summary, label, input, select, [onclick], [role="button"], .gallery-item img, .shot, canvas[data-toy], .lightbox, model-viewer';
+  var CLICKABLE = 'a[href], button, summary, label, input, select, [onclick], [role="button"], .gallery-item img, .shot, canvas[data-toy], .lightbox, model-viewer, .mall.hot';
   function playClick(e) {
     if (!audio || !clickSound) return;
     var t = e && e.target;

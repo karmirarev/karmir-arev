@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>craft mall - karmirarev</title>
+  <script>(function(){var t;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='light')document.documentElement.dataset.theme='dark'})()</script>
+  <link rel="stylesheet" href="/site.css?v=86">
+  <style>
+    body {
+      padding: 14px;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+    }
+    .side {
+      display: none !important;
+    }
+    .mall {
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+      border: 1px solid var(--maroon);
+      border-radius: 14px;
+      box-shadow: 4px 4px 0 var(--lilac);
+      background: var(--paper);
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .mall.hot {
+      cursor: pointer;
+    }
+    .mall.dragging {
+      cursor: grabbing;
+    }
+    .mall-world,
+    .mall-layer {
+      position: absolute;
+      left: 0;
+      top: 0;
+      transform-origin: 0 0;
+    }
+    .mall-layer canvas {
+      position: absolute;
+      left: 0;
+      top: 0;
+      image-rendering: crisp-edges;
+      image-rendering: pixelated;
+    }
+    .mall-glow {
+      pointer-events: none;
+    }
+    .mall-world .mall-guy {
+      position: absolute;
+      left: 0;
+      top: 0;
+      max-width: none;
+      pointer-events: none;
+    }
+    .post,
+    .tag,
+    .note {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    .post {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding-bottom: 20px;
+      pointer-events: none;
+    }
+    .post::after {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      left: calc(50% - 1px);
+      top: 6px;
+      bottom: 0;
+      width: 2px;
+      background: var(--maroon);
+    }
+    .board {
+      --fill: var(--paper);
+      position: relative;
+      pointer-events: auto;
+      white-space: nowrap;
+      font: inherit;
+      font-size: 12px;
+      font-weight: bold;
+      line-height: 1.35;
+      padding: 2px 17px 2px 9px;
+      border: 0;
+      background: var(--maroon);
+      color: var(--maroon);
+      cursor: pointer;
+      clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 50%, calc(100% - 9px) 100%, 0 100%);
+    }
+    .board::before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      inset: 1px;
+      background: var(--fill);
+      clip-path: polygon(0 0, calc(100% - 8.5px) 0, 100% 50%, calc(100% - 8.5px) 100%, 0 100%);
+    }
+    .board.l {
+      padding: 2px 9px 2px 17px;
+      clip-path: polygon(9px 0, 100% 0, 100% 100%, 9px 100%, 0 50%);
+    }
+    .board.l::before {
+      clip-path: polygon(8.5px 0, 100% 0, 100% 100%, 8.5px 100%, 0 50%);
+    }
+    .board.small {
+      --fill: var(--lilac);
+      font-size: 10px;
+      font-weight: normal;
+      padding: 0 13px 0 6px;
+      color: var(--ink);
+    }
+    .board:hover,
+    .board.hover {
+      --fill: var(--lime);
+    }
+    .board.on {
+      --fill: var(--green);
+      color: #1b1b1b;
+    }
+    .note .board {
+      cursor: default;
+      pointer-events: none;
+    }
+    .mall.far .tag,
+    .mall.far .note {
+      display: none;
+    }
+    .panel {
+      position: absolute;
+      z-index: 2;
+      box-sizing: border-box;
+      border: 1px solid var(--maroon);
+      border-radius: 14px;
+      box-shadow: 4px 4px 0 var(--lilac);
+      background: var(--paper);
+      cursor: default;
+    }
+    .mall-head {
+      top: 12px;
+      left: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 14px;
+    }
+    .mall-head .page-title {
+      margin: 0;
+    }
+    .mall-head .hint {
+      font-size: 12px;
+    }
+    .home {
+      font-size: 13px;
+      padding: 1px 10px;
+      border: 1px solid var(--maroon);
+      border-radius: 12px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .home:hover {
+      background: var(--lime);
+      text-decoration: none;
+    }
+    .mall-tools {
+      top: 12px;
+      right: 12px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 7px 9px;
+    }
+    .mall-tools .zb {
+      box-sizing: border-box;
+      width: 22px;
+      height: 22px;
+      padding: 0;
+      font: inherit;
+      font-size: 15px;
+      line-height: 20px;
+      border: 1px solid var(--maroon);
+      border-radius: 2px;
+      background: var(--paper);
+      color: var(--maroon);
+      cursor: pointer;
+    }
+    .mall-tools .zb:hover {
+      background: var(--maroon);
+      color: var(--paper);
+    }
+    .mall-tools .theme-toggle {
+      margin-left: 8px;
+    }
+    .mall-card {
+      left: 12px;
+      bottom: 12px;
+      width: min(320px, calc(100% - 24px));
+      max-height: calc(100% - 92px);
+      overflow: auto;
+      padding: 14px 18px 16px;
+    }
+    .card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .card-head .page-title {
+      margin: 0;
+    }
+    .card-min {
+      flex: none;
+      box-sizing: border-box;
+      width: 15px;
+      height: 15px;
+      padding: 0;
+      font: inherit;
+      font-size: 13px;
+      line-height: 13px;
+      border: 1px solid var(--maroon);
+      border-radius: 2px;
+      background: transparent;
+      color: var(--maroon);
+      cursor: pointer;
+    }
+    .card-min:hover {
+      background: var(--maroon);
+      color: var(--paper);
+    }
+    .mall-card.min .card-body {
+      display: none;
+    }
+    .card-body p {
+      margin: 10px 0 0;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+    .card-body .sub {
+      font-size: 12px;
+      color: var(--maroon);
+    }
+    .card-title {
+      padding-top: 12px;
+      border-top: 1px dashed var(--orange);
+      color: var(--maroon);
+      font-weight: bold;
+    }
+    .floor-list {
+      list-style: none;
+      margin: 8px 0 0;
+      padding: 0;
+      columns: 2;
+      column-gap: 10px;
+    }
+    .floor-list li {
+      display: flex;
+      align-items: center;
+      margin: 0 0 4px;
+      break-inside: avoid;
+    }
+    .floor-list li::before {
+      content: '';
+      flex: none;
+      box-sizing: border-box;
+      width: 11px;
+      height: 11px;
+      margin-right: 6px;
+      border: 1px solid var(--maroon);
+      border-radius: 2px;
+    }
+    .floor-list button,
+    .back {
+      font: inherit;
+      font-size: 13px;
+      text-align: left;
+      padding: 1px 5px;
+      border: 0;
+      border-radius: 3px;
+      background: none;
+      color: var(--ink);
+      cursor: pointer;
+    }
+    .floor-list button:hover,
+    .back:hover {
+      background: var(--lime);
+    }
+    .back {
+      margin-top: 14px;
+      padding: 1px 10px;
+      border: 1px solid var(--maroon);
+      border-radius: 12px;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 10px 0 0;
+    }
+    .tags button,
+    .tags span {
+      font: inherit;
+      font-size: 12px;
+      padding: 1px 7px;
+      border: 1px solid var(--maroon);
+      border-radius: 3px;
+      background: var(--lilac);
+      color: var(--ink);
+      cursor: pointer;
+    }
+    .tags button:hover {
+      background: var(--lime);
+    }
+    .tags button.on {
+      background: var(--green);
+      color: #1b1b1b;
+    }
+    .facts {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 4px 12px;
+      margin: 12px 0 0;
+      padding-top: 12px;
+      border-top: 1px dashed var(--orange);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .facts dt {
+      color: var(--maroon);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+    .facts dd {
+      margin: 0;
+    }
+    @media (max-width: 700px) {
+      body {
+        padding: 10px;
+      }
+      .mall-head .hint {
+        display: none;
+      }
+      .mall-card {
+        max-height: 45%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="mall" id="mall">
+  <div class="mall-world" id="world">
+    <div class="mall-layer" id="layer">
+      <canvas class="mall-scene" id="scene"></canvas>
+      <canvas class="mall-glow" id="glow"></canvas>
+    </div>
+    <img class="mall-guy" id="guy" src="/guy.gif" alt="">
+  </div>
+  <div class="panel mall-head">
+    <a class="home" href="/projects/#other">back</a>
+    <p class="page-title">craft mall</p>
+    <span class="hint">a mockup. drag to move, scroll or pinch to zoom, click a room.</span>
+  </div>
+  <div class="panel mall-tools" id="tools">
+    <button type="button" class="zb" data-zoom="1" aria-label="zoom in">+</button>
+    <button type="button" class="zb" data-zoom="-1" aria-label="zoom out">-</button>
+  </div>
+  <div class="panel mall-card" id="card"></div>
+</div>
+
+<div class="menu" id="menu"></div>
+
+<script>
+  const FLOORS = [
+    { key: 'ground', name: 'ground floor', x: 100, y: 100, z: 0, w: 22, d: 14, h: 48, walls: 'xy', wall: 'cream',
+      about: 'the way in, with the gift shop behind a paper sliding wall.',
+      sections: [
+        { key: 'gift-shop', name: 'gift shop', x: 0, y: 0, w: 9, d: 14, fl: ['grid', 'olive2'], point: 'l',
+          about: 'links to the artists\' own shops, and who is open for commissions.' },
+        { key: 'lobby', name: 'lobby', x: 9, y: 0, w: 13, d: 14, fl: ['check2', 'stone', 'stone2'], point: 'r',
+          about: 'the way in. the calendar of cool events hangs on the wall, and the stairs in the floor go down to the archive.' }
+      ] },
+    { key: 'gallery', name: 'gallery', x: 80, y: 100, z: 48, w: 14, d: 14, h: 48, walls: 'xy', wall: 'cream', point: 'l',
+      about: 'flat art on the walls. nothing is sorted: every piece carries its own tags.',
+      tags: ['digital', 'traditional', 'photography', 'mixed media'],
+      items: [[3.4, 3.4, 26, 'digital'], [11, 3.7, 28, 'traditional'], [3.7, 10.4, 28, 'photography'], [11.6, 12, 29, 'mixed media'], [0.3, 1.5, 36, 'digital'], [9.2, 0.3, 40, 'traditional']],
+      sections: [
+        { key: 'all', name: 'gallery', x: 0, y: 0, w: 14, d: 14, fl: ['grid', 'cream'] }
+      ] },
+    { key: 'cinema', name: 'cinema', x: 100, y: 85, z: 40, w: 22, d: 10, h: 56, walls: 'xy', wall: 'wineW', point: 'r',
+      about: 'moving pictures on the big screens.',
+      sections: [
+        { key: 'short-films', name: 'short films', x: 0, y: 0, w: 11, d: 10, fl: ['plain', 'wine'] },
+        { key: 'animation', name: 'animation', x: 11, y: 0, w: 11, d: 10, fl: ['plain', 'wine2'] }
+      ] },
+    { key: 'museum', name: 'museum', x: 62, y: 100, z: 112, w: 10, d: 14, h: 48, walls: 'xy', wall: 'lilacW', point: 'l',
+      about: '3d scans you can spin around. nothing is sorted: every piece carries its own tags.',
+      tags: ['papercraft', 'clay', 'crochet', 'crafts'],
+      items: [[2.4, 3.2, 24, 'papercraft'], [3.8, 5.4, 24, 'crochet'], [8, 2.8, 26, 'clay'], [8, 5.2, 24, 'papercraft'], [2.4, 9.8, 22, 'clay'], [3.8, 12.2, 22, 'crochet'], [7.5, 10.4, 18, 'crafts']],
+      sections: [
+        { key: 'all', name: 'museum', x: 0, y: 0, w: 10, d: 14, fl: ['check2', 'cream', 'stone'] }
+      ] },
+    { key: 'library', name: 'library', x: 80, y: 85, z: 88, w: 14, d: 10, h: 48, walls: 'xy', wall: 'oliveW', point: 'r',
+      about: 'words to sit down with.',
+      sections: [
+        { key: 'essays', name: 'essays', x: 0, y: 0, w: 5, d: 10, fl: ['grid', 'olive'] },
+        { key: 'poems', name: 'poems', x: 5, y: 0, w: 4, d: 10, fl: ['grid', 'olive2'] },
+        { key: 'zines', name: 'zines', x: 9, y: 0, w: 5, d: 10, fl: ['check', 'peach2', 'tan'] }
+      ] },
+    { key: 'arcade', name: 'arcade', x: 100, y: 70, z: 96, w: 22, d: 8, h: 48, walls: 'xy', wall: 'arcW', point: 'r',
+      about: 'games you can play right here.',
+      sections: [
+        { key: 'video-games', name: 'video games', x: 0, y: 0, w: 12, d: 8, fl: ['check', 'lilacD', 'lilac2'] },
+        { key: 'tabletop', name: 'tabletop', x: 12, y: 0, w: 10, d: 8, fl: ['grid', 'lilacF'] }
+      ] },
+    { key: 'vinyl-record-store', name: 'vinyl record store', x: 62, y: 85, z: 152, w: 10, d: 10, h: 40, walls: 'xy', wall: 'peachW', point: 'l',
+      about: 'music to put on.',
+      sections: [
+        { key: 'songs', name: 'songs', x: 0, y: 0, w: 5, d: 10, fl: ['check', 'peach', 'peach2'] },
+        { key: 'soundtracks', name: 'soundtracks', x: 5, y: 0, w: 5, d: 10, fl: ['grid', 'tan'] }
+      ] },
+    { key: 'closet', name: 'closet', x: 80, y: 70, z: 144, w: 14, d: 8, h: 40, walls: 'xy', wall: 'lilacW2', point: 'r',
+      about: 'things to wear.',
+      sections: [
+        { key: 'fashion', name: 'fashion', x: 0, y: 0, w: 8, d: 8, fl: ['grid', 'lilacF'] },
+        { key: 'jewelry', name: 'jewelry', x: 8, y: 0, w: 6, d: 8, fl: ['plain', 'wine2'] }
+      ] },
+    { key: 'conversation-pit', name: 'conversation pit', x: 62, y: 70, z: 208, w: 10, d: 8, h: 0, walls: '', point: 'l', open: true,
+      about: 'a sunken couch on the roof, for the ideas people bring.',
+      sections: [
+        { key: 'free-format', name: 'free format', x: 0, y: 0, w: 10, d: 5, fl: ['grid', 'roof'] },
+        { key: 'topics', name: 'topics', x: 0, y: 5, w: 5, d: 3, fl: ['grid', 'roof'] },
+        { key: 'suggestions', name: 'suggestions', x: 5, y: 5, w: 5, d: 3, fl: ['grid', 'roof'] }
+      ] },
+    { key: 'archive', name: 'archive', x: 96, y: 96, z: -230, w: 28, d: 18, h: 52, walls: 'xy', wall: 'bwall', under: true, point: 'r',
+      about: 'the basement. when the week resets, every piece comes down here and gets a shelf for its week.',
+      sections: [
+        { key: 'past-weeks', name: 'past weeks', x: 0, y: 0, w: 28, d: 18, fl: ['grid', 'bfloor'] }
+      ] }
+  ];
+  const STAIRS = [
+    ['ground', 'gallery', 'x', 9], ['ground', 'cinema', 'y', 15], ['gallery', 'museum', 'x', 3], ['gallery', 'library', 'y', 4],
+    ['cinema', 'library', 'x', 4], ['cinema', 'arcade', 'y', 19], ['museum', 'vinyl-record-store', 'y', 4], ['library', 'vinyl-record-store', 'x', 3],
+    ['library', 'closet', 'y', 11], ['arcade', 'closet', 'x', 3], ['vinyl-record-store', 'conversation-pit', 'y', 3], ['closet', 'conversation-pit', 'x', 2]
+  ];
+  const ARCHIVE_ROWS = [1.2, 4.4, 7.6, 10.8, 14], ARCHIVE_COLS = [1, 6.2, 11.4, 16.6, 21.8];
+
+  const byKey = {}, SECTIONS = [null];
+  FLOORS.forEach(f => {
+    byKey[f.key] = f;
+    f.gapX = null;
+    f.gapY = null;
+    f.sections.forEach(s => {
+      s.floor = f;
+      s.id = SECTIONS.length;
+      SECTIONS.push(s);
+    });
+  });
+  STAIRS.forEach(([a, , dir, s]) => { byKey[a][dir === 'x' ? 'gapX' : 'gapY'] = [s, s + 3]; });
+
+  const SLAB = 10, ZMAX = 5;
+  const proj = (x, y, z) => [(x - y) * 8, (x + y) * 4 - z];
+  const bounds = [Infinity, Infinity, -Infinity, -Infinity];
+  FLOORS.forEach(f => [f.x, f.x + f.w + 6].forEach(x => [f.y, f.y + f.d].forEach(y => [f.z - SLAB - 30, f.z + f.h + 60].forEach(z => {
+    const [sx, sy] = proj(x, y, z);
+    bounds[0] = Math.min(bounds[0], sx); bounds[1] = Math.min(bounds[1], sy);
+    bounds[2] = Math.max(bounds[2], sx); bounds[3] = Math.max(bounds[3], sy);
+  }))));
+  const OX = 40 - bounds[0], OY = 40 - bounds[1];
+  const W = Math.ceil(bounds[2] - bounds[0] + 80), H = Math.ceil(bounds[3] - bounds[1] + 80);
+
+  const view = document.getElementById('mall'), world = document.getElementById('world'), layer = document.getElementById('layer');
+  const scene = document.getElementById('scene'), glow = document.getElementById('glow');
+  const card = document.getElementById('card'), tools = document.getElementById('tools'), guy = document.getElementById('guy');
+  scene.width = glow.width = W;
+  scene.height = glow.height = H;
+  const sctx = scene.getContext('2d'), gctx = glow.getContext('2d');
+  const img = sctx.createImageData(W, H), gimg = gctx.createImageData(W, H);
+  const buf = new Uint32Array(img.data.buffer), gbuf = new Uint32Array(gimg.data.buffer);
+  const ids = new Uint8Array(W * H);
+
+  const probe = document.createElement('canvas').getContext('2d');
+  function rgb(v) {
+    probe.fillStyle = '#000';
+    probe.fillStyle = v.trim();
+    return [1, 3, 5].map(i => parseInt(probe.fillStyle.slice(i, i + 2), 16));
+  }
+  const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
+  const sh = (c, f) => c.map(v => Math.min(255, Math.round(v * f)));
+  const pack = c => (0xff000000 | c[2] << 16 | c[1] << 8 | c[0]) >>> 0;
+
+  let C;
+  function palette() {
+    const st = getComputedStyle(document.documentElement), v = n => rgb(st.getPropertyValue(n));
+    const P = v('--paper'), I = v('--ink'), M = v('--maroon'), G = v('--green'), L = v('--lime'), V = v('--lilac'), O = v('--orange');
+    const Wt = [242, 240, 232];
+    C = {
+      P, I, M, G, L, V, O,
+      line: M,
+      part: mix(V, P, 0.3),
+      cap: mix(P, Wt, 0.3),
+      wood: mix(O, P, 0.4),
+      dark: mix(M, P, 0.25),
+      light: mix(P, Wt, 0.55),
+      paperS: mix(P, Wt, 0.7),
+      glass: mix(V, Wt, 0.45),
+      seat: mix(M, O, 0.35),
+      cushion: mix(O, P, 0.15),
+      step: mix(L, Wt, 0.25),
+      slab: mix(M, P, 0.4),
+      cell: mix(P, L, 0.5),
+      map: mix(V, P, 0.4),
+      mat: mix(M, P, 0.45),
+      cream: mix(P, Wt, 0.35),
+      stone: mix(P, L, 0.6),
+      stone2: mix(P, M, 0.14),
+      olive: mix(G, P, 0.55),
+      olive2: mix(G, P, 0.72),
+      wine: mix(M, P, 0.6),
+      wine2: mix(M, P, 0.7),
+      lilacF: mix(V, P, 0.55),
+      lilac2: mix(V, P, 0.5),
+      lilacD: V,
+      peach: mix(O, P, 0.6),
+      peach2: mix(O, P, 0.78),
+      tan: mix(O, P, 0.72),
+      roof: mix(P, L, 0.35),
+      bfloor: mix(P, M, 0.14),
+      wineW: mix(M, P, 0.55),
+      lilacW: mix(V, P, 0.45),
+      lilacW2: mix(V, P, 0.25),
+      oliveW: mix(G, P, 0.5),
+      peachW: mix(O, P, 0.5),
+      arcW: mix(V, M, 0.2),
+      bwall: mix(V, M, 0.25)
+    };
+  }
+
+  let room = 0, clip = null, things = [];
+  const at = (x, y, z) => [OX + (x - y) * 8, OY + (x + y) * 4 - z];
+
+  function span(poly, yc) {
+    let lo = Infinity, hi = -Infinity;
+    for (let i = 0; i < poly.length; i++) {
+      const [x1, y1] = poly[i], [x2, y2] = poly[(i + 1) % poly.length];
+      if ((y1 <= yc && y2 > yc) || (y2 <= yc && y1 > yc)) {
+        const x = x1 + (yc - y1) / (y2 - y1) * (x2 - x1);
+        if (x < lo) lo = x;
+        if (x > hi) hi = x;
+      }
+    }
+    return [lo, hi];
+  }
+
+  function fill(pts, c) {
+    const col = pack(c);
+    let y0 = Infinity, y1 = -Infinity;
+    pts.forEach(p => { y0 = Math.min(y0, p[1]); y1 = Math.max(y1, p[1]); });
+    for (let y = Math.max(0, Math.floor(y0)); y < Math.min(H, Math.ceil(y1)); y++) {
+      let [lo, hi] = span(pts, y + 0.5);
+      if (clip) {
+        const [a, b] = span(clip, y + 0.5);
+        lo = Math.max(lo, a);
+        hi = Math.min(hi, b);
+      }
+      const a = Math.max(0, Math.ceil(lo - 0.5)), b = Math.min(W, Math.ceil(hi - 0.5));
+      for (let x = a; x < b; x++) {
+        buf[y * W + x] = col;
+        if (room >= 0) ids[y * W + x] = room;
+      }
+    }
+  }
+
+  function dot(x, y, col) {
+    if (x < 0 || y < 0 || x >= W || y >= H) return;
+    if (clip) {
+      const [a, b] = span(clip, y + 0.5);
+      if (!(x + 0.5 >= a && x + 0.5 < b)) return;
+    }
+    buf[y * W + x] = col;
+    if (room >= 0) ids[y * W + x] = room;
+  }
+
+  function line(p, q, c) {
+    const col = pack(c);
+    let x0 = Math.round(p[0]), y0 = Math.round(p[1]);
+    const x1 = Math.round(q[0]), y1 = Math.round(q[1]);
+    const dx = Math.abs(x1 - x0), dy = -Math.abs(y1 - y0), sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1;
+    let err = dx + dy;
+    for (;;) {
+      dot(x0, y0, col);
+      if (x0 === x1 && y0 === y1) break;
+      const e2 = 2 * err;
+      if (e2 >= dy) { err += dy; x0 += sx; }
+      if (e2 <= dx) { err += dx; y0 += sy; }
+    }
+  }
+
+  const outline = (q, c) => q.forEach((p, i) => line(p, q[(i + 1) % q.length], c));
+  function quad(ps, c, e) {
+    const q = ps.map(p => at(...p));
+    fill(q, c);
+    if (e) outline(q, e);
+  }
+  const flat = (x, y, z, w, d, c, e) => quad([[x, y, z], [x + w, y, z], [x + w, y + d, z], [x, y + d, z]], c, e);
+  const faceX = (x, y, z, d, h, c, e) => quad([[x, y, z], [x, y + d, z], [x, y + d, z + h], [x, y, z + h]], c, e);
+  const faceY = (x, y, z, w, h, c, e) => quad([[x, y, z], [x + w, y, z], [x + w, y, z + h], [x, y, z + h]], c, e);
+  function box(x, y, z, w, d, h, c, e = C.line) {
+    faceX(x + w, y, z, d, h, sh(c, 0.86), e);
+    faceY(x, y + d, z, w, h, sh(c, 0.72), e);
+    flat(x, y, z + h, w, d, c, e);
+  }
+
+  function put(key, fn) {
+    const r = room;
+    things.push({ key, fn: () => { room = r; fn(); } });
+  }
+  const B = (x, y, z, w, d, h, c, e) => put(x + w / 2 + y + d / 2, () => box(x, y, z, w, d, h, c, e));
+  function flush() {
+    things.sort((a, b) => a.key - b.key).forEach(t => t.fn());
+    things = [];
+  }
+
+  function pattern(x, y, z, w, d, [kind, a, b]) {
+    const ca = C[a], cb = C[b];
+    flat(x, y, z, w, d, ca);
+    if (kind === 'grid') {
+      const g = sh(ca, 0.92);
+      for (let k = 2; k < d; k += 2) line(at(x, y + k, z), at(x + w, y + k, z), g);
+      for (let k = 2; k < w; k += 2) line(at(x + k, y, z), at(x + k, y + d, z), g);
+    }
+    if (kind === 'check' || kind === 'check2') {
+      const n = kind === 'check' ? 1 : 2;
+      for (let i = 0; i < w / n; i++) for (let j = 0; j < d / n; j++) if ((i + j) % 2) flat(x + i * n, y + j * n, z, n, n, cb);
+    }
+  }
+
+  function hole(x, y, z, w, d, depth, f, wc, inside) {
+    clip = [at(x, y, z), at(x + w, y, z), at(x + w, y + d, z), at(x, y + d, z)];
+    flat(x, y, z - depth, w, d, f);
+    faceX(x, y, z - depth, d, depth, sh(wc, 0.86), C.line);
+    faceY(x, y, z - depth, w, depth, sh(wc, 0.72), C.line);
+    inside();
+    const rim = clip;
+    clip = null;
+    outline(rim, C.line);
+  }
+
+  const secAt = (f, rx, ry) => f.sections.find(s => rx >= s.x && rx < s.x + s.w && ry >= s.y && ry < s.y + s.d) || f.sections[0];
+  const inGap = (gap, t) => gap && t + 1 > gap[0] && t < gap[1];
+  function use(f, key) { room = f.sections.find(s => s.key === key).id; }
+
+  function edges(f) {
+    const c = C[f.wall], { x: X, y: Y, z: Z, h } = f;
+    const runs = (len, gap, idAt) => {
+      const out = [];
+      for (let t = 0; t < len; t++) {
+        if (inGap(gap, t)) continue;
+        const id = idAt(t), last = out[out.length - 1];
+        if (last && last[1] === t && last[2] === id) last[1] = t + 1;
+        else out.push([t, t + 1, id]);
+      }
+      return out;
+    };
+    if (f.walls.includes('x')) {
+      runs(f.d, f.gapX, t => secAt(f, 0, t).id).forEach(([a, b, id]) => {
+        room = id;
+        faceX(X, Y + a, Z, b - a, h, sh(c, 0.86), C.line);
+        faceX(X, Y + a, Z, b - a, 3, sh(c, 0.7), C.line);
+        flat(X - 0.3, Y + a, Z + h, 0.3, b - a, C.cap, C.line);
+        faceY(X - 0.3, Y + b, Z, 0.3, h, sh(C.cap, 0.72), C.line);
+      });
+    } else {
+      for (let t = 0; t < f.d; t++) if (!inGap(f.gapX, t)) { room = secAt(f, 0, t).id; B(X - 0.25, Y + t, Z, 0.25, 1, 8, C.part); }
+    }
+    if (f.walls.includes('y')) {
+      runs(f.w, f.gapY, t => secAt(f, t, 0).id).forEach(([a, b, id]) => {
+        room = id;
+        faceY(X + a, Y, Z, b - a, h, sh(c, 0.72), C.line);
+        faceY(X + a, Y, Z, b - a, 3, sh(c, 0.6), C.line);
+        flat(X + a, Y - 0.3, Z + h, b - a, 0.3, C.cap, C.line);
+        faceX(X + b, Y - 0.3, Z, 0.3, h, sh(C.cap, 0.86), C.line);
+      });
+    } else {
+      for (let t = 0; t < f.w; t++) if (!inGap(f.gapY, t)) { room = secAt(f, t, 0).id; B(X + t, Y - 0.25, Z, 1, 0.25, 8, C.part); }
+    }
+    if (f.walls.includes('x') && f.walls.includes('y')) {
+      room = secAt(f, 0, 0).id;
+      flat(X - 0.3, Y - 0.3, Z + h, 0.3, 0.3, C.cap, C.line);
+    }
+  }
+
+  function doorway(a, b, fn) {
+    if (b - a < 1) return;
+    const mid = (a + b) / 2;
+    for (let t = a; t < b; t++) if (t + 1 <= mid - 1.5 || t >= mid + 1.5) fn(t);
+  }
+  function partitions(f) {
+    if (f.open || f.key === 'ground') return;
+    f.sections.forEach(r => f.sections.forEach(n => {
+      room = r.id;
+      if (n.y + n.d === r.y) doorway(Math.max(r.x, n.x), Math.min(r.x + r.w, n.x + n.w), t => B(f.x + t, f.y + r.y - 0.125, f.z, 1, 0.25, 7, C.part));
+      if (n.x + n.w === r.x) doorway(Math.max(r.y, n.y), Math.min(r.y + r.d, n.y + n.d), t => B(f.x + r.x - 0.125, f.y + t, f.z, 0.25, 1, 7, C.part));
+    }));
+  }
+
+  function slab(f) {
+    room = 0;
+    faceX(f.x + f.w, f.y, f.z - SLAB, f.d, SLAB, sh(C.slab, 0.86), C.line);
+    faceY(f.x, f.y + f.d, f.z - SLAB, f.w, SLAB, sh(C.slab, 0.72), C.line);
+  }
+
+  function hang(x, y, z, len) {
+    room = 0;
+    faceX(x + 0.4, y, z - 6, 0.05, 6, C.dark, null);
+    box(x, y - 0.4, z - 12, 0.8, 0.8, 6, C.O);
+    for (let k = 0; k < 3; k++) box(x + 0.1 + k * 0.25, y - 0.1, z - 12 - len + k * 5, 0.2, 0.2, len - k * 5, C.G, null);
+  }
+
+  function frameY(x, y, z, w, h, f, a, b) {
+    faceY(x, y, z, w, h, f, C.line);
+    faceY(x + 0.3, y, z + 2, w - 0.6, h - 4, a, null);
+    faceY(x + 0.3 + (w - 0.6) * 0.35, y, z + 2 + (h - 4) * 0.3, (w - 0.6) * 0.4, (h - 4) * 0.4, b, null);
+  }
+  function tvX(x, y, z, d, h, glowC, mark) {
+    faceX(x, y, z, d, h, C.dark, C.line);
+    faceX(x, y + 0.2, z + 2, d - 0.4, h - 4, glowC, null);
+    faceX(x, y + 0.2, z + 2, d - 0.4, (h - 4) * 0.35, mark, null);
+  }
+  function tvY(x, y, z, w, h, glowC, mark) {
+    faceY(x, y, z, w, h, C.dark, C.line);
+    faceY(x + 0.2, y, z + 2, w - 0.4, h - 4, glowC, null);
+    faceY(x + 0.2, y, z + 2, w - 0.4, (h - 4) * 0.3, mark, null);
+    faceY(x + 0.2 + (w - 0.4) * 0.6, y, z + 2 + (h - 4) * 0.55, (w - 0.4) * 0.15, (h - 4) * 0.2, C.O, null);
+  }
+  function plant(x, y, z) {
+    put(x + y + 1, () => {
+      box(x, y, z, 0.8, 0.8, 5, C.O);
+      box(x - 0.15, y - 0.15, z + 5, 1.1, 1.1, 6, C.G);
+      box(x + 0.15, y + 0.15, z + 11, 0.5, 0.5, 4, C.G);
+    });
+  }
+  function pedestal(x, y, z, onTop) {
+    put(x + y + 1.25, () => {
+      box(x, y, z, 1.25, 1.25, 12, C.light);
+      onTop(x + 0.625, y + 0.625, z + 12);
+    });
+  }
+  function seatY(x, y, z) {
+    put(x + y + 1, () => {
+      box(x, y, z, 1, 1, 4, C.seat);
+      box(x, y + 0.75, z + 4, 1, 0.25, 7, C.seat);
+    });
+  }
+  function shelfY(x, y, z, w, h, cols) {
+    put(x + w / 2 + y + 0.5, () => {
+      box(x, y, z, w, 1, h, C.wood);
+      const rows = Math.floor((h - 4) / 9.5), n = Math.floor((w - 0.3) / 0.29);
+      for (let s = 0; s < rows; s++) for (let k = 0; k < n; k++)
+        faceY(x + 0.15 + k * 0.29, y + 1, z + 3 + s * 9.5, 0.22, 5 + (k * 5 + s) % 3, cols[(k + s * 3) % cols.length], null);
+    });
+  }
+  function bin(x, y, z, cols, shift) {
+    put(x + 1 + y + 0.7, () => {
+      box(x, y, z, 2, 1.4, 7, C.wood);
+      for (let k = 0; k < 5; k++) box(x + 0.15 + k * 0.36, y + 0.2, z + 7, 0.24, 1, 6, cols[(k + shift) % cols.length], null);
+    });
+  }
+  function rack(x, y0, y1, z, cols) {
+    put(x + y0 + 0.1, () => box(x, y0, z, 0.25, 0.25, 28, C.dark));
+    for (let k = 0, y = y0 + 0.5; y + 0.55 < y1; k++, y += 0.7) {
+      const yy = y, c = cols[k % cols.length];
+      put(x + yy + 0.4, () => box(x - 0.25, yy, z + 6, 0.75, 0.55, 20, c));
+    }
+    put(x + (y0 + y1) / 2 + 0.2, () => box(x, y0, z + 28, 0.25, y1 - y0, 1.5, C.dark));
+    put(x + y1, () => box(x, y1 - 0.25, z, 0.25, 0.25, 28, C.dark));
+  }
+  function mannequin(x, y, z, c, wig) {
+    put(x + y + 0.8, () => {
+      box(x, y, z, 0.8, 0.8, 2, C.dark);
+      box(x + 0.3, y + 0.3, z + 2, 0.2, 0.2, 4, C.dark);
+      box(x + 0.05, y + 0.15, z + 6, 0.7, 0.5, 16, c);
+      box(x + 0.2, y + 0.2, z + 22, 0.4, 0.4, 5, C.light);
+      if (wig) box(x + 0.15, y + 0.15, z + 26, 0.5, 0.5, 2.5, wig);
+    });
+  }
+  function shoji(x, y, z, len, h) {
+    put(x + y + len / 2, () => {
+      box(x - 0.1, y, z, 0.2, len, h, C.wood);
+      const fx = x + 0.1;
+      faceX(fx, y + 0.15, z + 4, len - 0.3, h - 6, C.paperS, null);
+      for (let k = 1; k < 3; k++) {
+        const yy = y + 0.15 + k * (len - 0.3) / 3;
+        line(at(fx, yy, z + 4), at(fx, yy, z + h - 2), C.wood);
+      }
+      for (let m = 1; m < 4; m++) {
+        const zz = z + 4 + m * (h - 6) / 4;
+        line(at(fx, y + 0.15, zz), at(fx, y + len - 0.15, zz), C.wood);
+      }
+    });
+  }
+
+  const DECOR = {
+    ground: {
+      back(f, X, Y, Z) {
+        use(f, 'gift-shop');
+        faceY(X + 5.4, Y, Z + 16, 3, 22, C.light, C.line);
+        faceY(X + 5.7, Y, Z + 32, 2.4, 3, C.G, null);
+        faceY(X + 5.7, Y, Z + 26, 1.8, 2, C.dark, null);
+        faceY(X + 5.7, Y, Z + 21, 2.1, 2, C.dark, null);
+        use(f, 'lobby');
+        line(at(X + 11, Y, Z + 42), at(X + 12.4, Y, Z + 46), C.dark);
+        line(at(X + 13.8, Y, Z + 42), at(X + 12.4, Y, Z + 46), C.dark);
+        faceY(X + 10, Y, Z + 12, 4.8, 30, C.light, C.line);
+        faceY(X + 10.2, Y, Z + 36, 4.4, 4, C.dark, null);
+        for (let r = 0; r < 4; r++) for (let c = 0; c < 7; c++) {
+          const n = r * 7 + c;
+          faceY(X + 10.25 + c * 0.62, Y, Z + 14 + r * 5.4, 0.5, 4, n % 9 === 4 ? C.G : n % 11 === 7 ? C.O : C.cell, null);
+        }
+        faceY(X + 19, Y, Z + 16, 2.4, 18, C.map, C.line);
+        faceY(X + 19.3, Y, Z + 26, 0.7, 4, C.G, null);
+        faceY(X + 20.2, Y, Z + 20, 0.9, 3, C.O, null);
+        flat(X + 20.6, Y + 5, Z, 1.2, 3, C.mat, C.line);
+        hole(X + 15.5, Y + 9.5, Z, 3, 3.5, 26, C.step, C.part, () => {
+          for (let i = 0; i < 5; i++) box(X + 15.5, Y + 9.5 + i * 0.7, Z - 26, 3, 0.7, 26 - 5 * (i + 1), C.step);
+        });
+      },
+      stuff(f, X, Y, Z) {
+        const cols = [C.G, C.O, C.V, C.seat, C.light];
+        use(f, 'gift-shop');
+        put(X + 0.6 + Y + 4.6, () => {
+          box(X + 0.1, Y + 0.6, Z, 1, 8, 34, C.wood);
+          for (let s = 0; s < 3; s++) for (let k = 0; k < 7; k++)
+            faceX(X + 1.1, Y + 0.9 + k * 1.05, Z + 4 + s * 10, 0.8, 5 + (k + s) % 3, cols[(k * 2 + s) % 5], C.line);
+        });
+        put(X + 3.3 + Y + 0.6, () => {
+          box(X + 1.6, Y + 0.1, Z, 3.4, 1, 26, C.wood);
+          for (let s = 0; s < 2; s++) for (let k = 0; k < 4; k++)
+            faceY(X + 1.8 + k * 0.8, Y + 1.1, Z + 4 + s * 10, 0.6, 5 + (k + s) % 3, cols[(k + s * 2) % 5], C.line);
+        });
+        put(X + 4.3 + Y + 5.2, () => {
+          box(X + 3, Y + 4.2, Z, 2.6, 2, 7, mix(C.G, C.P, 0.3));
+          box(X + 3.3, Y + 4.5, Z + 7, 0.6, 0.6, 3, C.O);
+          box(X + 4.2, Y + 4.6, Z + 7, 0.6, 0.6, 5, C.V);
+          box(X + 4.7, Y + 5.5, Z + 7, 0.6, 0.6, 4, C.G);
+        });
+        put(X + 5.4 + Y + 11, () => {
+          box(X + 3.6, Y + 10.4, Z, 3.6, 1.2, 10, C.wood);
+          box(X + 6, Y + 10.6, Z + 10, 0.9, 0.8, 5, C.dark);
+          flat(X + 4, Y + 10.6, Z + 10, 1, 0.7, C.light, C.line);
+        });
+        plant(X + 7.6, Y + 12.6, Z);
+        use(f, 'lobby');
+        [0, 1.75, 3.5, 8.75, 10.5, 12.25].forEach(t => shoji(X + 9, Y + t, Z, 1.75, 32));
+        put(X + 13 + Y + 5.2, () => {
+          box(X + 11.4, Y + 4.6, Z, 3.2, 1.2, 9, C.wood);
+          box(X + 13.8, Y + 4.9, Z + 9, 0.5, 0.5, 2, C.O);
+        });
+        B(X + 11, Y + 11.6, Z, 3, 0.9, 5, C.wood);
+        plant(X + 21, Y + 1, Z);
+        plant(X + 21, Y + 12.8, Z);
+      },
+      front(f, X, Y, Z) {
+        room = 0;
+        for (let i = 0; i < 5; i++) box(X + 22 + i, Y + 5, Z - 8 * (i + 1) - 10, 1, 3, 10, C.step);
+      }
+    },
+    gallery: {
+      back(f, X, Y, Z) {
+        use(f, 'all');
+        tvY(X + 0.6, Y, Z + 16, 3, 20, C.glass, C.G);
+        tvX(X, Y + 0.4, Z + 18, 2.2, 14, C.V, C.O);
+        frameY(X + 8, Y, Z + 14, 2.4, 24, C.wood, C.V, C.O);
+        frameY(X + 11, Y, Z + 18, 2.6, 18, C.dark, C.G, C.P);
+        [[7.6, 20, C.wood, C.O], [9, 27, C.dark, C.V], [10.4, 18, C.wood, C.G], [11.8, 25, C.dark, C.light], [9.2, 12, C.wood, C.seat]].forEach(([y, z, c, inner]) => {
+          faceX(X, Y + y, Z + z, 1, 7, c, C.line);
+          faceX(X, Y + y + 0.15, Z + z + 1.5, 0.7, 4, inner, null);
+        });
+      },
+      stuff(f, X, Y, Z) {
+        use(f, 'all');
+        put(X + 3.5 + Y + 3.8, () => {
+          box(X + 2, Y + 3.2, Z, 3, 1.2, 8, C.wood);
+          box(X + 2.8, Y + 3.3, Z + 8, 1.2, 0.25, 8, C.dark);
+          faceY(X + 2.9, Y + 3.55, Z + 9, 1, 6, C.G, null);
+        });
+        put(X + 3.5 + Y + 5.2, () => {
+          box(X + 3, Y + 4.7, Z, 1, 0.9, 5, C.seat);
+          box(X + 3, Y + 5.35, Z + 5, 1, 0.25, 7, C.seat);
+        });
+        put(X + 11 + Y + 3.8, () => {
+          box(X + 10.2, Y + 3.9, Z, 0.2, 0.2, 22, C.wood);
+          box(X + 11.6, Y + 3.9, Z, 0.2, 0.2, 22, C.wood);
+          box(X + 10, Y + 3.6, Z + 10, 2, 0.25, 14, C.light);
+          faceY(X + 10.2, Y + 3.85, Z + 12, 1.6, 10, C.O, null);
+          faceY(X + 10.6, Y + 3.85, Z + 15, 0.7, 4, C.G, null);
+        });
+        B(X + 8.6, Y + 5.6, Z, 3, 0.9, 5, C.wood);
+        put(X + 3.7 + Y + 10.4, () => {
+          box(X + 1.4, Y + 10.2, Z, 4.6, 0.35, 24, C.cream);
+          [C.O, C.V, C.G, C.light].forEach((c, k) => faceY(X + 1.7 + k * 1.1, Y + 10.55, Z + 7 + (k % 2) * 8, 0.8, 6, c, C.line));
+        });
+        put(X + 4.4 + Y + 12.5, () => {
+          box(X + 4.3, Y + 12.4, Z, 0.2, 0.2, 12, C.dark);
+          box(X + 4, Y + 12.2, Z + 12, 0.8, 0.5, 4, C.dark);
+          box(X + 4.2, Y + 12.7, Z + 13, 0.4, 0.3, 2, C.V);
+        });
+        put(X + 8.6 + Y + 9.6, () => {
+          box(X + 8.4, Y + 8, Z, 0.35, 3.2, 26, C.light);
+          faceX(X + 8.75, Y + 8.2, Z + 6, 1.2, 9, C.O, C.line);
+          faceX(X + 8.75, Y + 9.6, Z + 12, 1.4, 10, C.G, C.line);
+          faceX(X + 8.75, Y + 8.6, Z + 17, 0.8, 6, C.V, C.line);
+        });
+        put(X + 11.6 + Y + 12, () => {
+          box(X + 10.8, Y + 11.2, Z, 1.6, 1.6, 6, C.light);
+          box(X + 11.1, Y + 11.4, Z + 6, 1, 0.9, 7, C.O);
+          box(X + 11.3, Y + 11.6, Z + 13, 0.6, 0.5, 9, C.V);
+          box(X + 11, Y + 11.5, Z + 22, 0.9, 0.6, 3, C.G);
+        });
+      },
+      under(f, X, Y, Z) { hang(X + 12.6, Y + 13.6, Z - SLAB, 22); }
+    },
+    cinema: {
+      back(f, X, Y, Z) {
+        [['short-films', 1, 8.6, C.glass, C.G], ['animation', 12.2, 6, C.light, C.seat]].forEach(([k, x, w, g, m]) => {
+          use(f, k);
+          tvY(X + x, Y, Z + 14, w, 34, g, m);
+        });
+        use(f, 'short-films');
+        faceX(X, Y + 0.6, Z + 18, 2.8, 26, C.O, C.line);
+        faceX(X, Y + 1, Z + 36, 2, 3, C.P, null);
+        faceX(X, Y + 7.5, Z + 18, 2, 26, C.V, C.line);
+      },
+      stuff(f, X, Y, Z) {
+        [['short-films', [1.4, 2.6, 3.8, 5, 6.2, 7.4, 8.6]], ['animation', [12.4, 13.6, 14.8, 16, 17.2]]].forEach(([k, xs]) => {
+          use(f, k);
+          [3.6, 5.6, 7.6].forEach(y => xs.forEach(x => seatY(X + x, Y + y, Z)));
+        });
+      },
+      under(f, X, Y, Z) { hang(X + 20.6, Y + 9.6, Z - SLAB, 18); }
+    },
+    museum: {
+      back(f, X, Y, Z) {
+        use(f, 'all');
+        faceX(X, Y + 1.5, Z + 18, 2.6, 22, C.O, C.line);
+        faceX(X, Y + 1.8, Z + 32, 2, 3, C.P, null);
+        faceY(X + 1, Y, Z + 20, 2.4, 16, C.light, C.line);
+        faceY(X + 7.5, Y, Z + 18, 2, 20, C.seat, C.line);
+        faceX(X, Y + 9, Z + 18, 2.6, 22, C.G, C.line);
+        faceX(X, Y + 9.3, Z + 32, 2, 3, C.P, null);
+      },
+      stuff(f, X, Y, Z) {
+        use(f, 'all');
+        pedestal(X + 1.8, Y + 2.6, Z, (x, y, z) => { box(x - 0.4, y - 0.25, z, 0.8, 0.5, 2, C.light); box(x - 0.15, y - 0.15, z + 2, 0.3, 0.3, 4, C.light); });
+        pedestal(X + 3.2, Y + 4.8, Z, (x, y, z) => { box(x - 0.35, y - 0.35, z, 0.7, 0.7, 6, C.V); box(x - 0.2, y - 0.2, z + 6, 0.4, 0.4, 3, C.V); });
+        pedestal(X + 7.4, Y + 2.2, Z, (x, y, z) => { box(x - 0.35, y - 0.35, z, 0.7, 0.7, 7, C.O); box(x - 0.15, y - 0.15, z + 7, 0.3, 0.3, 3, C.O); });
+        pedestal(X + 7.4, Y + 4.6, Z, (x, y, z) => { box(x - 0.35, y - 0.35, z, 0.7, 0.7, 5, C.light); box(x - 0.4, y - 0.4, z + 5, 0.8, 0.8, 2, C.O); });
+        pedestal(X + 1.8, Y + 9.2, Z, (x, y, z) => { box(x - 0.4, y - 0.4, z, 0.8, 0.8, 4, C.wood); });
+        pedestal(X + 3.2, Y + 11.6, Z, (x, y, z) => { box(x - 0.4, y - 0.3, z, 0.8, 0.6, 5, C.G); });
+        put(X + 7.5 + Y + 10.4, () => {
+          box(X + 6, Y + 9.6, Z, 3, 1.6, 8, C.wood);
+          box(X + 6.3, Y + 9.8, Z + 8, 0.6, 0.6, 3, C.O);
+          box(X + 7.3, Y + 10, Z + 8, 0.8, 0.5, 2, C.V);
+          box(X + 8.3, Y + 9.9, Z + 8, 0.4, 0.4, 5, C.G);
+        });
+      },
+      under(f, X, Y, Z) { hang(X + 8.6, Y + 13.6, Z - SLAB, 26); }
+    },
+    library: {
+      stuff(f, X, Y, Z) {
+        const cols = [C.G, C.O, C.V, C.dark];
+        use(f, 'essays');
+        shelfY(X + 0.3, Y + 0.2, Z, 4.4, 40, cols);
+        put(X + 2.8 + Y + 6.2, () => {
+          box(X + 1.6, Y + 5.6, Z, 2.4, 1.2, 7, C.wood);
+          box(X + 3.4, Y + 5.8, Z + 7, 0.3, 0.3, 7, C.O);
+          box(X + 1.9, Y + 5.9, Z + 7, 0.9, 0.6, 1, C.V);
+        });
+        use(f, 'poems');
+        shelfY(X + 5.3, Y + 0.2, Z, 3.4, 30, cols);
+        put(X + 6.8 + Y + 5.8, () => {
+          box(X + 6, Y + 5, Z, 1.6, 1.4, 5, C.G);
+          box(X + 6, Y + 6.15, Z + 5, 1.6, 0.25, 8, C.G);
+        });
+        put(X + 8.1 + Y + 5.5, () => {
+          box(X + 7.8, Y + 5.2, Z, 0.6, 0.6, 6, C.wood);
+          box(X + 7.95, Y + 5.35, Z + 6, 0.3, 0.3, 6, C.O);
+        });
+        use(f, 'zines');
+        put(X + 10.1 + Y + 1.1, () => {
+          box(X + 9.4, Y + 0.6, Z, 1.5, 1, 12, C.wood);
+          for (let k = 0; k < 4; k++) box(X + 9.5 + k * 0.33, Y + 0.75, Z + 12, 0.2, 0.7, 4 + k % 3, [C.O, C.G, C.V, C.seat][k], null);
+        });
+        put(X + 11 + Y + 5.7, () => {
+          box(X + 10, Y + 5, Z, 2, 1.4, 12, C.light);
+          box(X + 10, Y + 5, Z + 12, 2, 1.4, 1.5, C.dark);
+          box(X + 10.4, Y + 6.4, Z + 7, 1.2, 0.4, 1, C.light);
+        });
+      }
+    },
+    arcade: {
+      back(f, X, Y, Z) {
+        use(f, 'video-games');
+        faceY(X + 4, Y, Z + 34, 4, 8, C.O, C.line);
+        faceY(X + 4.4, Y, Z + 36, 3.2, 3, C.light, null);
+      },
+      stuff(f, X, Y, Z) {
+        use(f, 'video-games');
+        [0.8, 2.6, 4.4, 6.2, 8, 9.8].forEach((x, i) => {
+          const c = [C.dark, C.V, C.seat][i % 3], scr = [C.G, C.O, C.glass][i % 3];
+          put(X + x + 0.7 + Y + 1, () => {
+            box(X + x, Y + 0.3, Z, 1.4, 1.3, 26, c);
+            faceY(X + x + 0.15, Y + 1.6, Z + 15, 1.1, 7, scr, C.line);
+            box(X + x, Y + 1.6, Z + 10, 1.4, 0.5, 3, C.dark);
+          });
+        });
+        put(X + 4.1 + Y + 5.9, () => {
+          box(X + 3, Y + 4.8, Z, 2.2, 2.2, 10, C.O);
+          box(X + 3, Y + 4.8, Z + 10, 2.2, 2.2, 15, C.glass);
+          faceY(X + 3.3, Y + 7, Z + 11, 0.5, 3, C.G, null);
+          faceY(X + 4, Y + 7, Z + 11, 0.6, 4, C.V, null);
+          faceY(X + 4.2, Y + 7, Z + 19, 0.2, 5, C.dark, null);
+          box(X + 3, Y + 4.8, Z + 25, 2.2, 2.2, 3, C.O);
+        });
+        put(X + 8.7 + Y + 5.8, () => {
+          box(X + 8, Y + 4.2, Z + 10, 1.4, 0.2, 10, C.dark);
+          box(X + 8.05, Y + 4.65, Z, 0.2, 0.2, 6, C.dark);
+          box(X + 9.15, Y + 4.65, Z, 0.2, 0.2, 6, C.dark);
+          box(X + 8, Y + 4.4, Z + 6, 1.4, 2.8, 4, C.G);
+          box(X + 8.05, Y + 6.95, Z, 0.2, 0.2, 6, C.dark);
+          box(X + 9.15, Y + 6.95, Z, 0.2, 0.2, 6, C.dark);
+        });
+        use(f, 'tabletop');
+        [[13, 1.4], [13, 5], [16.4, 3.2]].forEach(([x, y], i) => {
+          put(X + x + 1.2 + Y + y + 0.8, () => {
+            box(X + x, Y + y, Z, 2.4, 1.6, 7, C.wood);
+            flat(X + x + 0.4, Y + y + 0.3, Z + 7, 1.6, 1, i === 1 ? C.light : C.cell, C.line);
+            if (i !== 1) for (let k = 0; k < 4; k++) box(X + x + 0.5 + k * 0.4, Y + y + 0.4 + (k % 2) * 0.5, Z + 7, 0.2, 0.2, 2, k % 2 ? C.O : C.dark, null);
+            else [0, 1, 2].forEach(k => flat(X + x + 0.5 + k * 0.5, Y + y + 0.4, Z + 7, 0.35, 0.5, [C.O, C.G, C.V][k], null));
+          });
+          [[0.2, 1.8], [1.5, 1.8]].forEach(([a, b]) => B(X + x + a, Y + y + b, Z, 0.7, 0.7, 4, C.seat));
+        });
+      }
+    },
+    'vinyl-record-store': {
+      back(f, X, Y, Z) {
+        use(f, 'songs');
+        faceX(X, Y + 1, Z + 12, 3, 20, C.dark, C.line);
+        faceX(X, Y + 1.5, Z + 15, 2, 14, sh(C.dark, 0.8), null);
+        faceX(X, Y + 2.25, Z + 20, 0.5, 4, C.O, null);
+        use(f, 'soundtracks');
+        faceY(X + 7.2, Y, Z + 12, 2.2, 18, C.V, C.line);
+        faceY(X + 7.5, Y, Z + 16, 1.6, 6, C.G, null);
+      },
+      stuff(f, X, Y, Z) {
+        const cols = [C.G, C.O, C.V, C.seat, C.dark];
+        use(f, 'songs');
+        [2.6, 5.2, 7.6].forEach((y, i) => bin(X + 1.4, Y + y, Z, cols, i));
+        use(f, 'soundtracks');
+        put(X + 8.4 + Y + 1.8, () => {
+          box(X + 7.6, Y + 1, Z, 1.6, 1.6, 28, C.glass);
+          box(X + 8.1, Y + 1.5, Z + 10, 0.6, 0.6, 2, C.dark);
+        });
+        bin(X + 5.8, Y + 5.2, Z, cols, 3);
+        put(X + 7.6 + Y + 7.95, () => {
+          box(X + 6.4, Y + 7.4, Z, 2.4, 1.1, 9, C.wood);
+          box(X + 6.7, Y + 7.5, Z + 9, 1.2, 0.9, 1.5, C.dark);
+          box(X + 8.2, Y + 7.6, Z + 9, 0.3, 0.7, 4, C.G);
+        });
+      }
+    },
+    closet: {
+      back(f, X, Y, Z) {
+        use(f, 'fashion');
+        faceY(X + 0.8, Y, Z + 3, 2.4, 34, C.wood, C.line);
+        faceY(X + 1.1, Y, Z + 6, 1.8, 28, C.glass, null);
+        faceY(X + 1.4, Y, Z + 26, 0.3, 6, C.light, null);
+        faceX(X, Y + 5.6, Z + 22, 0.9, 6, C.O, C.line);
+        faceX(X, Y + 6.8, Z + 20, 0.9, 8, C.G, C.line);
+      },
+      stuff(f, X, Y, Z) {
+        use(f, 'fashion');
+        rack(X + 3.6, Y + 1.6, Y + 6.6, Z, [C.O, C.V, C.G, C.seat, C.light]);
+        mannequin(X + 5.6, Y + 2.2, Z, C.O, null);
+        mannequin(X + 5.6, Y + 5, Z, C.V, null);
+        use(f, 'jewelry');
+        [1.2, 3.8].forEach(y => put(X + 10.9 + Y + y + 0.7, () => {
+          box(X + 9.6, Y + y, Z, 2.6, 1.4, 8, C.wood);
+          box(X + 9.6, Y + y, Z + 8, 2.6, 1.4, 5, C.glass);
+          [[0.4, 0.4, C.O], [1.1, 0.8, C.G], [1.8, 0.4, C.V]].forEach(([a, b, c]) => flat(X + 9.6 + a, Y + y + b, Z + 13, 0.3, 0.3, c, null));
+        }));
+      }
+    },
+    'conversation-pit': {
+      back(f, X, Y, Z) {
+        use(f, 'free-format');
+        hole(X + 1.5, Y + 0.8, Z, 6, 3.4, 12, sh(C.peach, 0.85), C.part, () => {
+          box(X + 1.5, Y + 0.8, Z - 12, 6, 1, 5, C.cushion);
+          box(X + 1.5, Y + 1.8, Z - 12, 1, 2.4, 5, C.cushion);
+          box(X + 3.8, Y + 2, Z - 12, 1.6, 1, 4, C.wood);
+          box(X + 2.5, Y + 3.2, Z - 12, 4, 1, 5, C.cushion);
+          box(X + 6.5, Y + 1.8, Z - 12, 1, 2.4, 5, C.cushion);
+        });
+      },
+      stuff(f, X, Y, Z) {
+        use(f, 'free-format');
+        put(X + 8.9 + Y + 0.7, () => {
+          box(X + 8.8, Y + 0.6, Z, 0.2, 0.2, 26, C.dark);
+          box(X + 8.55, Y + 0.35, Z + 26, 0.7, 0.7, 4, C.O);
+        });
+        use(f, 'topics');
+        B(X + 0.3, Y + 5.4, Z, 0.9, 2.4, 5, C.wood);
+        put(X + 2.8 + Y + 5.8, () => {
+          box(X + 1.8, Y + 5.7, Z, 0.2, 0.2, 18, C.wood);
+          box(X + 3.6, Y + 5.7, Z, 0.2, 0.2, 18, C.wood);
+          box(X + 1.6, Y + 5.6, Z + 6, 2.4, 0.25, 14, C.dark);
+          [[1.9, 14, 1.6], [1.9, 10, 1.1], [2.4, 17, 1.3]].forEach(([x, z, w]) => faceY(X + x, Y + 5.85, Z + z, w, 1, C.light, null));
+        });
+        use(f, 'suggestions');
+        put(X + 8 + Y + 6.2, () => {
+          box(X + 7.4, Y + 5.6, Z, 1.2, 1.2, 10, C.O);
+          flat(X + 7.7, Y + 6, Z + 10, 0.6, 0.2, C.dark, null);
+          box(X + 6.6, Y + 6.4, Z, 0.5, 0.4, 0.5, C.light, null);
+        });
+        plant(X + 9, Y + 6.8, Z);
+      }
+    },
+    archive: {
+      stuff(f, X, Y, Z) {
+        const cols = [C.O, C.V, C.G, C.light, C.seat];
+        use(f, 'past-weeks');
+        ARCHIVE_ROWS.forEach((y, ri) => ARCHIVE_COLS.forEach((x, ci) => {
+          if (y > 13 && x + 4.2 > 19.5 && x < 22.5) return;
+          put(X + x + 2.1 + Y + y + 0.65, () => {
+            box(X + x, Y + y, Z, 4.2, 1.3, 30, C.wood);
+            for (let s = 0; s < 3; s++) for (let k = 0; k < 4; k++) {
+              if ((ri * 7 + ci * 3 + s * 5 + k) % 6 === 0) continue;
+              faceY(X + x + 0.25 + k * 0.97, Y + y + 1.3, Z + 3 + s * 9, 0.75, 6, cols[(ri + ci + s + k) % 5], C.line);
+            }
+          });
+        }));
+        put(X + 21 + Y + 15.25, () => {
+          for (let i = 0; i < 5; i++) box(X + 19.5, Y + 13.5 + i * 0.7, Z, 3, 0.7, 26 - 5 * i, C.step);
+        });
+        put(X + 25.5 + Y + 16.3, () => {
+          box(X + 24, Y + 15.6, Z, 3, 1.4, 8, C.wood);
+          box(X + 24.4, Y + 15.8, Z + 8, 0.9, 0.8, 1.5, C.light);
+          box(X + 26.5, Y + 15.9, Z + 8, 0.3, 0.3, 8, C.O);
+        });
+      }
+    }
+  };
+
+  function drawFloor(f) {
+    const { x: X, y: Y, z: Z } = f, deco = DECOR[f.key];
+    f.sections.forEach(s => { room = s.id; pattern(X + s.x, Y + s.y, Z, s.w, s.d, s.fl); });
+    slab(f);
+    if (deco.under) deco.under(f, X, Y, Z);
+    edges(f);
+    if (deco.back) deco.back(f, X, Y, Z);
+    partitions(f);
+    if (deco.stuff) deco.stuff(f, X, Y, Z);
+    flush();
+    if (deco.front) deco.front(f, X, Y, Z);
+  }
+
+  function drawStair([a, b, dir, s]) {
+    const A = byKey[a], n = (byKey[b].z - A.z) / 8;
+    room = 0;
+    for (let i = n - 1; i >= 0; i--) {
+      const z = A.z + 8 * (i + 1) - 12;
+      if (dir === 'x') box(A.x - i - 1, A.y + s, z, 1, 3, 12, C.step);
+      else box(A.x + s, A.y - i - 1, z, 3, 1, 12, C.step);
+    }
+  }
+
+  function dash(p, q) {
+    const col = pack(C.O), x = Math.round(p[0]), y0 = Math.round(p[1]);
+    for (let y = y0; y <= q[1]; y++) if ((y - y0) % 6 < 3) dot(x, y, col);
+  }
+
+  function draw() {
+    palette();
+    buf.fill(0);
+    ids.fill(0);
+    const units = FLOORS.map(f => ({ key: f.x + f.w / 2 + f.y + f.d / 2 + f.z / 4, fn: () => drawFloor(f) }))
+      .concat(STAIRS.map(st => {
+        const A = byKey[st[0]], n = (byKey[st[1]].z - A.z) / 8;
+        const cx = st[2] === 'x' ? A.x - n / 2 : A.x + st[3] + 1.5, cy = st[2] === 'x' ? A.y + st[3] + 1.5 : A.y - n / 2;
+        return { key: cx + cy + (A.z + 4 * n) / 4, fn: () => drawStair(st) };
+      }));
+    units.sort((a, b) => a.key - b.key).forEach(u => u.fn());
+    room = -1;
+    const G = byKey.ground, A = byKey.archive;
+    dash(at(G.x, G.y + G.d, -SLAB), at(A.x, A.x - (G.x - G.y - G.d), A.z + A.h));
+    dash(at(G.x + G.w, G.y, -SLAB), at(A.y + G.x + G.w - G.y, A.y, A.z + A.h));
+    dash(at(G.y + G.d + 5.75, G.y + G.d, -SLAB), at(A.y + 13.85 + 5.75, A.y + 13.85, A.z + 26));
+    sctx.putImageData(img, 0, 0);
+  }
+
+  let sel = null, hover = null;
+  function idsOf(t) {
+    if (!t) return null;
+    return new Set(t.sections ? t.sections.map(s => s.id) : [t.id]);
+  }
+  function drawGlow() {
+    gbuf.fill(0);
+    const col = pack(C.G);
+    [idsOf(sel), idsOf(hover)].forEach(set => {
+      if (!set) return;
+      for (let y = 1; y < H - 1; y++) for (let x = 1; x < W - 1; x++) {
+        const i = y * W + x;
+        if (set.has(ids[i]) && (!set.has(ids[i - 1]) || !set.has(ids[i + 1]) || !set.has(ids[i - W]) || !set.has(ids[i + W]))) gbuf[i] = col;
+      }
+    });
+    gctx.putImageData(gimg, 0, 0);
+  }
+
+  const labels = [], boards = [];
+  function board(text, pick, cls) {
+    const b = document.createElement(pick ? 'button' : 'span');
+    b.className = 'board ' + cls;
+    b.textContent = text;
+    if (pick) {
+      b.type = 'button';
+      b.dataset.pick = pick;
+      boards.push(b);
+    }
+    return b;
+  }
+  function label(cls, spot, kids) {
+    const el = document.createElement('div');
+    el.className = cls;
+    el.spot = spot;
+    kids.forEach(k => el.appendChild(k));
+    world.appendChild(el);
+    labels.push(el);
+  }
+  FLOORS.forEach(f => {
+    if (f.key === 'ground') {
+      label('post', at(f.x + 9, f.y + 0.3, f.z + f.h), f.sections.map(s => board(s.name, 'ground/' + s.key, s.point)));
+      return;
+    }
+    label('post', at(f.x + 0.6, f.y + 0.6, f.z + (f.h || 8)), [board(f.name, f.key, f.point)]);
+    (f.items || []).forEach(([x, y, z, t]) => label('note', at(f.x + x, f.y + y, f.z + z), [board(t, '', 'small l')]));
+    if (f.sections.length > 1) f.sections.forEach(s => label('tag', at(f.x + s.x + s.w / 2, f.y + s.y + s.d / 2, f.z + 14), [board(s.name, f.key + '/' + s.key, 'small r')]));
+  });
+  ARCHIVE_ROWS.forEach((y, i) => label('note', at(byKey.archive.x + 3.1, byKey.archive.y + y + 0.65, byKey.archive.z + 36), [board('week ' + (i + 1), '', 'small r')]));
+  label('note', at(byKey.ground.x + 26.5, byKey.ground.y + 6.5, byKey.ground.z - 50), [board('welcome', '', 'small l')]);
+
+  const GRAPH = {};
+  function link(a, b, pts) {
+    (GRAPH[a] = GRAPH[a] || []).push({ to: b, pts });
+    (GRAPH[b] = GRAPH[b] || []).push({ to: a, pts: pts.slice().reverse() });
+  }
+  STAIRS.forEach(([a, b, dir, s]) => {
+    const A = byKey[a], Bf = byKey[b], n = (Bf.z - A.z) / 8;
+    if (dir === 'x') {
+      const y = A.y + s + 1.5;
+      link(a, b, [[A.x + 0.6, y, A.z], [A.x, y, A.z], [A.x - n, y, Bf.z], [A.x - n - 0.6, y, Bf.z]]);
+    } else {
+      const x = A.x + s + 1.5;
+      link(a, b, [[x, A.y + 0.6, A.z], [x, A.y, A.z], [x, A.y - n, Bf.z], [x, A.y - n - 0.6, Bf.z]]);
+    }
+  });
+  (() => {
+    const G = byKey.ground, A = byKey.archive;
+    link('ground', 'archive', [[G.x + 17, G.y + 8.9, G.z], [G.x + 17, G.y + 9.5, G.z - 4], [G.x + 17, G.y + 12.6, G.z - 24],
+      [A.x + 21, A.y + 13.8, A.z + 26, 'jump'], [A.x + 21, A.y + 17.2, A.z], [A.x + 21, A.y + 17.6, A.z]]);
+  })();
+
+  function route(from, to) {
+    const prev = { [from]: null }, q = [from];
+    while (q.length) {
+      const k = q.shift();
+      if (k === to) break;
+      (GRAPH[k] || []).forEach(e => { if (!(e.to in prev)) { prev[e.to] = { k, e }; q.push(e.to); } });
+    }
+    const steps = [];
+    for (let k = to; prev[k]; k = prev[k].k) steps.unshift(prev[k].e);
+    return steps;
+  }
+  const spotFor = t => {
+    const f = t.sections ? t : t.floor;
+    return t.sections ? [f.x + f.w / 2, f.y + f.d / 2, f.z] : [f.x + t.x + t.w / 2, f.y + t.y + t.d / 2, f.z];
+  };
+  const lobbyStart = [byKey.ground.x + 14, byKey.ground.y + 8.5, 0];
+  const walker = { p: lobbyStart.slice(), floor: 'ground', queue: [], flip: false };
+  function walkTo(t) {
+    let keep = [], base = walker.floor;
+    const end = walker.queue.findIndex(q => q.floor);
+    if (end >= 0) {
+      keep = walker.queue.slice(0, end + 1);
+      base = keep[end].floor;
+    }
+    const f = t.sections ? t : t.floor, pts = [];
+    route(base, f.key).forEach(e => e.pts.forEach((p, i) => pts.push({ p: p.slice(0, 3), jump: p[3] === 'jump', floor: i === e.pts.length - 1 ? e.to : null })));
+    pts.push({ p: spotFor(t), jump: false, floor: null });
+    walker.queue = keep.concat(pts);
+    run();
+  }
+
+  let s = 1, cx = W / 2, cy = H / 2, cam = null, raf = 0, last = 0;
+  const fitScale = () => Math.min(view.clientWidth / W, view.clientHeight / H) * 0.92;
+  const clampS = v => Math.max(Math.min(1, fitScale()), Math.min(ZMAX, v));
+  function place() {
+    const vw = view.clientWidth, vh = view.clientHeight;
+    cx = Math.max(0, Math.min(W, cx));
+    cy = Math.max(0, Math.min(H, cy));
+    const tx = Math.round(vw / 2 - cx * s), ty = Math.round(vh / 2 - cy * s);
+    world.style.transform = `translate(${tx}px, ${ty}px)`;
+    layer.style.transform = `scale(${s})`;
+    view.classList.toggle('far', s < 1.7);
+    labels.forEach(el => { el.style.transform = `translate(${Math.round(el.spot[0] * s)}px, ${Math.round(el.spot[1] * s)}px) translate(-50%, -100%)`; });
+    const [gx, gy] = at(...walker.p);
+    guy.style.height = 24 * s + 'px';
+    guy.style.transform = `translate(${Math.round(gx * s)}px, ${Math.round(gy * s)}px) translate(-50%, -100%)${walker.flip ? ' scaleX(-1)' : ''}`;
+  }
+  function zoomAt(ns, ax, ay) {
+    const vw = view.clientWidth, vh = view.clientHeight;
+    const wx = cx + (ax - vw / 2) / s, wy = cy + (ay - vh / 2) / s;
+    s = clampS(ns);
+    cx = wx - (ax - vw / 2) / s;
+    cy = wy - (ay - vh / 2) / s;
+  }
+  function zoomTo(ts, ax, ay) {
+    cam = { mode: 'zoom', s: clampS(ts), ax, ay };
+    run();
+  }
+  function flyTo([x, y], ts) {
+    cam = { mode: 'fly', s: clampS(ts), x, y };
+    run();
+  }
+  function run() { if (!raf) { last = performance.now(); raf = requestAnimationFrame(tick); } }
+  function tick(now) {
+    raf = 0;
+    const dt = Math.min(0.05, (now - last) / 1000);
+    last = now;
+    const k = 1 - Math.pow(0.0015, dt);
+    if (cam) {
+      if (cam.mode === 'zoom') {
+        const ns = Math.abs(cam.s - s) < 0.003 ? cam.s : s + (cam.s - s) * k;
+        zoomAt(ns, cam.ax, cam.ay);
+        if (ns === cam.s) cam = null;
+      } else {
+        s += (cam.s - s) * k;
+        cx += (cam.x - cx) * k;
+        cy += (cam.y - cy) * k;
+        if (Math.abs(cam.s - s) < 0.003 && Math.hypot(cam.x - cx, cam.y - cy) < 0.5) {
+          s = cam.s;
+          cx = cam.x;
+          cy = cam.y;
+          cam = null;
+        }
+      }
+    }
+    let moving = walker.queue.length > 0;
+    if (moving) {
+      let left = dt * 7;
+      while (left > 0 && walker.queue.length) {
+        const q = walker.queue[0], p = walker.p;
+        if (q.jump) {
+          walker.p = q.p.slice();
+        } else {
+          const dx = q.p[0] - p[0], dy = q.p[1] - p[1], dz = (q.p[2] - p[2]) / 8, dist = Math.hypot(dx, dy, dz);
+          if (dist > left) {
+            const r = left / dist;
+            walker.p = [p[0] + dx * r, p[1] + dy * r, p[2] + dz * 8 * r];
+            const sx = (dx - dy) * 8;
+            if (Math.abs(sx) > 0.01) walker.flip = sx < 0;
+            break;
+          }
+          left -= dist;
+          walker.p = q.p.slice();
+        }
+        if (q.floor) walker.floor = q.floor;
+        walker.queue.shift();
+      }
+      moving = walker.queue.length > 0;
+    }
+    place();
+    if (cam || moving) run();
+  }
+
+  function hit(e) {
+    const r = scene.getBoundingClientRect();
+    const x = Math.floor((e.clientX - r.left) / s), y = Math.floor((e.clientY - r.top) / s);
+    if (x < 0 || y < 0 || x >= W || y >= H) return null;
+    return SECTIONS[ids[y * W + x]] || null;
+  }
+  const top1 = t => t && t.floor && t.floor.sections.length === 1 ? t.floor : t;
+  const keyOf = t => !t ? '' : t.sections ? t.key : t.floor.sections.length === 1 ? t.floor.key : t.floor.key + '/' + t.key;
+  function setHover(t) {
+    view.classList.toggle('hot', !!t);
+    if (t === hover) return;
+    hover = t;
+    const k = keyOf(t);
+    boards.forEach(b => b.classList.toggle('hover', !!k && b.dataset.pick === k));
+    drawGlow();
+  }
+
+  function cardFor(t) {
+    const head = title => `<div class="card-head"><p class="page-title">${title}</p><button type="button" class="card-min" aria-label="fold">${card.classList.contains('min') ? '+' : '-'}</button></div>`;
+    if (!t) return head('craft mall') + `<div class="card-body">
+      <p>a virtual mall for artists. every floor is one theme, and every week new works fill it. when the week resets, they move down to the archive in the basement.</p>
+      <p class="card-title">floors</p>
+      <ul class="floor-list">${FLOORS.map(f => `<li><button type="button" data-pick="${f.key}">${f.name}</button></li>`).join('')}</ul></div>`;
+    const f = t.sections ? t : t.floor;
+    const tags = f.sections.length > 1 ? `<p class="card-title">${f.key === 'ground' ? 'rooms' : 'sections'}</p><div class="tags">${f.sections.map(s => `<button type="button" class="${s === t ? 'on' : ''}" data-pick="${f.key}/${s.key}">${s.name}</button>`).join('')}</div>`
+      : f.tags ? `<p class="card-title">tags</p><div class="tags">${f.tags.map(x => `<span>${x}</span>`).join('')}</div>` : '';
+    const facts = f.under ? '<dt>shelved</dt><dd>no weeks yet</dd>' : '<dt>this week</dt><dd>empty</dd><dt>after the reset</dt><dd>goes down to the archive</dd>';
+    return head(t.name) + `<div class="card-body">
+      ${t.sections ? '' : `<p class="sub">on the ${f.name}${f.key === 'ground' ? '' : ' floor'}</p>`}
+      <p>${t.about || f.about}</p>${tags}<dl class="facts">${facts}</dl>
+      <button type="button" class="back" data-pick="${t.sections ? '' : f.key}">${t.sections ? 'all floors' : 'back to ' + f.name}</button></div>`;
+  }
+  function lookup(k) {
+    const [a, b] = k.split('/'), f = byKey[a];
+    if (!f) return null;
+    return b ? f.sections.find(x => x.key === b) || f : f;
+  }
+  function apply(center) {
+    const t = lookup(decodeURIComponent(location.hash.slice(1)));
+    if (t && t !== sel) walkTo(t);
+    sel = t;
+    const k = keyOf(sel);
+    boards.forEach(b => b.classList.toggle('on', !!k && b.dataset.pick === k));
+    card.innerHTML = cardFor(sel);
+    drawGlow();
+    if (center && sel) {
+      const [x, y] = at(...spotFor(sel));
+      flyTo([x, y - 20], Math.max(cam && cam.s || s, 2));
+    }
+  }
+  let recenter = false;
+  function pick(k, center) {
+    recenter = !!center;
+    if (!k) {
+      history.pushState(null, '', location.pathname);
+      apply(false);
+    } else if (location.hash !== '#' + k) location.hash = k;
+    else apply(recenter);
+  }
+
+  const overlay = e => e.target.closest('button, a, .panel');
+  const pointers = new Map();
+  let drag = null, pinch = null;
+  const mid = () => {
+    const [a, b] = [...pointers.values()];
+    return [(a.x + b.x) / 2, (a.y + b.y) / 2, Math.hypot(a.x - b.x, a.y - b.y)];
+  };
+  const local = e => {
+    const r = view.getBoundingClientRect();
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
+  };
+  view.addEventListener('pointerdown', e => {
+    if (e.button !== 0 || overlay(e)) return;
+    view.setPointerCapture(e.pointerId);
+    pointers.set(e.pointerId, local(e));
+    cam = null;
+    if (pointers.size === 2) {
+      const [mx, my, d] = mid();
+      pinch = { s, d, wx: cx + (mx - view.clientWidth / 2) / s, wy: cy + (my - view.clientHeight / 2) / s };
+      drag = null;
+      view.classList.remove('dragging');
+    } else if (pointers.size === 1) {
+      drag = { x: e.clientX, y: e.clientY, cx, cy, moved: false };
+    }
+  });
+  view.addEventListener('pointermove', e => {
+    if (pointers.has(e.pointerId)) pointers.set(e.pointerId, local(e));
+    if (pinch && pointers.size === 2) {
+      const [mx, my, d] = mid();
+      s = clampS(pinch.s * d / pinch.d);
+      cx = pinch.wx - (mx - view.clientWidth / 2) / s;
+      cy = pinch.wy - (my - view.clientHeight / 2) / s;
+      place();
+      return;
+    }
+    if (!drag) return setHover(overlay(e) ? null : top1(hit(e)));
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (!drag.moved && Math.hypot(dx, dy) > 4) {
+      drag.moved = true;
+      view.classList.add('dragging');
+      setHover(null);
+    }
+    if (drag.moved) {
+      cx = drag.cx - dx / s;
+      cy = drag.cy - dy / s;
+      place();
+    }
+  });
+  function release(e) {
+    pointers.delete(e.pointerId);
+    if (pinch) {
+      if (pointers.size < 2) pinch = null;
+      drag = null;
+      return;
+    }
+    if (!drag) return;
+    if (!drag.moved && e.type === 'pointerup') {
+      const t = top1(hit(e));
+      if (t) pick(keyOf(t));
+    }
+    drag = null;
+    view.classList.remove('dragging');
+  }
+  view.addEventListener('pointerup', release);
+  view.addEventListener('pointercancel', release);
+  view.addEventListener('pointerleave', () => { if (!drag) setHover(null); });
+  view.addEventListener('wheel', e => {
+    if (overlay(e)) return;
+    e.preventDefault();
+    const p = local(e);
+    const mouse = e.deltaMode !== 0 || (e.deltaX === 0 && Math.abs(e.deltaY) >= 50 && Number.isInteger(e.deltaY));
+    if (e.ctrlKey) {
+      cam = null;
+      zoomAt(s * Math.exp(-e.deltaY * 0.01), p.x, p.y);
+      place();
+    } else if (mouse) {
+      const dy = e.deltaMode === 1 ? e.deltaY * 40 : e.deltaY;
+      const from = cam && cam.mode === 'zoom' ? cam.s : s;
+      zoomTo(from * Math.exp(-dy * 0.0022), p.x, p.y);
+    } else {
+      cam = null;
+      cx += e.deltaX / s;
+      cy += e.deltaY / s;
+      place();
+    }
+  }, { passive: false });
+  window.addEventListener('pointerdown', e => {
+    if (view.contains(e.target) && !overlay(e)) view.classList.toggle('hot', !!hit(e));
+  }, true);
+  view.addEventListener('click', e => {
+    const b = e.target.closest('[data-pick], .zb, .card-min');
+    if (!b) return;
+    if (b.classList.contains('card-min')) {
+      card.classList.toggle('min');
+      b.textContent = card.classList.contains('min') ? '+' : '-';
+    } else if (b.classList.contains('zb')) {
+      const from = cam && cam.mode === 'zoom' ? cam.s : s;
+      zoomTo(from * (b.dataset.zoom === '1' ? 1.5 : 1 / 1.5), view.clientWidth / 2, view.clientHeight / 2);
+    } else pick(b.dataset.pick, !!b.closest('.mall-card'));
+  });
+  window.addEventListener('hashchange', () => {
+    apply(recenter);
+    recenter = false;
+  });
+  window.addEventListener('resize', () => { s = clampS(s); place(); });
+  document.addEventListener('DOMContentLoaded', () => {
+    const t = document.querySelector('.theme-toggle');
+    if (t) tools.appendChild(t);
+  });
+  new MutationObserver(() => { draw(); drawGlow(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  if (innerWidth < 700) card.classList.add('min');
+  draw();
+  [cx, cy] = at(byKey.library.x + 7, byKey.library.y + 12, byKey.library.z - 40);
+  place();
+  apply(!!location.hash);
+</script>
+<script src="/nav.js?v=77"></script>
+</body>
+</html>
