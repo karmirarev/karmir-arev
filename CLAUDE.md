@@ -365,8 +365,8 @@ All of it is in its `index.html`, no images.
   `[from, to, 'x' | 'y', offset]`, leaving through a gap in the lower floor's back wall and
   landing on the upper floor's open front edge.
 - The gallery and the museum are one open room each, not split into sections: every piece
-  carries its own tags instead (`tags` on the floor for the card, `items` places small tags
-  next to pieces). Cinema has short films and animation, closet has fashion and jewelry,
+  carries its own tags instead (`tags` on the floor for the card, each piece in `PIECES` is
+  named by its tag). Cinema has short films and animation, closet has fashion and jewelry,
   the roof pit has free format, topics and suggestions.
 - Ground floor: the lobby and the gift shop in one room, split by a shoji (paper sliding
   wall, `shoji()`), the calendar hanging on the lobby wall, "welcome" stairs out the front
@@ -374,9 +374,36 @@ All of it is in its `index.html`, no images.
 - Room names are pointer signs: arrow boards (`.board`, `clip-path`) on a post standing on
   the floor's back corner; the ground floor's post has two boards, gift shop and lobby.
   Sections get small lilac arrow tags, shown from 1.7x zoom up.
-- The beet (`guy.gif`) starts in the lobby and walks to whatever is picked: `route()` finds
-  the stairs (breadth first), `walkTo()` queues the points, `tick()` moves him (he flips to
-  face where he walks, and jumps the gap down to the archive).
+- The beet (`guy.gif`) starts in the lobby. Picking a room puts him at the top of the last
+  stair into it (`route()` finds the stairs, breadth first) and he walks to the spot;
+  `tick()` moves him and flips him to face where he walks.
+- Clicking a room (on the scene, its sign or the card) zooms into it: the other rooms
+  vanish at once (`mode = 'iso'`, the map drawn with only that floor), the camera flies in,
+  then it cuts to the room drawn on its own at 3x detail (`mode = 'room'`, `drawRoom()`,
+  `KD = 3`, `roomFrame()`), lined up so the cut looks like the room getting sharper. Inside,
+  `DETAIL` turns on more: paintings in frames and screens (`art()`), wall lamps, a 1-tile
+  floor grid, and `MORE[key]` per floor adds visitors (`person()`), a cat, rugs, glass
+  cases (`wire()`), string lights and props. The stairs touching that room are drawn,
+  leading off toward the edge signs.
+- In a room, every other floor shows as an arrow sign on the screen edges, on the side
+  where that floor sits on the map (`f.mc`). Clicking one cuts to that room with a
+  short slide from that side, and the beet comes in at the top of the stairs from where he
+  was (`moveBeet()`). The "map" pill, or zooming out past half the room view, goes back to
+  the whole mall.
+- Clickable things in a room have no visible label: hovering one draws a green outline
+  round it and shows its name on an arrow board (`.tip`); clicking opens `.piece-view`.
+  `PIECES[floor]` lists them (`k`, `name`, `sec`, `at` for the name board); the decor marks
+  what belongs to each with `pc(f, k)` before drawing it, which gives those pixels the
+  piece's own id (100 and up) in `ids`, so the outline follows the object. On the map the
+  piece ids count as their section. One name per thing: the ground floor has "calendar",
+  "artist shops" (shelves, table, postcard stand) and "commissions" (counter and wall board).
+  The lobby's mall map was removed (oct 2026, marita did not want it).
+- The calendar piece opens a real calendar in `.piece-view` (wide): month grid (monday
+  first, today ringed green, days with events get an orange dot), the picked day's events,
+  and an "add an event" form (title, date, from, to, location, short description, free or
+  paid with price, link). Each event shows "add to google calendar" (a calendar.google.com
+  template link, 2 hours when no end time) and "remove". For now events live in the
+  viewer's own `localStorage` (`craft-mall-events`); a shared store comes later.
 - Zoom is smooth and only scales the scene: the canvases sit in `.mall-layer` scaled with a
   transform, labels are moved by hand at their own size, panels never move. Drag or
   two-finger scroll to move, pinch or ctrl + scroll zooms at the cursor, a mouse wheel zooms
