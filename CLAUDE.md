@@ -199,8 +199,8 @@ loads. It loads `FILEPREFIX.loader.js` and calls
 `createUnityInstance` itself, so the export's own `index.html` is never touched. The
 separate "play in browser" link is hidden for embedded games, and `show()` quits the game
 when you leave the page. A plain web page plays the same way with `embed: { page: './games/NAME/', width, height }`:
-it shows in an iframe in the same player box. Pingala uses this (its ascii web version, one
-self-contained `index.html` copied from `~/Projects/pingala/ascii/`).
+it shows in an iframe in the same player box. Pingala uses the Unity build (marita's own; an ascii web version was tried
+in oct 2026 and she went back to the Unity one).
 
 `projects/#other` uses the same card grid as games, built from the `OTHER` list in
 `projects/index.html` (`{ key, name, tag, blurb, href, cover }`); like the game cards they show a live
