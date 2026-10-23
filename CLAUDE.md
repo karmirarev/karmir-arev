@@ -230,11 +230,18 @@ live in `site.css` so both pages share them.
   the rest keep their own names. The byob pictures in "animated" reuse the event files.
   Videos become gifs (no ffmpeg on the mac: `uv run --no-project --with imageio-ffmpeg`
   gives one), kept small (characterconcept: 480px, 10 fps, 4.7MB).
-- Zine fold: the zines block starts with `<div class="zine-fold" data-outside="./drawings/zine-2.webp" data-poster="./drawings/zine-1.webp">`,
-  a looping CSS 3D fold of the one-sheet zine (`arts-and-crafts/zine.js`): menu cover,
-  flaps open one by one, full poster, then it folds back. `show()` calls `window.zineFold()`
-  after swapping sections in. `?zine=4.2` freezes it at that second for checking. Her
-  fold reel: instagram.com/karmirarev__/reel/DafPxhTteDZ.
+- Zine fold: the zines block holds only `<div class="zine-fold" data-outside="./drawings/zine-2.webp" data-poster="./drawings/zine-1.webp">`
+  (marita removed the two flat sheet pictures), a CSS 3D model of her one-sheet zine
+  (`arts-and-crafts/zine.js`) stepped with `<` `>` square arrows on its left and right
+  (`.zine-arrow`, styled like the home carousel `>`). No autoplay and no motion between frames:
+  each click jumps straight to the next still frame (marita removed the fold animation). 8 frames: the menu cover,
+  then one panel opens per click along her zigzag (up, right, down, right, up, right,
+  down, poster coordinates, every flap rolled over the top), ending on the full poster;
+  `>` on the last frame folds it back to the cover. In each frame the newest opened page
+  stays lifted a little (`LIFT`), as if still opening. The six tarot pages are turned
+  upright on the flaps (her print shows them inverted with this fold); the cover keeps
+  the print orientation. `show()` calls `window.zineFold()` after swapping sections in.
+  `?zine=3` opens on that frame. Her fold reel: instagram.com/karmirarev__/reel/DafPxhTteDZ.
 - Previews: every drawing and event photo shows a small preview, never the full file.
   Run `python3 tools/thumb.py arts-and-crafts/drawings/x.webp` (any number of
   paths). It writes a 560px-wide webp into `arts-and-crafts/thumbs/` (event photos into

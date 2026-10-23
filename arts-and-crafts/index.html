@@ -185,7 +185,34 @@
     }
     .zine-fold {
       max-width: 720px;
-      margin: 0 auto 10px;
+      margin: 0 auto;
+    }
+    .zine-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1;
+      font: inherit;
+      font-size: 14px;
+      line-height: 1;
+      box-sizing: border-box;
+      width: 22px;
+      height: 22px;
+      padding: 0;
+      border: 1px solid var(--maroon);
+      border-radius: 2px;
+      background: var(--paper);
+      color: var(--maroon);
+      cursor: pointer;
+    }
+    .zine-arrow:hover {
+      background: var(--lime);
+    }
+    .zine-arrow.prev {
+      left: 0;
+    }
+    .zine-arrow.next {
+      right: 0;
     }
   </style>
 </head>
@@ -284,10 +311,6 @@
       </div>
       <div class="event">
         <div class="zine-fold" data-outside="./drawings/zine-2.webp" data-poster="./drawings/zine-1.webp"></div>
-        <div class="gallery">
-          <div class="gallery-item"><img src="./thumbs/zine-1.webp" data-full="./drawings/zine-1.webp" width="560" height="396" loading="lazy" alt="zine-1"></div>
-          <div class="gallery-item"><img src="./thumbs/zine-2.webp" data-full="./drawings/zine-2.webp" width="560" height="396" loading="lazy" alt="zine-2"></div>
-        </div>
       </div>
       <div class="event">
         <div class="gallery">
@@ -482,7 +505,7 @@
   });
 </script>
 
-<script src="/arts-and-crafts/zine.js?v=1"></script>
+<script src="/arts-and-crafts/zine.js?v=5"></script>
 <script src="/nav.js?v=77"></script>
 </body>
 </html>

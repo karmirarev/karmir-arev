@@ -1,36 +1,15 @@
 (function () {
-  var SEGS = [
-    { s: 1.2 },
-    { k: 'd', to: 0, s: 1.1 }, { s: 0.35 },
-    { k: 'c', to: 0, s: 1 }, { s: 0.35 },
-    { k: 'b', to: 0, s: 1 }, { s: 0.35 },
-    { k: 'a', to: 0, s: 1 },
-    { s: 2.2 },
-    { k: 'a', to: 1, s: 0.9 }, { s: 0.2 },
-    { k: 'b', to: 1, s: 0.9 }, { s: 0.2 },
-    { k: 'c', to: 1, s: 0.9 }, { s: 0.2 },
-    { k: 'd', to: 1, s: 1 }
-  ];
-  var LOOP = SEGS.reduce(function (n, g) { return n + g.s; }, 0);
-  var PI = Math.PI;
+  var PATH = [[1, 0], [0, 0], [0, 1], [1, 1], [1, 2], [0, 2], [0, 3], [1, 3]];
+  var LAST = 7, LIFT = 0.15, PI = Math.PI;
+  var I = [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0];
 
-  function state(t) {
-    var f = { a: 1, b: 1, c: 1, d: 1 }, tilt = 0;
-    t = ((t % LOOP) + LOOP) % LOOP;
-    for (var i = 0; i < SEGS.length; i++) {
-      var g = SEGS[i];
-      if (t < g.s) {
-        if (g.k) {
-          var from = f[g.k], q = t / g.s;
-          f[g.k] = from + (g.to - from) * (0.5 - 0.5 * Math.cos(PI * q));
-          tilt = Math.sin(PI * q);
-        }
-        break;
-      }
-      if (g.k) f[g.k] = g.to;
-      t -= g.s;
+  function folds(p) {
+    var f = [1];
+    for (var k = 1; k <= LAST; k++) {
+      var a = p - (k - 1);
+      f[k] = a <= 0 ? 1 : a <= 1 ? 1 - (1 - LIFT) * a : k === LAST ? LIFT : a >= 2 ? 0 : LIFT * (2 - a);
     }
-    return { f: f, tilt: tilt };
+    return f;
   }
 
   function mul(A, B) {
@@ -52,31 +31,47 @@
   function css(m) {
     return 'matrix3d(' + [m[0], m[3], m[6], 0, m[1], m[4], m[7], 0, m[2], m[5], m[8], 0, m[9], m[10], m[11], 1].join(',') + ')';
   }
+  function box(n) {
+    var b = [4, 2, 0, 0];
+    for (var i = 0; i <= n; i++) {
+      var p = PATH[i];
+      b = [Math.min(b[0], p[1]), Math.min(b[1], p[0]), Math.max(b[2], p[1] + 1), Math.max(b[3], p[0] + 1)];
+    }
+    return b;
+  }
 
   function init(el) {
     if (el._zine) return;
-    var scene = document.createElement('div'), faces = [];
     el._zine = true;
     el.style.position = 'relative';
     el.style.width = '100%';
     el.style.aspectRatio = '25 / 18';
+    var scene = document.createElement('div'), faces = [];
     scene.style.cssText = 'position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d';
     for (var r = 0; r < 2; r++) for (var c = 0; c < 4; c++) for (var side = 0; side < 2; side++) {
       var d = document.createElement('div');
       d.style.cssText = 'position:absolute;left:0;top:0;transform-origin:0 0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background-repeat:no-repeat';
       d.style.backgroundImage = 'url("' + (side ? el.dataset.outside : el.dataset.poster) + '")';
-      faces.push({ el: d, r: r, c: c, back: side === 1 });
+      faces.push({ el: d, r: r, c: c, back: side === 1, i: PATH.findIndex(function (p) { return p[0] === r && p[1] === c; }) });
       scene.appendChild(d);
     }
-    el.appendChild(scene);
+    var prev = document.createElement('button'), next = document.createElement('button');
+    prev.type = next.type = 'button';
+    prev.className = 'zine-arrow prev';
+    next.className = 'zine-arrow next';
+    prev.textContent = '<';
+    next.textContent = '>';
+    prev.title = 'fold back';
+    next.title = 'unfold';
+    el.append(scene, prev, next);
 
     var W, H, EW, EH, g;
     function size() {
       EW = el.clientWidth;
       EH = el.clientHeight;
-      var ratio = 1191 / 2 / (1684 / 4);
-      var w0 = Math.min(EW * 0.9 / 4, EH * 0.86 / 2 / ratio);
-      W = Math.min(EW * 0.9, EH * 0.86 / ratio, w0 * 1.7);
+      var ratio = 1191 / 2 / (1684 / 4), room = EW - 64;
+      var w0 = Math.min(room / 4, EH * 0.86 / 2 / ratio);
+      W = Math.min(room, EH * 0.86 / ratio, w0 * 1.7);
       H = W * ratio;
       g = Math.max(1.2, W * 0.008);
       el.style.perspective = (EW * 3) + 'px';
@@ -88,56 +83,35 @@
       });
     }
 
-    function draw(t) {
-      var st = state(t), f = st.f;
-      var col = [[1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]];
-      col[1] = rotV(W, 1.5 * g, PI * f.c);
-      col[2] = mul(col[1], rotV(2 * W, g, PI * f.b));
-      col[3] = mul(col[2], rotV(3 * W, 0.5 * g, PI * f.a));
-      var top = rotH(H, 3.5 * g, PI * f.d);
+    function draw(p) {
+      var f = folds(p), T = [I];
+      for (var i = 1; i <= LAST; i++) {
+        var q = PATH[i], o = PATH[i - 1], a = PI * f[i], z0 = (8 - i) * g / 2;
+        T[i] = mul(T[i - 1], q[0] !== o[0] ? rotH(H, z0, q[0] < o[0] ? a : -a) : rotV(q[1] * W, z0, a));
+      }
       faces.forEach(function (fc) {
-        var cell = fc.r ? col[fc.c] : mul(top, col[fc.c]);
-        var local = fc.back
-          ? [-1, 0, 0, 0, 1, 0, 0, 0, -1, (fc.c + 1) * W, fc.r * H, 0]
-          : [1, 0, 0, 0, 1, 0, 0, 0, 1, fc.c * W, fc.r * H, 0];
-        fc.el.style.transform = css(mul(cell, local));
+        var local = !fc.back ? [1, 0, 0, 0, 1, 0, 0, 0, 1, fc.c * W, fc.r * H, 0]
+          : fc.c ? [1, 0, 0, 0, -1, 0, 0, 0, -1, fc.c * W, (fc.r + 1) * H, 0]
+          : [-1, 0, 0, 0, 1, 0, 0, 0, -1, (fc.c + 1) * W, fc.r * H, 0];
+        fc.el.style.transform = css(mul(T[fc.i], local));
       });
-      var bw = W * (4 - f.a - f.b - f.c), y0 = H * f.d, bh = 2 * H - y0;
-      var s = Math.min(EW * 0.9 / bw, EH * 0.86 / bh, 1);
-      scene.style.transform = 'translate(' + EW / 2 + 'px,' + EH / 2 + 'px) rotateX(' + (8 * st.tilt) + 'deg) rotateY(' + (-6 * st.tilt) + 'deg) scale3d(' + s + ',' + s + ',' + s + ') translate(' + (-bw / 2) + 'px,' + (-(y0 + bh / 2)) + 'px)';
+      var n = Math.min(LAST - 1, Math.floor(p)), u = p - n, b0 = box(n), b1 = box(n + 1);
+      var b = b0.map(function (v, j) { return v + (b1[j] - v) * u; });
+      var bw = (b[2] - b[0]) * W, bh = (b[3] - b[1]) * H;
+      var s = Math.min((EW - 64) / bw, EH * 0.86 / bh, 1), tilt = 0.45;
+      scene.style.transform = 'translate(' + EW / 2 + 'px,' + EH / 2 + 'px) rotateX(' + (8 * tilt) + 'deg) rotateY(' + (-6 * tilt) + 'deg) scale3d(' + s + ',' + s + ',' + s + ') translate(' + (-(b[0] * W + bw / 2)) + 'px,' + (-(b[1] * H + bh / 2)) + 'px)';
     }
 
-    var fixed = parseFloat(new URLSearchParams(location.search).get('zine'));
-    var clock = 0, last = 0, running = false, seen = false;
-    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) fixed = 7.5;
-    function frame(now) {
-      if (!el.isConnected) {
-        io.disconnect();
-        ro.disconnect();
-        document.removeEventListener('visibilitychange', wake);
-        running = false;
-        return;
-      }
-      if (!seen || document.hidden || !isNaN(fixed)) { running = false; return; }
-      clock += Math.min(0.1, (now - last) / 1000);
-      last = now;
-      draw(clock);
-      requestAnimationFrame(frame);
+    var at = Math.max(0, Math.min(LAST, parseInt(new URLSearchParams(location.search).get('zine'), 10) || 0));
+    function go(d) {
+      at = (at + d + LAST + 1) % (LAST + 1);
+      draw(at);
     }
-    function wake() {
-      if (running || !seen || document.hidden) return;
-      running = true;
-      last = performance.now();
-      requestAnimationFrame(frame);
-    }
-    var io = new IntersectionObserver(function (es) { seen = es[0].isIntersecting; wake(); });
-    var ro = new ResizeObserver(function () { size(); draw(isNaN(fixed) ? clock : fixed); });
-    document.addEventListener('visibilitychange', wake);
+    prev.addEventListener('click', function () { go(-1); });
+    next.addEventListener('click', function () { go(1); });
+    new ResizeObserver(function () { size(); draw(at); }).observe(el);
     size();
-    draw(isNaN(fixed) ? 0 : fixed);
-    io.observe(el);
-    ro.observe(el);
-    el.zineAt = function (t) { fixed = t; draw(t); };
+    draw(at);
   }
 
   window.zineFold = function () {
