@@ -1,5 +1,5 @@
 (function () {
-  var PATH = [[1, 0], [0, 0], [0, 1], [1, 1], [1, 2], [0, 2], [0, 3], [1, 3]];
+  var PATH = [[0, 0], [1, 0], [1, 1], [0, 1], [0, 2], [1, 2], [1, 3], [0, 3]];
   var LAST = 7, LIFT = 0.15, PI = Math.PI;
   var I = [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0];
 
@@ -33,7 +33,7 @@
   }
   function box(n) {
     var b = [4, 2, 0, 0];
-    for (var i = 0; i <= n; i++) {
+    for (var i = n ? 0 : 1; i <= Math.max(1, n); i++) {
       var p = PATH[i];
       b = [Math.min(b[0], p[1]), Math.min(b[1], p[0]), Math.max(b[2], p[1] + 1), Math.max(b[3], p[0] + 1)];
     }
@@ -84,15 +84,15 @@
     }
 
     function draw(p) {
-      var f = folds(p), T = [I];
-      for (var i = 1; i <= LAST; i++) {
+      var f = folds(p), T = [rotH(H, 3.5 * g, PI * f[1]), I];
+      for (var i = 2; i <= LAST; i++) {
         var q = PATH[i], o = PATH[i - 1], a = PI * f[i], z0 = (8 - i) * g / 2;
         T[i] = mul(T[i - 1], q[0] !== o[0] ? rotH(H, z0, q[0] < o[0] ? a : -a) : rotV(q[1] * W, z0, a));
       }
       faces.forEach(function (fc) {
-        var local = !fc.back ? [1, 0, 0, 0, 1, 0, 0, 0, 1, fc.c * W, fc.r * H, 0]
-          : fc.c ? [1, 0, 0, 0, -1, 0, 0, 0, -1, fc.c * W, (fc.r + 1) * H, 0]
-          : [-1, 0, 0, 0, 1, 0, 0, 0, -1, (fc.c + 1) * W, fc.r * H, 0];
+        var local = fc.back
+          ? [-1, 0, 0, 0, 1, 0, 0, 0, -1, (fc.c + 1) * W, fc.r * H, 0]
+          : [1, 0, 0, 0, 1, 0, 0, 0, 1, fc.c * W, fc.r * H, 0];
         fc.el.style.transform = css(mul(T[fc.i], local));
       });
       var n = Math.min(LAST - 1, Math.floor(p)), u = p - n, b0 = box(n), b1 = box(n + 1);

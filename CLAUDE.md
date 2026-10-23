@@ -234,13 +234,15 @@ live in `site.css` so both pages share them.
   (marita removed the two flat sheet pictures), a CSS 3D model of her one-sheet zine
   (`arts-and-crafts/zine.js`) stepped with `<` `>` square arrows on its left and right
   (`.zine-arrow`, styled like the home carousel `>`). No autoplay and no motion between frames:
-  each click jumps straight to the next still frame (marita removed the fold animation). 8 frames: the menu cover,
-  then one panel opens per click along her zigzag (up, right, down, right, up, right,
-  down, poster coordinates, every flap rolled over the top), ending on the full poster;
-  `>` on the last frame folds it back to the cover. In each frame the newest opened page
-  stays lifted a little (`LIFT`), as if still opening. The six tarot pages are turned
-  upright on the flaps (her print shows them inverted with this fold); the cover keeps
-  the print orientation. `show()` calls `window.zineFold()` after swapping sections in.
+  each click jumps straight to the next still frame (marita removed the fold animation). 8 frames. Closed, it sits on the castle panel with the menu as a cover
+  flap folded down over it. The cover lifts up to show the tarot-reading panel with the
+  tower card under it, then one flap opens per click along the poster story (castle,
+  swords, phone, monster, dog, house, game over; every flap rolled over the top). Each
+  card on the stack predicts the next panel it uncovers (tower, 10 of swords, 3 of swords,
+  devil, queen of wands, death), and with this fold her print makes every card upright
+  with no tricks. Game over is the last flap. `>` on the last frame folds it back to the
+  cover. In each frame the newest opened page stays lifted a little (`LIFT`), as if still
+  opening. `show()` calls `window.zineFold()` after swapping sections in.
   `?zine=3` opens on that frame. Her fold reel: instagram.com/karmirarev__/reel/DafPxhTteDZ.
 - Previews: every drawing and event photo shows a small preview, never the full file.
   Run `python3 tools/thumb.py arts-and-crafts/drawings/x.webp` (any number of
