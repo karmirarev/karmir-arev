@@ -214,6 +214,10 @@ The portfolio cards (gif, name, email with copy button, bio, find me on, resume)
 `wings.games` in `projects/index.html`. The "other" section and the projects landing page show the same left box
 (`wings.other = wings.games`, and the landing wing is filled with it on load), so the
 projects landing has no creature any more. The resume is `projects/resume.pdf`.
+The arts-and-crafts landing has its own version in its `#wing` html (oct 2026): the same
+gif, name and email, her art bio instead of the work one, "find me on" instagram, no
+resume. Subsections there swap it for their own wing. The card styles (`.card`, `.copy`)
+live in `site.css` so both pages share them.
 
 ## Adding drawings, events, essays
 
@@ -271,7 +275,8 @@ projects landing has no creature any more. The resume is `projects/resume.pdf`.
 Only the main pages `projects`, `arts-and-crafts` and `thinking-out-loud` (no hash) show `<canvas class="wing-toy" data-toy="wing-PAGE">`, sized to the box. Each page has
 its own, picked by marita from a numbered grid of every option (`pick-N` in
 `toys.js`; the picker page `lab/creatures.html` was deleted, it is in git history): projects is 11 (pale ripples, Gray-Scott F 0.014 k 0.054),
-arts is 9 (rings and curls, F 0.03 k 0.062). Thinking-out-loud has no creature (sep
+though its landing now shows the portfolio box instead. Arts had 9 (rings and curls), replaced
+by its portfolio box in oct 2026, so the arts page no longer loads `toys.js`. Thinking-out-loud has no creature (sep
 2026): its landing box shows lowercase Armenian letters (FreeMono) popping in and out
 on an invisible 34px grid, about 5% of the cells at once, each for 5 to 10 seconds (some already showing when the page opens), no
 fading (`.letters` and its script in `thinking-out-loud/index.html`). Keep them small (`cols: 220`) and never reuse a game banner's creature. She

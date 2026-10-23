@@ -6,7 +6,7 @@
   <title>arts and crafts - karmirarev</title>
   <script>(function(){var t;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='light')document.documentElement.dataset.theme='dark'})()</script>
   <link rel="stylesheet" href="../gallery.css?v=6">
-  <link rel="stylesheet" href="../site.css?v=86">
+  <link rel="stylesheet" href="../site.css?v=87">
   <style>
     .model-wrap {
       position: relative;
@@ -188,7 +188,21 @@
 <body>
 
 <div class="page-layout">
-  <div class="wing only-toy" id="wing"><canvas class="wing-toy" data-toy="wing-arts"></canvas></div>
+  <div class="wing" id="wing">
+    <div class="card intro">
+      <img src="../projects/desk.gif" alt="pixel me at my desk">
+      <p class="page-title name">marita movsisyan</p>
+      <p class="email">email: <span class="email-wrap"><span id="email">maritamovsisyan@gmail.com</span><button type="button" class="copy" title="copy email" onclick="copyEmail(this)"><svg class="clip" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><svg class="check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></button></span></p>
+      <p>i grew up in arshaluys village, in a family full of artists and scientists. after taking art classes as a kid and later studying programming in college, i found myself working in game development. still, drawing has never left my daily routine, as i make sure to take part in events, exhibitions and markets, both engaging with and contributing to the community.</p>
+    </div>
+
+    <div class="card find">
+      <p class="page-title">find me on</p>
+      <p>
+        <a href="https://www.instagram.com/karmirarev__" target="_blank" rel="noopener">instagram</a>
+      </p>
+    </div>
+  </div>
   <div class="content" id="content">
         <p class="page-title">arts and crafts</p>
         <p>artsy stuff i am working/worked on</p>
@@ -343,9 +357,7 @@
     document.getElementById('content').replaceChildren(...landing.content);
     const wing = document.getElementById('wing');
     wing.replaceChildren(...landing.wing);
-    wing.classList.add('only-toy');
     wing.classList.remove('cites');
-    if (window.startToys) window.startToys();
   }
 
   function showFromHash() {
@@ -387,7 +399,6 @@
       m.addEventListener('loadedmetadata', alignEvents);
     });
     alignEvents();
-    if (window.startToys) window.startToys();
     document.querySelectorAll('#content model-viewer').forEach(mv => {
       const note = mv.parentNode.querySelector('.model-loading'), bar = note.querySelector('i');
       mv.addEventListener('progress', e => { bar.style.width = (e.detail.totalProgress * 100) + '%'; });
@@ -413,6 +424,14 @@
     lightbox.classList.remove('active');
   }
 
+  function copyEmail(btn) {
+    var text = document.getElementById('email').textContent;
+    navigator.clipboard.writeText(text).then(function () {
+      btn.classList.add('done');
+      setTimeout(function () { btn.classList.remove('done'); }, 1500);
+    });
+  }
+
   lightbox.addEventListener('click', (e) => {
     if (e.target === lightbox) closeLightbox();
   });
@@ -423,7 +442,5 @@
 </script>
 
 <script src="/nav.js?v=77"></script>
-<script src="/toys.js?v=29"></script>
-<script>if (window.startToys) window.startToys();</script>
 </body>
 </html>
