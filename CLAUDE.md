@@ -221,15 +221,25 @@ live in `site.css` so both pages share them.
 
 ## Adding drawings, events, essays
 
-- Drawings: `arts-and-crafts/index.html`, `sections.drawings`. Six type blocks
-  (game assets, mixed media, digital, traditional, fanarts, sketches) as `.event` divs,
-  with matching `.story` titles in `wings.drawings`. Put a
-  gallery item into the right block. Empty blocks show "nothing here yet".
+- Drawings: `arts-and-crafts/index.html`, `sections.drawings`. Eight type blocks
+  (game assets, digital, traditional, fanarts, sketches, animated, zines, postcards) as
+  `.event` divs, with matching `.story` titles in `wings.drawings`. Put a
+  gallery item into the right block. Empty blocks show "nothing here yet". Marita sorted
+  them herself (oct 2026, mixed media dropped). Full files live in `arts-and-crafts/drawings/`.
+  Digital ones are named `digital-N` and sketches `sketch-N`, numbered in page order;
+  the rest keep their own names. The byob pictures in "animated" reuse the event files.
+  Videos become gifs (no ffmpeg on the mac: `uv run --no-project --with imageio-ffmpeg`
+  gives one), kept small (characterconcept: 480px, 10 fps, 4.7MB).
+- Zine fold: the zines block starts with `<div class="zine-fold" data-outside="./drawings/zine-2.webp" data-poster="./drawings/zine-1.webp">`,
+  a looping CSS 3D fold of the one-sheet zine (`arts-and-crafts/zine.js`): menu cover,
+  flaps open one by one, full poster, then it folds back. `show()` calls `window.zineFold()`
+  after swapping sections in. `?zine=4.2` freezes it at that second for checking. Her
+  fold reel: instagram.com/karmirarev__/reel/DafPxhTteDZ.
 - Previews: every drawing and event photo shows a small preview, never the full file.
-  Run `python3 tools/thumb.py arts-and-crafts/digital-mixed-media/x.webp` (any number of
+  Run `python3 tools/thumb.py arts-and-crafts/drawings/x.webp` (any number of
   paths). It writes a 560px-wide webp into `arts-and-crafts/thumbs/` (event photos into
   `thumbs/events/`, animated gifs stay animated) and prints the tag to paste, e.g.
-  `<div class="gallery-item"><img src="./thumbs/x.webp" data-full="./digital-mixed-media/x.webp" width="560" height="700" loading="lazy" alt="x"></div>`.
+  `<div class="gallery-item"><img src="./thumbs/x.webp" data-full="./drawings/x.webp" width="560" height="700" loading="lazy" alt="x"></div>`.
   The lightbox opens `data-full`, the full picture. Save full drawings as webp (quality 90),
   not png: the pngs were up to 11MB each, 45MB in total, the webps 6.5MB. Keep `width`/`height` (no layout jump)
   and `loading="lazy"` on gallery items (not on event `.shot`s, they sit at the top).
