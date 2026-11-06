@@ -331,7 +331,10 @@ runs `.github/scripts/letterboxd.py`, `.github/scripts/anilist.py` and `.github/
 (latest book on her goodreads "read" shelf, user 156882035, by read date then date added, RSS) (AniList GraphQL,
 status COMPLETED sorted by finish date then last update, since she often marks several
 done on one day), writes `letterboxd.json`, `anilist.json`, `anilist-manga.json` (latest completed manga, same query with type MANGA) and `goodreads.json`, and commits only when
-they changed. `index.html` fetches both and feeds them to the "last watched" carousel; an item whose Each fetch step has `continue-on-error`, so one dead feed never stops the others. Goodreads shut its RSS feeds (nov 2026, 404 for every user, the shelf page wants a sign-in), so `goodreads.json` stays on the last book until there is another source.
+they changed. Each fetch step has `continue-on-error`, so one dead feed never stops the others.
+Goodreads shut its RSS feeds (nov 2026, 404 for every user, the shelf page wants a sign-in), so
+`goodreads.json` stays on the last book until there is another source.
+`index.html` fetches both and feeds them to the "last watched" carousel; an item whose
 file is missing is skipped. The second line is her rating (stars for films,
 score/10 for anime) and just `-` when she has not rated it. Do not log these bot commits in the update log.
 The poster always gets marita's Canva "Sepia" duotone: an inline SVG filter `#sepia`
