@@ -53,7 +53,7 @@ const DEFAULTS = {
   biomeLength: 35, dragonLength: 45, scroll: 1.5, density: 1, hazardSpeed: 1,
   archGap: 2.4, archSpeed: 3.4,
   bulletSpeed: 5.5, fireRate: 1, dragonSize: 5,
-  roofHeight: 0.7, trainX: 0, trainTop: 0.828, trainW: 1, trainH: 0.172, mirror: true, infiniteHealth: false, projection: false, shiftX: 0.02, zoom: 0.92, tilt: -1,
+  roofHeight: 0.7, trainX: 0, trainTop: 0.828, trainW: 1, trainH: 0.172, mirror: true, infiniteHealth: false, projection: false, shiftX: 0.02, zoom: 0.92, tilt: -1, keystone: 2,
 };
 const SLIDERS = [
   ['Plane', [
@@ -80,6 +80,7 @@ const SLIDERS = [
     ['shiftX', 'Shift whole game left', 0, 0.15, 0.005],
     ['zoom', 'Game size', 0.6, 1, 0.005],
     ['tilt', 'Tilt (right is +)', -5, 5, 0.1],
+    ['keystone', 'Right edge taller (+) / shorter (-)', -15, 15, 0.5],
   ]],
   ['Real train (line it up with the wall)', [
     ['trainX', 'Left edge', -0.2, 0.6, 0.002],
@@ -119,7 +120,7 @@ function resize() {
   w *= cfg.zoom; h *= cfg.zoom;
   cv.style.width = w + 'px';
   cv.style.height = h + 'px';
-  cv.style.transform = `translateX(${-cfg.shiftX * w}px) rotate(${cfg.tilt}deg)`;
+  cv.style.transform = `translateX(${-cfg.shiftX * w}px) rotate(${cfg.tilt}deg) perspective(${w * 1.5}px) rotateY(${-cfg.keystone}deg)`;
   cv.width = Math.round(w * dpr);
   cv.height = Math.round(h * dpr);
   S = cv.width / W;
@@ -237,7 +238,7 @@ const art = {};
 const ART = { 'lvl1': 'webp', 'lvl1dark': 'webp', 'lvl2-back': 'png', 'lvl2-mid': 'webp', 'lvl2-front': 'webp', 'lvl2-chandelier': 'png', 'lvl2-props': 'png', 'lvl2-floor': 'png', 'cloud-transition': 'webp', 'lvl3-cloud-strip': 'webp', 'lvl3-map': 'webp', 'vine-transition': 'webp', 'fg-plant': 'webp', 'vishap-red-body': 'png', 'vishap-red-head-top': 'png', 'vishap-red-jaw': 'png', 'operator': 'webp', 'zeppelin': 'webp', 'head': 'webp', 'wing': 'png', 'column': 'png', 'chandelier': 'png', 'smoke': 'png', 'train-shape': 'png', 'zep-1': 'png', 'zep-2': 'png', 'zep-3': 'png', 'zep-4': 'png', 'op-1': 'png', 'chain': 'png', 'cherub-head': 'png', 'cherub-wing': 'png', 'shooter-1': 'png', 'shooter-2': 'png', 'shooter-3': 'png' };
 for (const [name, ext] of Object.entries(ART)) {
   art[name] = new Image();
-  art[name].src = `art/${name}.${ext}?v=202611061751`;
+  art[name].src = `art/${name}.${ext}?v=202611061802`;
 }
 const trainImg = new Image();
 trainImg.src = 'train.png';
@@ -378,7 +379,7 @@ function hitPlane() {
   if (plane.hp <= 0) gameOver();
 }
 const ZEP = { bx: 65, by: 58, cx: 79, cy: 55, ax: 82, ay: 106, w: 1.5, src: 158, frames: 4, fps: 8 };
-const OP = { feet: H * (1 - 36 * (1920 / 68) / 1080), fx: 85, fy: 222, hx: 52, hy: 9, h: 2.185, src: 228, fps: 3, anims: { idle: ['op-1'] } };
+const OP = { feet: H * (1 - 36 * (1920 / 68) / 1080) - 0.6, fx: 85, fy: 222, hx: 52, hy: 9, h: 2.185, src: 228, fps: 3, anims: { idle: ['op-1'] } };
 const zs = () => ZEP.w / ZEP.src;
 function planeAnchor() {
   const s = zs(), dx = -s * (ZEP.ax - ZEP.cx), dy = -s * (ZEP.ay - ZEP.cy);
@@ -1031,7 +1032,7 @@ function drawScoreboard() {
 }
 let titleDots = null;
 let titleWindows = [];
-fetch('title-dots.json?v=202611061751').then(r => r.json()).then(d => { titleDots = d; titleWindows = findWindows(d); }).catch(() => {});
+fetch('title-dots.json?v=202611061802').then(r => r.json()).then(d => { titleDots = d; titleWindows = findWindows(d); }).catch(() => {});
 function regions(cols, rows, wall) {
   const seen = new Set(), out = [];
   for (let y0 = 0; y0 < rows; y0++) for (let x0 = 0; x0 < cols; x0++) {
@@ -1137,7 +1138,7 @@ function drawFineDots(pts, s, dot) {
   }
 }
 let controlsDots = null;
-fetch('controls-dots.json?v=202611061751').then(r => r.json()).then(d => { controlsDots = d; }).catch(() => {});
+fetch('controls-dots.json?v=202611061802').then(r => r.json()).then(d => { controlsDots = d; }).catch(() => {});
 const DOT_FONT = {
   0: ['###', '#.#', '#.#', '#.#', '###'], 1: ['.#.', '##.', '.#.', '.#.', '###'], 2: ['###', '..#', '###', '#..', '###'],
   3: ['###', '..#', '.##', '..#', '###'], 4: ['#.#', '#.#', '###', '..#', '..#'], 5: ['###', '#..', '###', '..#', '###'],
@@ -1207,7 +1208,7 @@ let last = performance.now(), time = 0;
 let shiftNow = null;
 function frame(now) {
   pollPads();
-  if (shiftNow !== cfg.shiftX + '|' + cfg.zoom + '|' + cfg.tilt) { shiftNow = cfg.shiftX + '|' + cfg.zoom + '|' + cfg.tilt; resize(); }
+  if (shiftNow !== cfg.shiftX + '|' + cfg.zoom + '|' + cfg.tilt + '|' + cfg.keystone) { shiftNow = cfg.shiftX + '|' + cfg.zoom + '|' + cfg.tilt + '|' + cfg.keystone; resize(); }
   const dt = clamp((now - last) / 1000, 0, 0.05);
   last = now; time += dt;
   scroll += cfg.scroll * dt;
