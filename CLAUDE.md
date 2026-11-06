@@ -441,6 +441,18 @@ All of it is in its `index.html`, no images.
 - Never name a global `top`, `screenX`, `screenY` or `find`: they clash with `window` and
   kill the whole script. Keep `data-zoom` only on the zoom buttons (clicks look for it).
 
+## Train game
+
+`/projects/other/train-game/` plays marita's train game (the web version of her Unity
+project, source `~/Projects/train-game/WebPrototype/`) in an iframe from `game/`. Laid out
+like craft mall: no left box or menu, a top panel (back pill, title, controls hint, sun/moon)
+and the game in a 16:9 box. Card in `OTHER`, creature `TOYS['train-game']` (Life spaceships).
+Never edit `game/` by hand. When she updates the game, run `python3 tools/train-game.py`:
+it rebuilds `game/` from her folder (index.html, the art in her `ART` map, `sfx/`, and root
+files the page names), turns art over 300KB into webp q90 and rewrites `ART` to match
+(36MB down to 12MB), and swaps her `Date.now()` cache busting for the copy time so
+browsers can cache it. In the game M toggles sound and T opens her tweaks panel.
+
 ## Cache
 
 The home page data files (`letterboxd.json` and the rest, `plants.json`) are fetched with

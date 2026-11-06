@@ -12,7 +12,8 @@
       ]},
       { label: 'other', href: '/projects/#other', children: [
         { label: 'mini me and u', href: '/projects/other/mini-me-and-you/' },
-        { label: 'craft mall', href: '/projects/other/craft-mall/' }
+        { label: 'craft mall', href: '/projects/other/craft-mall/' },
+        { label: 'train game', href: '/projects/other/train-game/' }
       ]}
     ]},
     { label: 'arts-and-crafts', href: '/arts-and-crafts/', color: 'lime', children: [
