@@ -14,8 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: python3 .github/scripts/letterboxd.py
+        continue-on-error: true
       - run: python3 .github/scripts/anilist.py
+        continue-on-error: true
       - run: python3 .github/scripts/goodreads.py
+        continue-on-error: true
       - run: |
           if [ -z "$(git status --porcelain -- letterboxd.json anilist.json anilist-manga.json goodreads.json)" ]; then exit 0; fi
           git config user.name 'site bot'
