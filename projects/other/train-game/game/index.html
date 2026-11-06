@@ -142,27 +142,8 @@ function play(name, vol = 1, gap = 0) {
   a.play().catch(() => {});
   return a;
 }
-const TICK = { file: 'sfx/harpies.mp3', from: 0.08, len: 0.045, vol: 0.3, every: 4 };
-let tickCtx = null, tickBuf = null, lastLed = -1;
-function initTick() {
-  if (tickCtx) return;
-  try {
-    tickCtx = new (window.AudioContext || window.webkitAudioContext)();
-    fetch(TICK.file).then(r => r.arrayBuffer()).then(b => tickCtx.decodeAudioData(b)).then(buf => { tickBuf = buf; }).catch(() => {});
-  } catch (e) {}
-}
-function playTick() {
-  if (!soundOn || !tickBuf || tickCtx.state !== 'running') return;
-  const src = tickCtx.createBufferSource(), g = tickCtx.createGain(), t = tickCtx.currentTime;
-  src.buffer = tickBuf;
-  g.gain.setValueAtTime(TICK.vol, t);
-  g.gain.linearRampToValueAtTime(0, t + TICK.len);
-  src.connect(g).connect(tickCtx.destination);
-  src.start(t, TICK.from, TICK.len);
-}
-initTick();
 function startTrainSound() {
-  initTick(); if (tickCtx && tickCtx.state === 'suspended' && soundOn) tickCtx.resume().catch(() => {}); if (soundOn && sfx.train.paused) sfx.train.play().catch(() => {}); }
+  if (soundOn && sfx.train.paused) sfx.train.play().catch(() => {}); }
 function stopLaser() { if (laserSound) { laserSound.pause(); laserSound = null; } }
 addEventListener('pointerdown', startTrainSound);
 addEventListener('keydown', e => {
@@ -229,10 +210,10 @@ function text(lines, x, y, size, align = 'center', alpha = 1) {
 }
 
 const art = {};
-const ART = { 'lvl1': 'webp', 'lvl1dark': 'webp', 'lvl2-back': 'png', 'lvl2-mid': 'webp', 'lvl2-front': 'webp', 'lvl2-chandelier': 'png', 'cloud-transition': 'webp', 'lvl3-cloud1': 'webp', 'lvl3-cloud2': 'webp', 'lvl3-cloud3': 'webp', 'lvl3-map': 'webp', 'vishap-red-body': 'png', 'vishap-red-head-top': 'png', 'vishap-red-jaw': 'png', 'operator': 'webp', 'zeppelin': 'webp', 'head': 'webp', 'wing': 'png', 'column': 'png', 'chandelier': 'png', 'smoke': 'png', 'train-shape': 'png', 'zep-1': 'png', 'zep-2': 'png', 'zep-3': 'png', 'zep-4': 'png', 'op-1': 'png', 'chain': 'png', 'cherub-head': 'png', 'cherub-wing': 'png', 'shooter-1': 'png', 'shooter-2': 'png', 'shooter-3': 'png', 'shot': 'png' };
+const ART = { 'lvl1': 'webp', 'lvl1dark': 'webp', 'lvl2-back': 'png', 'lvl2-mid': 'webp', 'lvl2-front': 'webp', 'lvl2-chandelier': 'png', 'lvl2-props': 'png', 'lvl2-floor': 'png', 'cloud-transition': 'webp', 'lvl3-cloud1': 'webp', 'lvl3-cloud2': 'webp', 'lvl3-cloud3': 'webp', 'lvl3-map': 'webp', 'vine-transition': 'webp', 'fg-plant': 'webp', 'vishap-red-body': 'png', 'vishap-red-head-top': 'png', 'vishap-red-jaw': 'png', 'operator': 'webp', 'zeppelin': 'webp', 'head': 'webp', 'wing': 'png', 'column': 'png', 'chandelier': 'png', 'smoke': 'png', 'train-shape': 'png', 'zep-1': 'png', 'zep-2': 'png', 'zep-3': 'png', 'zep-4': 'png', 'op-1': 'png', 'chain': 'png', 'cherub-head': 'png', 'cherub-wing': 'png', 'shooter-1': 'png', 'shooter-2': 'png', 'shooter-3': 'png' };
 for (const [name, ext] of Object.entries(ART)) {
   art[name] = new Image();
-  art[name].src = `art/${name}.${ext}?v=202611060436`;
+  art[name].src = `art/${name}.${ext}?v=202611060647`;
 }
 const trainImg = new Image();
 trainImg.src = 'train.png';
@@ -273,9 +254,9 @@ function bgStrip(img, speed) {
 const MENU = { hold: 10, dim: 'rgba(12,10,14,0.55)' };
 const dim = c => box(W / 2, H / 2, W, H, c);
 function bgLandscape() { box(W / 2, H / 2, W, H, '#2f5a5c'); bgStrip(isMenu() ? art.lvl1dark : art.lvl1, 1); if (isMenu()) drawWindows(() => bgStrip(art.lvl1, 1)); }
-function hallBack() { box(W / 2, H / 2, W, H, '#013c5b'); bgStrip(art['lvl2-back'], 0); bgStrip(art['lvl2-mid'], 0.6); bgStrip(art['lvl2-chandelier'], 0.8); }
+function hallBack() { box(W / 2, H / 2, W, H, '#013c5b'); bgStrip(art['lvl2-back'], 0); bgStrip(art['lvl2-mid'], 0.6); bgStrip(art['lvl2-props'], 0.6); bgStrip(art['lvl2-chandelier'], 0.8); }
 function bgBuilding(t, between) {
-  hallBack(); between?.(); bgStrip(art['lvl2-front'], 1);
+  hallBack(); between?.(); bgStrip(art['lvl2-front'], 1); bgStrip(art['lvl2-floor'], 1);
   if (isMenu()) { dim(MENU.dim); drawWindows(hallBack); }
 }
 const SKY = { color: '#809e6d', span: 80, dim: 'rgba(30,34,30,0.5)' };
@@ -403,8 +384,13 @@ function add(o) { hazards.push({ t: 0, vx: 0, vy: 0, r: 0.4, warn: 0, ...o }); }
 
 const HEAD = { cx: 41, cy: 45, size: 0.92, src: 62 };
 const WING = { rx: 11, ry: 57, len: 1.05, src: 99, dir: Math.atan2(57 - 5, 95 - 11) };
-const SHOT = { w: 35, cx: 17, cy: 15, spin: 6 };
-function drawShot(h) { const s = SHOOTER.h / SHOOTER.src; drawImg(art.shot, h.x, h.y, -s, -s, SHOT.cx, SHOT.cy, -h.t * SHOT.spin); }
+const SHOT_DOT = { pitch: W / 68 * 1.04, outline: 'rgba(0,0,0,0.45)', red: '#e8344a', white: '#ffffff' };
+function dots(pts, r, ring = 1.65) {
+  ctx.fillStyle = SHOT_DOT.outline;
+  for (const [x, y] of pts) { ctx.beginPath(); ctx.arc(x, y, r * ring, 0, Math.PI * 2); ctx.fill(); }
+  for (const [x, y, c] of pts) { ctx.fillStyle = c; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); }
+}
+const drawShot = (h, c) => dots([[h.x, h.y, c]], h.r * 0.85, 1.4);
 const SHOOTER = { cx: 50, cy: 52, h: 2.1, src: 141, frames: ['shooter-1', 'shooter-2', 'shooter-3'], ft: 0.12 };
 function drawWing(x, y, rot, flip) {
   const s = WING.len / WING.src;
@@ -500,7 +486,7 @@ const HZ = {
     consume: true,
     update(h, dt) { h.x += h.vx * dt; h.y += h.vy * dt; },
     hit: h => near(h.x, h.y, h.r),
-    draw(h) { drawShot(h); },
+    draw(h) { drawShot(h, SHOT_DOT.white); },
   },
   arch: {
     spawn(o = {}) {
@@ -553,7 +539,7 @@ const HZ = {
     consume: true,
     update(h, dt) { h.x += h.vx * dt; h.y += h.vy * dt; },
     hit: h => near(h.x, h.y, h.r),
-    draw(h) { drawShot(h); },
+    draw(h) { drawShot(h, SHOT_DOT.red); },
   },
   cave: {
     spawn() { const L = W + 4; add({ kind: 'cave', x: W + 0.5, L, reach: L, vx: -cfg.archSpeed * spd() }); },
@@ -725,25 +711,28 @@ function updateBeam(d, dt) {
   shake = Math.max(shake, 0.08);
   const m = mouth(), c = Math.cos(b.a), n = Math.sin(b.a), vx = hitC().x - m.x, vy = hitC().y - m.y;
   if (state === 'play' && vx * c + vy * n > 0 && Math.abs(vx * n - vy * c) < BEAM.width / 2 + cfg.hitbox) hitPlane();
-  if (Math.random() < 0.6) { const k = rand(1, 18); spawnFx({ x: m.x + c * k, y: m.y + n * k + rand(-0.4, 0.4), c: [1, rand(0.3, 0.7), 0.1], a: 0.8, d0: 0.6, d1: 0.1, life: 0.35, front: true }); }
 }
 function drawBeam() {
   const b = dragon.beam;
   if (!b) return;
-  const m = mouth(), L = 30, e = [m.x + Math.cos(b.a) * L, m.y + Math.sin(b.a) * L];
+  const m = mouth(), c = Math.cos(b.a), n = Math.sin(b.a), P = SHOT_DOT.pitch, L = 30;
   if (b.t < BEAM.charge) {
-    const k = b.t / BEAM.charge;
-    if ((b.t * 14) % 1 < 0.6) line([[m.x, m.y], e], 0.05 + k * 0.1, `rgba(255,90,30,${0.3 + k * 0.4})`);
-    soft(m.x, m.y, 0.6 + k * 1.8, [1, 0.6, 0.15], 0.9);
+    if ((b.t * 14) % 1 >= 0.6) return;
+    const pts = [];
+    for (let k = 1; k * P < L; k++) pts.push([m.x + c * k * P, m.y + n * k * P, SHOT_DOT.red]);
+    dots(pts, P / 4);
     return;
   }
   const f = b.t - BEAM.charge, grow = Math.min(1, f * 8) * Math.min(1, (BEAM.fire - f) * 6);
-  const w = BEAM.width * grow * (1 + Math.sin(b.t * 40) * 0.06);
-  line([[m.x, m.y], e], w * 1.6, 'rgba(255,120,30,0.35)');
-  line([[m.x, m.y], e], w, '#ff5a12');
-  line([[m.x, m.y], e], w * 0.55, '#ffb030');
-  line([[m.x, m.y], e], w * 0.25, '#fff2b0');
-  soft(m.x, m.y, 2.6 * grow, [1, 0.8, 0.3], 1);
+  const rows = Math.max(1, Math.round(BEAM.width * grow / P)), slide = (b.t * 12) % 1, pts = [];
+  for (let r = 0; r < rows; r++) {
+    const o = (r - (rows - 1) / 2) * P, core = Math.abs(o) < P * 0.75;
+    for (let k = 0; (k + slide) * P < L; k++) {
+      const d = (k + slide + (r % 2) * 0.5) * P;
+      pts.push([m.x + c * d - n * o, m.y + n * d + c * o, core ? SHOT_DOT.white : SHOT_DOT.red]);
+    }
+  }
+  dots(pts, P / 2 * 0.95);
 }
 function drawDragon() {
   if (!dragon.on) return;
@@ -772,7 +761,7 @@ function startRun(index = 0) {
   hazards.length = 0;
   Object.assign(dragon, { on: false, leaving: false, x: W + 7, beam: null });
   won = false;
-  bi = prevBi = index; cloud = null; biomeT = 0; loop = 0; runT = 0; timers = {};
+  bi = prevBi = index; cloud = null; vine = null; fgDecos = []; biomeT = 0; loop = 0; runT = 0; timers = {};
   state = 'play';
   nameBox.hidden = true;
   nameBox.blur();
@@ -789,7 +778,7 @@ function toTitle() {
   hazards.length = 0;
   Object.assign(dragon, { on: false, leaving: false, x: W + 7, beam: null });
   Object.assign(plane, { vx: 0, vy: 0, tilt: 0, hurt: 0, gone: false });
-  cloud = null; runT = 0; menuT = 0;
+  cloud = null; vine = null; fgDecos = []; runT = 0; menuT = 0;
 }
 resize();
 function nextBiome() {
@@ -802,6 +791,43 @@ function advance() {
   if (bi === 0) loop++;
   biomeT = 0; prevBi = bi; timers = {};
   if (isDragon()) startDragon();
+}
+const VINE = { speed: 1.6, stem: [[774, 0], [691, 60], [620, 120], [570, 180], [534, 240], [499, 300], [464, 360], [419, 420], [374, 480], [316, 540], [265, 600], [210, 660], [170, 720], [145, 780], [125, 840], [110, 900], [108, 960], [112, 1020], [123, 1080]] };
+let vine = null;
+const vineX = px => vine.x + (cfg.mirror ? 2880 - px : px) * H / 1080;
+const stemXs = () => VINE.stem.map(([x]) => vineX(x));
+function updateVine(dt) {
+  if (!vine) return;
+  vine.x -= VINE.speed * cfg.scroll * spd() * dt;
+  if (!vine.swapped && Math.max(...stemXs()) < W) { vine.swapped = true; advance(); }
+  if (vine.x + 2880 * H / 1080 < 0) vine = null;
+}
+function vineOnScreen() {
+  if (!vine) return false;
+  const xs = stemXs();
+  return Math.min(...xs) < W && Math.max(...xs) > 0;
+}
+function vineSplit() {
+  const s = H / 1080, pts = VINE.stem.map(([x, y]) => [vineX(x), H - y * s]);
+  BG.building(time, drawBackFog);
+  ctx.save();
+  ctx.beginPath(); ctx.moveTo(-2, -2); ctx.lineTo(pts[pts.length - 1][0], -2);
+  for (let i = pts.length - 1; i >= 0; i--) ctx.lineTo(pts[i][0], pts[i][1]);
+  ctx.lineTo(pts[0][0], H + 2); ctx.lineTo(-2, H + 2); ctx.closePath(); ctx.clip();
+  BG.landscape(time);
+  ctx.restore();
+}
+function drawFg(img, x) {
+  if (!ready(img)) return;
+  const s = H / img.naturalHeight;
+  if (cfg.mirror) drawImg(img, x + img.naturalWidth * s, H, -s, -s, 0, 0);
+  else drawImg(img, x, H, s, -s, 0, 0);
+}
+const drawVine = () => { if (vine) drawFg(art['vine-transition'], vine.x); };
+let fgDecos = [];
+function updateFgDecos(dt) {
+  for (const d of fgDecos) d.x -= VINE.speed * cfg.scroll * spd() * dt;
+  fgDecos = fgDecos.filter(d => d.x + 2880 * H / 1080 > 0);
 }
 const CLOUD = { speed: 3.5, frontSpeed: 18, frontScale: 3.6 };
 let cloud = null;
@@ -885,18 +911,20 @@ function tunnelBase(i) {
 }
 const SCRIPT = {
   landscape: [
-    wait(2), run(() => WAVES.snake(6.5)), clear(W * 0.75),
-    run(() => WAVES.wall(2)), clear(W * 0.75),
-    run(() => WAVES.braid(6)), clear(W * 0.7),
-    run(() => HZ.shooter.spawn({ y: 7.6, vx: -2.2 })), clear(8),
-    run(() => WAVES.wall(1)), clear(W * 0.75),
-    run(() => WAVES.hunter()), clear(W * 0.6),
-    run(() => HZ.shooter.spawn({ y: 4.6, vx: -2.2 })), clear(8),
-    run(() => HZ.cave.spawn()),
-    until(() => hazards.some(h => h.kind === 'cave' && h.x < -0.5)),
+    run(() => fgDecos.push({ img: 'fg-plant', x: cfg.mirror ? W - 1120 * H / 1080 : W - 200 * H / 1080 })), wait(4.5), run(() => WAVES.snake(6.5)), wait(3.5),
+    run(() => WAVES.wall(2)), wait(2.6),
+    run(() => WAVES.braid(6)), wait(4),
+    run(() => HZ.shooter.spawn({ y: 7.6, vx: -2.2 })), wait(5),
+    run(() => WAVES.wall(1)), wait(2.6),
+    run(() => WAVES.hunter()), wait(4.5),
+    run(() => HZ.shooter.spawn({ y: 4.6, vx: -2.2 })), wait(3.5),
+    run(() => HZ.shooter.spawn({ y: 7.4, vx: -2.2 })), wait(3.5),
+    run(() => HZ.shooter.spawn({ y: 5.8, vx: -2.2 })), wait(4.5),
+    run(() => { vine = { x: cfg.mirror ? W - 1470 * H / 1080 : W, swapped: false }; }),
+    until(() => false),
   ],
   building: [
-    clear(W - 3), wait(0.5),
+    wait(4), clear(W - 3), wait(0.5),
     { dist: 4.5, run: i => HZ.arch.spawn({ moving: false, base: lane([0.5, 0.65, 0.35, 0.6, 0.45][i]) }), count: 5 },
     { dist: 5 },
     run(() => swingAt(2, 0.45, 1.8, 0)),
@@ -943,6 +971,8 @@ function updateGame(dt) {
   }
   runT += dt; biomeT += dt;
   updateSpawns(dt);
+  updateVine(dt);
+  updateFgDecos(dt);
   updateCloud(dt);
 }
 
@@ -972,7 +1002,7 @@ function drawTrainShape() {
 }
 let titleDots = null;
 let titleWindows = [];
-fetch('title-dots.json?v=202611060436').then(r => r.json()).then(d => { titleDots = d; titleWindows = findWindows(d); }).catch(() => {});
+fetch('title-dots.json?v=202611060647').then(r => r.json()).then(d => { titleDots = d; titleWindows = findWindows(d); }).catch(() => {});
 function regions(cols, rows, wall) {
   const seen = new Set(), out = [];
   for (let y0 = 0; y0 < rows; y0++) for (let x0 = 0; x0 < cols; x0++) {
@@ -1032,21 +1062,25 @@ function frameLoop(cells) {
   for (let y = 35; y >= 2; y--) path.push([1, y]);
   return path.filter(([x, y]) => has(x, y)).map(([x, y]) => x + ',' + y);
 }
+let frameSet = null;
 function drawTitleDots(alpha) {
   if (!titleDots || alpha <= 0.01) return;
   ledPath = ledPath || frameLoop(titleDots.cells);
   const step = Math.floor(time * LED.speed), led = ledPath.length ? ledPath[step % ledPath.length] : null;
-  if (step !== lastLed) { lastLed = step; if (step % TICK.every === 0) playTick(); }
   const s = 1920 / titleDots.cols, lw = s * titleDots.line, cells = Object.entries(titleDots.cells).map(([k, v]) => [...k.split(',').map(Number), k === led ? { ...v, s: 'ring', c: LED.color } : v]);
   ctx.save();
   ctx.setTransform(cv.width / 1920, 0, 0, cv.height / 1080, 0, 0);
   ctx.globalAlpha = alpha;
+  frameSet = frameSet || new Set(ledPath);
+  ctx.fillStyle = OUTLINE_DOT.color;
+  const pad = s * titleDots.dot / 4 * (OUTLINE_DOT.size - 1);
+  for (const [x, y] of cells) if (frameSet.has(x + ',' + y)) { ctx.beginPath(); ctx.arc((x + 0.5) * s, (y + 0.5) * s, s * titleDots.dot / 2 + pad, 0, Math.PI * 2); ctx.fill(); }
   ctx.fillStyle = '#e0281e';
   for (const [x, y, v] of cells) if (v.o) DOT_SHAPES[v.s]((x + 0.5) * s, (y + 0.5) * s, s, titleDots.dot, lw);
   for (const [x, y, v] of cells) { ctx.fillStyle = v.c; DOT_SHAPES[v.s]((x + 0.5) * s, (y + 0.5) * s, s, titleDots.dot, 0); }
   const isText = (x, y, v) => y >= 35 && y <= 39 && v.c === '#ffffff';
   const showText = state === 'result' ? !blinkOff(resultT, RESULT.hold) : !blinkOff((time - titleStart) % 3, 3 - RESULT.flick * (RESULT.flicks * 2 - 1));
-  const small = (x, y, c) => { ctx.fillStyle = c; ctx.beginPath(); ctx.arc((x + 0.5) * s / 2, (y + 0.5) * s / 2, s * titleDots.dot / 4, 0, Math.PI * 2); ctx.fill(); };
+  const pts = [], small = (x, y, c) => pts.push([x, y, c]);
   for (const [k, v] of Object.entries(titleDots.fine || {})) {
     const [x, y] = k.split(',').map(Number);
     if (isText(x, y, v) && (state === 'result' || !showText)) continue;
@@ -1060,8 +1094,21 @@ function drawTitleDots(alpha) {
       x += g[0].length + 1;
     }
   }
+  drawFineDots(pts, s, titleDots.dot);
   ctx.restore();
 }
+const OUTLINE_DOT = { color: 'rgba(0,0,0,0.45)', size: 1.65 };
+function drawFineDots(pts, s, dot) {
+  const r = s * dot / 4;
+  for (const [fill, rr] of [[OUTLINE_DOT.color, r * OUTLINE_DOT.size], [null, r]]) {
+    for (const [x, y, c] of pts) {
+      ctx.fillStyle = fill || c;
+      ctx.beginPath(); ctx.arc((x + 0.5) * s / 2, (y + 0.5) * s / 2, rr, 0, Math.PI * 2); ctx.fill();
+    }
+  }
+}
+let controlsDots = null;
+fetch('controls-dots.json?v=202611060647').then(r => r.json()).then(d => { controlsDots = d; }).catch(() => {});
 const DOT_FONT = {
   0: ['###', '#.#', '#.#', '#.#', '###'], 1: ['.#.', '##.', '.#.', '.#.', '###'], 2: ['###', '..#', '###', '#..', '###'],
   3: ['###', '..#', '.##', '..#', '###'], 4: ['#.#', '#.#', '###', '..#', '..#'], 5: ['###', '#..', '###', '..#', '###'],
@@ -1073,16 +1120,28 @@ const DOT_FONT = {
   S: ['.##', '#..', '.#.', '..#', '##.'], T: ['###', '.#.', '.#.', '.#.', '.#.'], U: ['#.#', '#.#', '#.#', '#.#', '###'],
   Y: ['#.#', '#.#', '.#.', '.#.', '.#.'], V: ['#.#', '#.#', '#.#', '#.#', '.#.'], D: ['##.', '#.#', '#.#', '#.#', '##.'],
   E: ['###', '#..', '##.', '#..', '###'], F: ['###', '#..', '##.', '#..', '#..'],
+  M: ['#...#', '##.##', '#.#.#', '#...#', '#...#'],
 };
+const HINT = { time: 4, flick: 0.15, flicks: 3 };
+function drawControlsHint() {
+  if (!controlsDots || state !== 'play' || BIOMES[bi].key !== 'landscape' || loop > 0 || runT > HINT.time) return;
+  const end = HINT.time - HINT.flick * HINT.flicks * 2;
+  if (runT > end && Math.floor((runT - end) / HINT.flick) % 2 === 0) return;
+  const s = 1920 / controlsDots.cols;
+  ctx.save();
+  ctx.setTransform(cv.width / 1920, 0, 0, cv.height / 1080, 0, 0);
+  drawFineDots(Object.entries(controlsDots.fine).map(([k, v]) => [...k.split(',').map(Number), v.c]), s, controlsDots.dot);
+  ctx.restore();
+}
 const dotTextWidth = (str, pitch) => [...str].reduce((w, ch) => w + ((DOT_FONT[ch]?.[0].length ?? 0) + 1) * pitch, -pitch);
-function dotText(str, x, y, pitch, color) {
+function dotText(str, x, y, pitch, color, r = 0.52) {
   ctx.fillStyle = color;
   for (const ch of str) {
     const g = DOT_FONT[ch];
     if (!g) continue;
     g.forEach((row, j) => [...row].forEach((c, i) => {
       if (c !== '#') return;
-      ctx.beginPath(); ctx.arc(x + (i + 0.5) * pitch, y - (j + 0.5) * pitch, pitch * 0.52, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(x + (i + 0.5) * pitch, y - (j + 0.5) * pitch, pitch * r, 0, Math.PI * 2); ctx.fill();
     }));
     x += (g[0].length + 1) * pitch;
   }
@@ -1093,6 +1152,13 @@ function drawHud() {
   world();
   if (!isMenu()) {
     const cell = W / (titleDots?.cols || 68), dd = cell * (titleDots?.dot || 1.04);
+    ctx.fillStyle = OUTLINE_DOT.color;
+    for (let i = 0; i < cfg.hearts; i++) {
+      const x = 0.4 + i * cell * 1.3, y = H - 0.4, pad = dd / 4 * (OUTLINE_DOT.size - 1);
+      ctx.beginPath(); ctx.arc(x, y, dd / 2 + pad, 0, Math.PI * 2);
+      if (i >= plane.hp) ctx.arc(x, y, Math.max(0, dd / 2 * 0.45 - pad), 0, Math.PI * 2, true);
+      ctx.fill('evenodd');
+    }
     ctx.fillStyle = '#e8344a';
     for (let i = 0; i < cfg.hearts; i++) {
       const x = 0.4 + i * cell * 1.3, y = H - 0.4;
@@ -1100,10 +1166,12 @@ function drawHud() {
       if (i >= plane.hp) ctx.arc(x, y, dd / 2 * 0.45, 0, Math.PI * 2, true);
       ctx.fill('evenodd');
     }
+    dotText(`${meters()} m`, 0.28, H - 0.68, cell * 0.45, OUTLINE_DOT.color, 0.52 * OUTLINE_DOT.size);
     dotText(`${meters()} m`, 0.28, H - 0.68, cell * 0.45, '#ffffff');
   }
   hudMode = false;
   world();
+  drawControlsHint();
 }
 
 let last = performance.now(), time = 0;
@@ -1123,8 +1191,8 @@ function frame(now) {
   world();
   if (cfg.projection) box(W / 2, H / 2, W, H, '#000');
   else {
-    BG[BIOMES[bi].key](time, drawBackFog);
-    drawFrontFog();
+    if (vineOnScreen()) vineSplit();
+    else BG[BIOMES[bi].key](time, drawBackFog);
   }
   for (const h of hazards) if (h.kind === 'arch') HZ.arch.draw(h);
   // if (!cfg.projection) drawTrain(time);
@@ -1139,6 +1207,8 @@ function frame(now) {
   }
   const caves = hazards.filter(h => h.kind === 'cave');
   if (caves.length) { caves.forEach(h => HZ.cave.front(h)); drawTrainShape(); drawOperator(time); }
+  if ((vine || fgDecos.length) && !isMenu()) { fgDecos.forEach(d => drawFg(art[d.img], d.x)); drawVine(); drawTrainShape(); drawOperator(time); }
+  if (!cfg.projection) drawFrontFog();
   drawFx(true);
   drawHud();
   requestAnimationFrame(frame);
