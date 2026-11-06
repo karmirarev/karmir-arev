@@ -126,7 +126,24 @@ resize();
 const KEYS = { left: ['ArrowLeft', 'KeyA'], right: ['ArrowRight', 'KeyD'], up: ['ArrowUp', 'KeyW'], down: ['ArrowDown', 'KeyS'] };
 const START_KEYS = [...KEYS.left, ...KEYS.right, ...KEYS.up, ...KEYS.down, 'Space', 'Enter'];
 const held = new Set(), pressed = new Set();
-const isHeld = dir => KEYS[dir].some(k => held.has(k));
+const padDirs = new Set(), PAD = { dead: 0.35 };
+let padWas = false;
+const isHeld = dir => KEYS[dir].some(k => held.has(k)) || padDirs.has(dir);
+function pollPads() {
+  padDirs.clear();
+  let any = false;
+  for (const p of navigator.getGamepads?.() || []) {
+    if (!p) continue;
+    const [ax = 0, ay = 0] = p.axes, b = i => p.buttons[i]?.pressed;
+    if (ax < -PAD.dead || b(14)) padDirs.add('left');
+    if (ax > PAD.dead || b(15)) padDirs.add('right');
+    if (ay < -PAD.dead || b(12)) padDirs.add('up');
+    if (ay > PAD.dead || b(13)) padDirs.add('down');
+    if (p.buttons.some((x, i) => x.pressed && i < 12)) any = true;
+  }
+  if (any && !padWas && state === 'title') { startTrainSound(); startRun(0); }
+  padWas = any;
+}
 const sfx = {};
 for (const [k, f] of Object.entries({ train: 'train', hit: 'hit', harpies: 'harpies', fireballs: 'dragon-fireballs', laser: 'dragon-laser' })) { sfx[k] = new Audio(`sfx/${f}.mp3`); sfx[k].preload = 'auto'; }
 sfx.train.loop = true; sfx.train.volume = 0.45;
@@ -213,7 +230,7 @@ const art = {};
 const ART = { 'lvl1': 'webp', 'lvl1dark': 'webp', 'lvl2-back': 'png', 'lvl2-mid': 'webp', 'lvl2-front': 'webp', 'lvl2-chandelier': 'png', 'lvl2-props': 'png', 'lvl2-floor': 'png', 'cloud-transition': 'webp', 'lvl3-cloud-strip': 'webp', 'lvl3-map': 'webp', 'vine-transition': 'webp', 'fg-plant': 'webp', 'vishap-red-body': 'png', 'vishap-red-head-top': 'png', 'vishap-red-jaw': 'png', 'operator': 'webp', 'zeppelin': 'webp', 'head': 'webp', 'wing': 'png', 'column': 'png', 'chandelier': 'png', 'smoke': 'png', 'train-shape': 'png', 'zep-1': 'png', 'zep-2': 'png', 'zep-3': 'png', 'zep-4': 'png', 'op-1': 'png', 'chain': 'png', 'cherub-head': 'png', 'cherub-wing': 'png', 'shooter-1': 'png', 'shooter-2': 'png', 'shooter-3': 'png' };
 for (const [name, ext] of Object.entries(ART)) {
   art[name] = new Image();
-  art[name].src = `art/${name}.${ext}?v=202611060654`;
+  art[name].src = `art/${name}.${ext}?v=202611061711`;
 }
 const trainImg = new Image();
 trainImg.src = 'train.png';
@@ -254,7 +271,25 @@ function bgStrip(img, speed) {
 const MENU = { hold: 10, dim: 'rgba(12,10,14,0.55)' };
 const dim = c => box(W / 2, H / 2, W, H, c);
 function bgLandscape() { box(W / 2, H / 2, W, H, '#2f5a5c'); bgStrip(isMenu() ? art.lvl1dark : art.lvl1, 1); if (isMenu()) drawWindows(() => bgStrip(art.lvl1, 1)); }
-function hallBack() { box(W / 2, H / 2, W, H, '#013c5b'); bgStrip(art['lvl2-back'], 0); bgStrip(art['lvl2-mid'], 0.6); bgStrip(art['lvl2-props'], 0.6); bgStrip(art['lvl2-chandelier'], 0.8); }
+const BG_VIDEO = { size: 5.6, y: 6.2, speed: 0.4 };
+const bgVideoEl = Object.assign(document.createElement('video'), { src: 'art/lvl2-video.mp4', muted: true, loop: true, playsInline: true, preload: 'auto' });
+let bgVideo = null;
+function startBgVideo() { bgVideo = { x: W + 0.5 }; bgVideoEl.currentTime = 0; bgVideoEl.play().catch(() => {}); }
+function updateBgVideo(dt) {
+  if (!bgVideo) return;
+  bgVideo.x -= BG_VIDEO.speed * cfg.scroll * spd() * dt;
+  if (bgVideo.x + BG_VIDEO.size < -1) { bgVideo = null; bgVideoEl.pause(); }
+}
+function drawBgVideo() {
+  if (!bgVideo || isMenu() || bgVideoEl.readyState < 2) return;
+  const s = BG_VIDEO.size / bgVideoEl.videoWidth, top = BG_VIDEO.y + BG_VIDEO.size / 2;
+  ctx.save();
+  if (cfg.mirror) { ctx.translate(bgVideo.x + BG_VIDEO.size, top); ctx.scale(-s, -s); }
+  else { ctx.translate(bgVideo.x, top); ctx.scale(s, -s); }
+  ctx.drawImage(bgVideoEl, 0, 0);
+  ctx.restore();
+}
+function hallBack() { box(W / 2, H / 2, W, H, '#013c5b'); bgStrip(art['lvl2-back'], 0); drawBgVideo(); bgStrip(art['lvl2-mid'], 0.6); bgStrip(art['lvl2-props'], 0.6); bgStrip(art['lvl2-chandelier'], 0.8); }
 function bgBuilding(t, between) {
   hallBack(); between?.(); bgStrip(art['lvl2-front'], 1); bgStrip(art['lvl2-floor'], 1);
   if (isMenu()) { dim(MENU.dim); drawWindows(hallBack); }
@@ -754,7 +789,7 @@ function startRun(index = 0) {
   hazards.length = 0;
   Object.assign(dragon, { on: false, leaving: false, x: W + 7, beam: null });
   won = false;
-  bi = prevBi = index; cloud = null; vine = null; fgDecos = []; biomeT = 0; loop = 0; runT = 0; timers = {};
+  bi = prevBi = index; cloud = null; vine = null; fgDecos = []; bgVideo = null; biomeT = 0; loop = 0; runT = 0; timers = {};
   state = 'play';
   nameBox.hidden = true;
   nameBox.blur();
@@ -771,7 +806,7 @@ function toTitle() {
   hazards.length = 0;
   Object.assign(dragon, { on: false, leaving: false, x: W + 7, beam: null });
   Object.assign(plane, { vx: 0, vy: 0, tilt: 0, hurt: 0, gone: false });
-  cloud = null; vine = null; fgDecos = []; runT = 0; menuT = 0;
+  cloud = null; vine = null; fgDecos = []; bgVideo = null; runT = 0; menuT = 0;
 }
 resize();
 function nextBiome() {
@@ -920,7 +955,7 @@ const SCRIPT = {
     wait(4), clear(W - 3), wait(0.5),
     { dist: 4.5, run: i => HZ.arch.spawn({ moving: false, base: lane([0.5, 0.65, 0.35, 0.6, 0.45][i]) }), count: 5 },
     { dist: 5 },
-    run(() => swingAt(2, 0.45, 1.8, 0)),
+    run(() => { swingAt(2, 0.45, 1.8, 0); startBgVideo(); }),
     { dist: 15 },
     { dist: 3.6, run: i => swingAt(...CHAOS[i]), count: CHAOS.length },
     { dist: 6 },
@@ -966,6 +1001,7 @@ function updateGame(dt) {
   updateSpawns(dt);
   updateVine(dt);
   updateFgDecos(dt);
+  updateBgVideo(dt);
   updateCloud(dt);
 }
 
@@ -995,7 +1031,7 @@ function drawTrainShape() {
 }
 let titleDots = null;
 let titleWindows = [];
-fetch('title-dots.json?v=202611060654').then(r => r.json()).then(d => { titleDots = d; titleWindows = findWindows(d); }).catch(() => {});
+fetch('title-dots.json?v=202611061711').then(r => r.json()).then(d => { titleDots = d; titleWindows = findWindows(d); }).catch(() => {});
 function regions(cols, rows, wall) {
   const seen = new Set(), out = [];
   for (let y0 = 0; y0 < rows; y0++) for (let x0 = 0; x0 < cols; x0++) {
@@ -1101,7 +1137,7 @@ function drawFineDots(pts, s, dot) {
   }
 }
 let controlsDots = null;
-fetch('controls-dots.json?v=202611060654').then(r => r.json()).then(d => { controlsDots = d; }).catch(() => {});
+fetch('controls-dots.json?v=202611061711').then(r => r.json()).then(d => { controlsDots = d; }).catch(() => {});
 const DOT_FONT = {
   0: ['###', '#.#', '#.#', '#.#', '###'], 1: ['.#.', '##.', '.#.', '.#.', '###'], 2: ['###', '..#', '###', '#..', '###'],
   3: ['###', '..#', '.##', '..#', '###'], 4: ['#.#', '#.#', '###', '..#', '..#'], 5: ['###', '#..', '###', '..#', '###'],
@@ -1169,6 +1205,7 @@ function drawHud() {
 
 let last = performance.now(), time = 0;
 function frame(now) {
+  pollPads();
   const dt = clamp((now - last) / 1000, 0, 0.05);
   last = now; time += dt;
   scroll += cfg.scroll * dt;

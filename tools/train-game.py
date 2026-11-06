@@ -27,6 +27,9 @@ open(f'{DST}/index.html', 'w').write(html)
 for f in os.listdir(SRC):
     if os.path.isfile(f'{SRC}/{f}') and f != 'index.html' and f in html:
         shutil.copy(f'{SRC}/{f}', DST)
+for f in set(re.findall(r"art/([\w.-]+\.\w+)", html)):
+    if os.path.isfile(f'{SRC}/art/{f}'):
+        shutil.copy(f'{SRC}/art/{f}', f'{DST}/art/')
 if os.path.isdir(f'{SRC}/sfx'):
     shutil.copytree(f'{SRC}/sfx', f'{DST}/sfx')
 
