@@ -210,10 +210,10 @@ function text(lines, x, y, size, align = 'center', alpha = 1) {
 }
 
 const art = {};
-const ART = { 'lvl1': 'webp', 'lvl1dark': 'webp', 'lvl2-back': 'png', 'lvl2-mid': 'webp', 'lvl2-front': 'webp', 'lvl2-chandelier': 'png', 'lvl2-props': 'png', 'lvl2-floor': 'png', 'cloud-transition': 'webp', 'lvl3-cloud1': 'webp', 'lvl3-cloud2': 'webp', 'lvl3-cloud3': 'webp', 'lvl3-map': 'webp', 'vine-transition': 'webp', 'fg-plant': 'webp', 'vishap-red-body': 'png', 'vishap-red-head-top': 'png', 'vishap-red-jaw': 'png', 'operator': 'webp', 'zeppelin': 'webp', 'head': 'webp', 'wing': 'png', 'column': 'png', 'chandelier': 'png', 'smoke': 'png', 'train-shape': 'png', 'zep-1': 'png', 'zep-2': 'png', 'zep-3': 'png', 'zep-4': 'png', 'op-1': 'png', 'chain': 'png', 'cherub-head': 'png', 'cherub-wing': 'png', 'shooter-1': 'png', 'shooter-2': 'png', 'shooter-3': 'png' };
+const ART = { 'lvl1': 'webp', 'lvl1dark': 'webp', 'lvl2-back': 'png', 'lvl2-mid': 'webp', 'lvl2-front': 'webp', 'lvl2-chandelier': 'png', 'lvl2-props': 'png', 'lvl2-floor': 'png', 'cloud-transition': 'webp', 'lvl3-cloud-strip': 'webp', 'lvl3-map': 'webp', 'vine-transition': 'webp', 'fg-plant': 'webp', 'vishap-red-body': 'png', 'vishap-red-head-top': 'png', 'vishap-red-jaw': 'png', 'operator': 'webp', 'zeppelin': 'webp', 'head': 'webp', 'wing': 'png', 'column': 'png', 'chandelier': 'png', 'smoke': 'png', 'train-shape': 'png', 'zep-1': 'png', 'zep-2': 'png', 'zep-3': 'png', 'zep-4': 'png', 'op-1': 'png', 'chain': 'png', 'cherub-head': 'png', 'cherub-wing': 'png', 'shooter-1': 'png', 'shooter-2': 'png', 'shooter-3': 'png' };
 for (const [name, ext] of Object.entries(ART)) {
   art[name] = new Image();
-  art[name].src = `art/${name}.${ext}?v=202611060647`;
+  art[name].src = `art/${name}.${ext}?v=202611060654`;
 }
 const trainImg = new Image();
 trainImg.src = 'train.png';
@@ -259,18 +259,11 @@ function bgBuilding(t, between) {
   hallBack(); between?.(); bgStrip(art['lvl2-front'], 1); bgStrip(art['lvl2-floor'], 1);
   if (isMenu()) { dim(MENU.dim); drawWindows(hallBack); }
 }
-const SKY = { color: '#809e6d', span: 80, dim: 'rgba(30,34,30,0.5)' };
-const SKY_CLOUDS = Array.from({ length: 4 }, (_, i) => ({ img: 'lvl3-cloud' + (i % 3 + 1), u: i / 4 + Math.random() * 0.1, y: H / 2, k: 1 + Math.random() * 0.15, sp: 0.5 + Math.random() * 0.5 })).sort((a, b) => a.sp - b.sp);
+const SKY = { color: '#809e6d', cloudSpeed: 0.8, dim: 'rgba(30,34,30,0.5)' };
 function mapBack() { box(W / 2, H / 2, W, H, SKY.color); bgStrip(art['lvl3-map'], 0.4); dim(SKY.dim); }
 function bgHills() {
   mapBack();
-  for (const c of SKY_CLOUDS) {
-    const img = art[c.img];
-    if (!ready(img)) continue;
-    const s = H / img.naturalHeight * c.k, w = img.naturalWidth * s, h = img.naturalHeight * s;
-    const x = ((c.u * SKY.span - scroll * c.sp) % SKY.span + SKY.span) % SKY.span - w;
-    drawImg(img, x, c.y + h / 2, s, -s, 0, 0);
-  }
+  bgStrip(art['lvl3-cloud-strip'], SKY.cloudSpeed);
   if (isMenu()) { dim(MENU.dim); drawWindows(mapBack); }
 }
 const BG = { landscape: bgLandscape, building: bgBuilding, hills: bgHills };
@@ -1002,7 +995,7 @@ function drawTrainShape() {
 }
 let titleDots = null;
 let titleWindows = [];
-fetch('title-dots.json?v=202611060647').then(r => r.json()).then(d => { titleDots = d; titleWindows = findWindows(d); }).catch(() => {});
+fetch('title-dots.json?v=202611060654').then(r => r.json()).then(d => { titleDots = d; titleWindows = findWindows(d); }).catch(() => {});
 function regions(cols, rows, wall) {
   const seen = new Set(), out = [];
   for (let y0 = 0; y0 < rows; y0++) for (let x0 = 0; x0 < cols; x0++) {
@@ -1108,7 +1101,7 @@ function drawFineDots(pts, s, dot) {
   }
 }
 let controlsDots = null;
-fetch('controls-dots.json?v=202611060647').then(r => r.json()).then(d => { controlsDots = d; }).catch(() => {});
+fetch('controls-dots.json?v=202611060654').then(r => r.json()).then(d => { controlsDots = d; }).catch(() => {});
 const DOT_FONT = {
   0: ['###', '#.#', '#.#', '#.#', '###'], 1: ['.#.', '##.', '.#.', '.#.', '###'], 2: ['###', '..#', '###', '#..', '###'],
   3: ['###', '..#', '.##', '..#', '###'], 4: ['#.#', '#.#', '###', '..#', '..#'], 5: ['###', '#..', '###', '..#', '###'],
