@@ -101,9 +101,9 @@ if (!(cfg.version >= 8)) cfg.hitbox = DEFAULTS.hitbox;
 if (cfg.version !== 7 && cfg.version !== 8) { for (const k of ['trainX', 'trainTop', 'trainW', 'trainH']) cfg[k] = DEFAULTS[k]; cfg.infiniteHealth = false; }
 if (cfg.version !== 8) { cfg.version = 8; saveCfg(); }
 
-const floorY = () => shapePt(0, TSHAPE.roof).y;
+const floorY = () => OP.feet;
 const opX = () => shapePt(TSHAPE.w * TSHAPE.last, 0).x;
-const lo = () => floorY() + 1.1;
+const lo = () => floorY() + 0.55;
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const lerp = (a, b, t) => a + (b - a) * t;
 const toward = (v, target, step) => v < target ? Math.min(v + step, target) : Math.max(v - step, target);
@@ -238,7 +238,7 @@ const art = {};
 const ART = { 'lvl1': 'webp', 'lvl1dark': 'webp', 'lvl2-back': 'png', 'lvl2-mid': 'webp', 'lvl2-front': 'webp', 'lvl2-chandelier': 'png', 'lvl2-props': 'png', 'lvl2-floor': 'png', 'cloud-transition': 'webp', 'lvl3-cloud-strip': 'webp', 'lvl3-map': 'webp', 'vine-transition': 'webp', 'fg-plant': 'webp', 'vishap-red-body': 'png', 'vishap-red-head-top': 'png', 'vishap-red-jaw': 'png', 'operator': 'webp', 'zeppelin': 'webp', 'head': 'webp', 'wing': 'png', 'column': 'png', 'chandelier': 'png', 'smoke': 'png', 'train-shape': 'png', 'zep-1': 'png', 'zep-2': 'png', 'zep-3': 'png', 'zep-4': 'png', 'op-1': 'png', 'chain': 'png', 'cherub-head': 'png', 'cherub-wing': 'png', 'shooter-1': 'png', 'shooter-2': 'png', 'shooter-3': 'png' };
 for (const [name, ext] of Object.entries(ART)) {
   art[name] = new Image();
-  art[name].src = `art/${name}.${ext}?v=202611061802`;
+  art[name].src = `art/${name}.${ext}?v=202611061811`;
 }
 const trainImg = new Image();
 trainImg.src = 'train.png';
@@ -337,6 +337,7 @@ function hitC() {
   const s = zs(), dx = -s * (ZEP.bx - ZEP.cx), dy = -s * (ZEP.by - ZEP.cy), c = Math.cos(plane.tilt), n = Math.sin(plane.tilt);
   return { x: plane.x + dx * c - dy * n, y: plane.y + dx * n + dy * c };
 }
+const DRAGON_GAP = 2.6;
 function updatePlane(dt, time) {
   const p = plane;
   p.hurt -= dt;
@@ -365,8 +366,8 @@ function updatePlane(dt, time) {
   p.vx = toward(p.vx, dx / len * cfg.planeSpeed, 45 * dt);
   p.vy = toward(p.vy, dy / len * cfg.planeSpeed, 45 * dt);
   p.x = clamp(p.x + p.vx * dt, 0.8, W - 0.8);
-  if (dragon.on && !dragon.leaving) { const wall = (dragon.bite ? dragon.bite.home : dragon.x) - 6.5; if (p.x > wall) { p.x = wall; p.vx = Math.min(p.vx, 0); } }
-  p.y = clamp(p.y + p.vy * dt, lo(), H - 0.5);
+  if (dragon.on && !dragon.leaving) { const wall = (dragon.bite ? dragon.bite.home : dragon.x) - DRAGON_GAP; if (p.x > wall) { p.x = wall; p.vx = Math.min(p.vx, 0); } }
+  p.y = clamp(p.y + p.vy * dt, floorY() + 0.45, H - 0.45);
   p.tilt = toward(p.tilt, p.vy * 0.035, dt * 3);
 }
 function hitPlane() {
@@ -1032,7 +1033,7 @@ function drawScoreboard() {
 }
 let titleDots = null;
 let titleWindows = [];
-fetch('title-dots.json?v=202611061802').then(r => r.json()).then(d => { titleDots = d; titleWindows = findWindows(d); }).catch(() => {});
+fetch('title-dots.json?v=202611061811').then(r => r.json()).then(d => { titleDots = d; titleWindows = findWindows(d); }).catch(() => {});
 function regions(cols, rows, wall) {
   const seen = new Set(), out = [];
   for (let y0 = 0; y0 < rows; y0++) for (let x0 = 0; x0 < cols; x0++) {
@@ -1057,7 +1058,8 @@ function regions(cols, rows, wall) {
 function findWindows(d) {
   const s = 1920 / d.cols, h = s / 2, rows = Math.ceil(1080 / s);
   const inside = regions(d.cols * 2, rows * 2, new Set(Object.keys(d.fine || {}))).filter(r => !r.edge && r.cells.length >= 6);
-  const outside = regions(d.cols, rows, new Set(Object.keys(d.cells))).filter(r => r.edge);
+  const outside = [{ cells: [] }];
+  for (let y = 0; y < rows; y++) for (let x = 0; x < d.cols; x++) if ((x === 0 || x === d.cols - 1 || y === 0) && !d.cells[x + ',' + y]) outside[0].cells.push([x, y]);
   return [
     ...inside.flatMap(r => r.cells.map(([x, y]) => [(x - 0.5) * h, (y - 0.5) * h, h * 2])),
     ...outside.flatMap(r => r.cells.map(([x, y]) => [(x - 0.5) * s, (y - 0.5) * s, s * 2])),
@@ -1086,10 +1088,9 @@ const LED = { speed: 18, color: '#e8344a' };
 let ledPath = null;
 function frameLoop(cells) {
   const has = (x, y) => cells[x + ',' + y], path = [];
+  for (let y = 37; y >= 2; y--) path.push([1, y]);
   for (let x = 2; x <= 65; x++) path.push([x, 1]);
-  for (let y = 2; y <= 35; y++) path.push([66, y]);
-  for (let x = 65; x >= 2; x--) path.push([x, 36]);
-  for (let y = 35; y >= 2; y--) path.push([1, y]);
+  for (let y = 2; y <= 37; y++) path.push([66, y]);
   return path.filter(([x, y]) => has(x, y)).map(([x, y]) => x + ',' + y);
 }
 let frameSet = null;
@@ -1138,7 +1139,7 @@ function drawFineDots(pts, s, dot) {
   }
 }
 let controlsDots = null;
-fetch('controls-dots.json?v=202611061802').then(r => r.json()).then(d => { controlsDots = d; }).catch(() => {});
+fetch('controls-dots.json?v=202611061811').then(r => r.json()).then(d => { controlsDots = d; }).catch(() => {});
 const DOT_FONT = {
   0: ['###', '#.#', '#.#', '#.#', '###'], 1: ['.#.', '##.', '.#.', '.#.', '###'], 2: ['###', '..#', '###', '#..', '###'],
   3: ['###', '..#', '.##', '..#', '###'], 4: ['#.#', '#.#', '###', '..#', '..#'], 5: ['###', '#..', '###', '..#', '###'],
