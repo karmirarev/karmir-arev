@@ -53,7 +53,7 @@ const DEFAULTS = {
   biomeLength: 35, dragonLength: 45, scroll: 1.5, density: 1, hazardSpeed: 1,
   archGap: 2.4, archSpeed: 3.4,
   bulletSpeed: 5.5, fireRate: 1, dragonSize: 5,
-  roofHeight: 0.7, trainX: 0, trainTop: 0.828, trainW: 1, trainH: 0.172, mirror: true, infiniteHealth: false, projection: false,
+  roofHeight: 0.7, trainX: 0, trainTop: 0.828, trainW: 1, trainH: 0.172, mirror: true, infiniteHealth: false, projection: false, shiftX: 0.02, zoom: 0.92, tilt: -1,
 };
 const SLIDERS = [
   ['Plane', [
@@ -75,6 +75,11 @@ const SLIDERS = [
     ['bulletSpeed', 'Fireball speed', 2, 12, 0.25],
     ['fireRate', 'Fire rate', 0.3, 3, 0.05],
     ['dragonSize', 'Size', 2, 9, 0.1],
+  ]],
+  ['Projector', [
+    ['shiftX', 'Shift whole game left', 0, 0.15, 0.005],
+    ['zoom', 'Game size', 0.6, 1, 0.005],
+    ['tilt', 'Tilt (right is +)', -5, 5, 0.1],
   ]],
   ['Real train (line it up with the wall)', [
     ['trainX', 'Left edge', -0.2, 0.6, 0.002],
@@ -111,8 +116,10 @@ function resize() {
   const dpr = window.devicePixelRatio || 1;
   let w = innerWidth, h = w * 9 / 16;
   if (h > innerHeight) { h = innerHeight; w = h * 16 / 9; }
+  w *= cfg.zoom; h *= cfg.zoom;
   cv.style.width = w + 'px';
   cv.style.height = h + 'px';
+  cv.style.transform = `translateX(${-cfg.shiftX * w}px) rotate(${cfg.tilt}deg)`;
   cv.width = Math.round(w * dpr);
   cv.height = Math.round(h * dpr);
   S = cv.width / W;
@@ -230,7 +237,7 @@ const art = {};
 const ART = { 'lvl1': 'webp', 'lvl1dark': 'webp', 'lvl2-back': 'png', 'lvl2-mid': 'webp', 'lvl2-front': 'webp', 'lvl2-chandelier': 'png', 'lvl2-props': 'png', 'lvl2-floor': 'png', 'cloud-transition': 'webp', 'lvl3-cloud-strip': 'webp', 'lvl3-map': 'webp', 'vine-transition': 'webp', 'fg-plant': 'webp', 'vishap-red-body': 'png', 'vishap-red-head-top': 'png', 'vishap-red-jaw': 'png', 'operator': 'webp', 'zeppelin': 'webp', 'head': 'webp', 'wing': 'png', 'column': 'png', 'chandelier': 'png', 'smoke': 'png', 'train-shape': 'png', 'zep-1': 'png', 'zep-2': 'png', 'zep-3': 'png', 'zep-4': 'png', 'op-1': 'png', 'chain': 'png', 'cherub-head': 'png', 'cherub-wing': 'png', 'shooter-1': 'png', 'shooter-2': 'png', 'shooter-3': 'png' };
 for (const [name, ext] of Object.entries(ART)) {
   art[name] = new Image();
-  art[name].src = `art/${name}.${ext}?v=202611061711`;
+  art[name].src = `art/${name}.${ext}?v=202611061751`;
 }
 const trainImg = new Image();
 trainImg.src = 'train.png';
@@ -371,7 +378,7 @@ function hitPlane() {
   if (plane.hp <= 0) gameOver();
 }
 const ZEP = { bx: 65, by: 58, cx: 79, cy: 55, ax: 82, ay: 106, w: 1.5, src: 158, frames: 4, fps: 8 };
-const OP = { fx: 85, fy: 222, hx: 52, hy: 9, h: 2.185, src: 228, fps: 3, anims: { idle: ['op-1'] } };
+const OP = { feet: H * (1 - 36 * (1920 / 68) / 1080), fx: 85, fy: 222, hx: 52, hy: 9, h: 2.185, src: 228, fps: 3, anims: { idle: ['op-1'] } };
 const zs = () => ZEP.w / ZEP.src;
 function planeAnchor() {
   const s = zs(), dx = -s * (ZEP.ax - ZEP.cx), dy = -s * (ZEP.ay - ZEP.cy);
@@ -384,7 +391,7 @@ function drawPlane(time) {
   drawImg(art['zep-' + (1 + Math.floor(time * ZEP.fps) % ZEP.frames)], p.x, p.y, -s, -s, ZEP.cx, ZEP.cy, p.tilt);
 }
 function drawOperator(time) {
-  const s = OP.h / OP.src, y = floorY(), rot = 0, frames = OP.anims.idle;
+  const s = OP.h / OP.src, y = OP.feet, rot = 0, frames = OP.anims.idle;
   drawImg(art[frames[Math.floor(time * OP.fps) % frames.length]], opX(), y, -s, -s, OP.fx, OP.fy, rot);
   const dx = -s * (OP.hx - OP.fx), dy = -s * (OP.hy - OP.fy), c = Math.cos(rot), n = Math.sin(rot);
   return { x: opX() + dx * c - dy * n, y: y + dx * n + dy * c };
@@ -1022,16 +1029,9 @@ function drawScoreboard() {
   rows.forEach((e, i) => row(e, i, top - 0.8 - i * gap));
   if (extra) row(lastEntry, rank, top - 0.8 - rows.length * gap);
 }
-function drawTrainShape() {
-  if (!ready(art['train-shape'])) return;
-  const p = shapePt(0, 0), sw = cfg.trainW * W / TSHAPE.w, sh = cfg.trainH * H / TSHAPE.h;
-  ctx.save(); ctx.translate(p.x, p.y); ctx.scale(cfg.mirror ? -sw : sw, -sh);
-  ctx.drawImage(art['train-shape'], 0, 0);
-  ctx.restore();
-}
 let titleDots = null;
 let titleWindows = [];
-fetch('title-dots.json?v=202611061711').then(r => r.json()).then(d => { titleDots = d; titleWindows = findWindows(d); }).catch(() => {});
+fetch('title-dots.json?v=202611061751').then(r => r.json()).then(d => { titleDots = d; titleWindows = findWindows(d); }).catch(() => {});
 function regions(cols, rows, wall) {
   const seen = new Set(), out = [];
   for (let y0 = 0; y0 < rows; y0++) for (let x0 = 0; x0 < cols; x0++) {
@@ -1137,7 +1137,7 @@ function drawFineDots(pts, s, dot) {
   }
 }
 let controlsDots = null;
-fetch('controls-dots.json?v=202611061711').then(r => r.json()).then(d => { controlsDots = d; }).catch(() => {});
+fetch('controls-dots.json?v=202611061751').then(r => r.json()).then(d => { controlsDots = d; }).catch(() => {});
 const DOT_FONT = {
   0: ['###', '#.#', '#.#', '#.#', '###'], 1: ['.#.', '##.', '.#.', '.#.', '###'], 2: ['###', '..#', '###', '#..', '###'],
   3: ['###', '..#', '.##', '..#', '###'], 4: ['#.#', '#.#', '###', '..#', '..#'], 5: ['###', '#..', '###', '..#', '###'],
@@ -1204,8 +1204,10 @@ function drawHud() {
 }
 
 let last = performance.now(), time = 0;
+let shiftNow = null;
 function frame(now) {
   pollPads();
+  if (shiftNow !== cfg.shiftX + '|' + cfg.zoom + '|' + cfg.tilt) { shiftNow = cfg.shiftX + '|' + cfg.zoom + '|' + cfg.tilt; resize(); }
   const dt = clamp((now - last) / 1000, 0, 0.05);
   last = now; time += dt;
   scroll += cfg.scroll * dt;
@@ -1230,14 +1232,13 @@ function frame(now) {
   drawDragon();
   for (const h of hazards) if (h.kind !== 'arch') HZ[h.kind].draw(h);
   if (!isMenu()) {
-    drawTrainShape();
     const hand = drawOperator(time);
     drawTether(hand, time);
     drawPlane(time);
   }
   const caves = hazards.filter(h => h.kind === 'cave');
-  if (caves.length) { caves.forEach(h => HZ.cave.front(h)); drawTrainShape(); drawOperator(time); }
-  if ((vine || fgDecos.length) && !isMenu()) { fgDecos.forEach(d => drawFg(art[d.img], d.x)); drawVine(); drawTrainShape(); drawOperator(time); }
+  if (caves.length) { caves.forEach(h => HZ.cave.front(h)); drawOperator(time); }
+  if ((vine || fgDecos.length) && !isMenu()) { fgDecos.forEach(d => drawFg(art[d.img], d.x)); drawVine(); drawOperator(time); }
   if (!cfg.projection) drawFrontFog();
   drawFx(true);
   drawHud();
