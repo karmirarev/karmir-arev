@@ -24,7 +24,7 @@ const cfg = {
   planeSpeed: 9, hearts: 10, hurtTime: 1.5, hitbox: 0.18, scroll: 1.5, hazardSpeed: 1,
   archGap: 2.4, archSpeed: 3.4, bulletSpeed: 5.5, fireRate: 1,
   trainX: 0, trainTop: 0.828, trainW: 1, trainH: 0.172, mirror: true, infiniteHealth: false,
-  shiftX: 0.02, zoom: 0.92, tilt: -1, keystone: 2,
+  shiftX: 0.02, zoom: 0.92, tilt: -1, keystone: 2, leftLean: 4,
 };
 
 const floorY = () => OP.feet;
@@ -47,7 +47,7 @@ function resize() {
   w *= cfg.zoom; h *= cfg.zoom;
   cv.style.width = w + 'px';
   cv.style.height = h + 'px';
-  cv.style.transform = `translateX(${-cfg.shiftX * w}px) rotate(${cfg.tilt}deg) perspective(${w * 1.5}px) rotateY(${-cfg.keystone}deg)`;
+  cv.style.transform = `translateX(${-cfg.shiftX * w}px) rotate(${cfg.tilt}deg) perspective(${w * 1.5}px) rotateY(${-cfg.keystone}deg) rotateX(${-0.089 * cfg.leftLean}deg) skewX(${0.0265 * cfg.leftLean}deg)`;
   cv.width = Math.round(w * dpr);
   cv.height = Math.round(h * dpr);
   S = cv.width / W;
@@ -155,7 +155,7 @@ const art = {};
 const ART = { 'lvl1': 'webp', 'lvl1dark': 'webp', 'lvl2-back': 'png', 'lvl2-mid': 'webp', 'lvl2-front': 'webp', 'lvl2-chandelier': 'png', 'lvl2-props': 'png', 'lvl2-floor': 'png', 'lvl2-balloon-a': 'webp', 'lvl2-balloon-b': 'webp', 'lvl2-balloon-c': 'webp', 'en1-sun': 'png', 'beam-1': 'png', 'beam-2': 'png', 'beam-3': 'png', 'beam-4': 'png', 'beam-5': 'png', 'beam-6': 'png', 'en1-wing': 'png', 'en1-hand': 'png', 'en1-shoot-1': 'png', 'en1-shoot-2': 'png', 'en1-shoot-3': 'png', 'en1-shoot-4': 'png', 'en1-fly': 'png', 'girl-head': 'png', 'win-panel': 'png', 'girl-1': 'png', 'girl-2': 'png', 'girl-3': 'png', 'girl-4': 'png', 'girl-5': 'png', 'girl-6': 'png', 'cloud-transition': 'webp', 'lvl3-cloud-strip': 'webp', 'lvl3-map': 'webp', 'vine-transition': 'webp', 'fg-plant': 'webp', 'column': 'png', 'chandelier': 'png', 'zep-1': 'png', 'zep-2': 'png', 'zep-3': 'png', 'zep-4': 'png', 'chain': 'png' };
 for (const [name, ext] of Object.entries(ART)) {
   art[name] = new Image();
-  art[name].src = `art/${name}.${ext}?v=202611071653`;
+  art[name].src = `art/${name}.${ext}?v=202611071734`;
 }
 const ready = img => img.complete && img.naturalWidth > 0;
 function drawImg(img, x, y, sx, sy, ox, oy, rot = 0) {
@@ -595,7 +595,7 @@ function updateHazards(dt) {
 }
 
 const DRAKE = { fps: 24, w: 5.5, mouth: [-0.43, -0.87], back: 0.3, data: null, img: { fly: [], attack: [] }, anchor: [0, 0], anim: 'fly', i: 0, t: 0 };
-fetch('art/dragon/frames.json?v=202611071653').then(r => r.json()).then(d => {
+fetch('art/dragon/frames.json?v=202611071734').then(r => r.json()).then(d => {
   DRAKE.data = d;
   const fm = d.fly.mouth; DRAKE.anchor = [fm.reduce((a, m) => a + m[0], 0) / fm.length, fm.reduce((a, m) => a + m[1], 0) / fm.length];
   for (const anim of ['fly', 'attack']) for (let i = 0; i < d[anim].n; i++) { const im = new Image(); im.src = `art/dragon/${anim}-${String(i).padStart(2, '0')}.webp`; DRAKE.img[anim].push(im); }
@@ -948,7 +948,7 @@ let titleDots = null;
 let titleWindows = [];
 let titleCells = [], titleFine = [];
 const parseKey = k => k.split(',').map(Number);
-fetch('title-dots.json?v=202611071653').then(r => r.json()).then(d => {
+fetch('title-dots.json?v=202611071734').then(r => r.json()).then(d => {
   titleDots = d; titleWindows = findWindows(d);
   titleCells = Object.entries(d.cells).map(([k, v]) => [...parseKey(k), v, k]);
   titleFine = Object.entries(d.fine || {}).map(([k, v]) => [...parseKey(k), v]);
@@ -1061,7 +1061,7 @@ function drawFineDots(pts, s, dot) {
 }
 let controlsDots = null;
 let controlsPts = [];
-fetch('controls-dots.json?v=202611071653').then(r => r.json()).then(d => { controlsDots = d; controlsPts = Object.entries(d.fine).map(([k, v]) => [...parseKey(k), v.c]); }).catch(() => {});
+fetch('controls-dots.json?v=202611071734').then(r => r.json()).then(d => { controlsDots = d; controlsPts = Object.entries(d.fine).map(([k, v]) => [...parseKey(k), v.c]); }).catch(() => {});
 const DOT_FONT = {
   0: ['###', '#.#', '#.#', '#.#', '###'], 1: ['.#.', '##.', '.#.', '.#.', '###'], 2: ['###', '..#', '###', '#..', '###'],
   3: ['###', '..#', '.##', '..#', '###'], 4: ['#.#', '#.#', '###', '..#', '..#'], 5: ['###', '#..', '###', '..#', '###'],
