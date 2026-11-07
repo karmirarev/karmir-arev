@@ -77,13 +77,17 @@ function pollPads() {
   else if (PAUSE.open) {
     if (dirHit('up')) movePause(-1);
     if (dirHit('down')) movePause(1);
+    if (PAUSE.sel === PAUSE.train && dirHit('left')) setTrainVol(Math.max(0, TRAIN_VOL.level - 1));
+    if (PAUSE.sel === PAUSE.train && dirHit('right')) setTrainVol(Math.min(TRAIN_VOL.steps, TRAIN_VOL.level + 1));
     if (hit(0)) pauseAct(PAUSE.sel);
     if (hit(1)) closePause();
   } else if (state === 'title' && [...now].some(i => i !== 9 && !padPrev.has(i))) { startTrainSound(); startRun(0); }
   padPrev = now; padDirsPrev = new Set(padDirs);
 }
-const PAUSE = { open: false, sel: 0 };
-const pauseItems = () => ['RESUME', 'START OVER', soundOn ? 'SOUND ON' : 'SOUND OFF', 'STAGE 1', 'STAGE 2', 'STAGE 3'];
+const PAUSE = { open: false, sel: 0, train: 3 };
+const TRAIN_VOL = { steps: 10, level: 3 };
+const setTrainVol = l => { TRAIN_VOL.level = (l + TRAIN_VOL.steps + 1) % (TRAIN_VOL.steps + 1); sfx.train.volume = TRAIN_VOL.level / TRAIN_VOL.steps; };
+const pauseItems = () => ['RESUME', 'START OVER', soundOn ? 'SOUND ON' : 'SOUND OFF', 'TRAIN', 'STAGE 1', 'STAGE 2', 'STAGE 3'];
 function openPause() { PAUSE.open = true; PAUSE.sel = 0; sfx.train.pause(); stopLaser(); bgVideoEl.pause(); }
 function closePause() { PAUSE.open = false; startTrainSound(); if (bgVideo) bgVideoEl.play().catch(() => {}); }
 const togglePause = () => PAUSE.open ? closePause() : openPause();
@@ -91,11 +95,12 @@ const movePause = d => { const n = pauseItems().length; PAUSE.sel = (PAUSE.sel +
 function pauseAct(i) {
   if (i === 0) closePause();
   else if (i === 2) { soundOn = !soundOn; if (!soundOn) { sfx.train.pause(); stopLaser(); } }
-  else { PAUSE.open = false; startRun(i === 1 ? 0 : i - 3); startTrainSound(); }
+  else if (i === PAUSE.train) setTrainVol(TRAIN_VOL.level + 1);
+  else { PAUSE.open = false; startRun(i === 1 ? 0 : i - 4); startTrainSound(); }
 }
 const sfx = {};
 for (const [k, f] of Object.entries({ train: 'train', hit: 'hit', harpies: 'harpies', fireballs: 'dragon-fireballs', laser: 'dragon-laser', win: 'win', lose: 'lose' })) { sfx[k] = new Audio(`sfx/${f}.mp3?v=2`); sfx[k].preload = 'auto'; }
-sfx.train.loop = true; sfx.train.volume = 0.45;
+sfx.train.loop = true; sfx.train.volume = TRAIN_VOL.level / TRAIN_VOL.steps;
 let soundOn = true, laserSound = null;
 const lastSound = {};
 function play(name, vol = 1, gap = 0) {
@@ -118,6 +123,8 @@ addEventListener('keydown', e => {
     e.preventDefault();
     if (e.code === 'ArrowUp' || e.code === 'KeyW') movePause(-1);
     if (e.code === 'ArrowDown' || e.code === 'KeyS') movePause(1);
+    if (PAUSE.sel === PAUSE.train && (e.code === 'ArrowLeft' || e.code === 'KeyA')) setTrainVol(Math.max(0, TRAIN_VOL.level - 1));
+    if (PAUSE.sel === PAUSE.train && (e.code === 'ArrowRight' || e.code === 'KeyD')) setTrainVol(Math.min(TRAIN_VOL.steps, TRAIN_VOL.level + 1));
     if ((e.code === 'Enter' || e.code === 'Space') && !e.repeat) pauseAct(PAUSE.sel);
     return;
   }
@@ -145,10 +152,10 @@ function box(x, y, w, h, c) { ctx.fillStyle = c; ctx.fillRect(x - w / 2, y - h /
 function poly(pts, c) { ctx.fillStyle = c; ctx.beginPath(); pts.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.closePath(); ctx.fill(); }
 
 const art = {};
-const ART = { 'lvl1': 'webp', 'lvl1dark': 'webp', 'lvl2-back': 'png', 'lvl2-mid': 'webp', 'lvl2-front': 'webp', 'lvl2-chandelier': 'png', 'lvl2-props': 'png', 'lvl2-floor': 'png', 'lvl2-balloon-a': 'webp', 'lvl2-balloon-b': 'webp', 'lvl2-balloon-c': 'webp', 'en1-head': 'png', 'en1-wing': 'png', 'en1-hand': 'png', 'en1-shoot-1': 'png', 'en1-shoot-2': 'png', 'en1-shoot-3': 'png', 'en1-shoot-4': 'png', 'en1-fly': 'png', 'girl-head': 'png', 'win-panel': 'png', 'girl-1': 'png', 'girl-2': 'png', 'girl-3': 'png', 'girl-4': 'png', 'girl-5': 'png', 'girl-6': 'png', 'cloud-transition': 'webp', 'lvl3-cloud-strip': 'webp', 'lvl3-map': 'webp', 'vine-transition': 'webp', 'fg-plant': 'webp', 'vishap-red-body': 'png', 'vishap-red-head-top': 'png', 'vishap-red-jaw': 'png', 'column': 'png', 'chandelier': 'png', 'zep-1': 'png', 'zep-2': 'png', 'zep-3': 'png', 'zep-4': 'png', 'chain': 'png' };
+const ART = { 'lvl1': 'webp', 'lvl1dark': 'webp', 'lvl2-back': 'png', 'lvl2-mid': 'webp', 'lvl2-front': 'webp', 'lvl2-chandelier': 'png', 'lvl2-props': 'png', 'lvl2-floor': 'png', 'lvl2-balloon-a': 'webp', 'lvl2-balloon-b': 'webp', 'lvl2-balloon-c': 'webp', 'en1-sun': 'png', 'beam-1': 'png', 'beam-2': 'png', 'beam-3': 'png', 'beam-4': 'png', 'beam-5': 'png', 'beam-6': 'png', 'en1-wing': 'png', 'en1-hand': 'png', 'en1-shoot-1': 'png', 'en1-shoot-2': 'png', 'en1-shoot-3': 'png', 'en1-shoot-4': 'png', 'en1-fly': 'png', 'girl-head': 'png', 'win-panel': 'png', 'girl-1': 'png', 'girl-2': 'png', 'girl-3': 'png', 'girl-4': 'png', 'girl-5': 'png', 'girl-6': 'png', 'cloud-transition': 'webp', 'lvl3-cloud-strip': 'webp', 'lvl3-map': 'webp', 'vine-transition': 'webp', 'fg-plant': 'webp', 'vishap-red-body': 'png', 'vishap-red-head-top': 'png', 'vishap-red-jaw': 'png', 'column': 'png', 'chandelier': 'png', 'zep-1': 'png', 'zep-2': 'png', 'zep-3': 'png', 'zep-4': 'png', 'chain': 'png' };
 for (const [name, ext] of Object.entries(ART)) {
   art[name] = new Image();
-  art[name].src = `art/${name}.${ext}?v=202611070755`;
+  art[name].src = `art/${name}.${ext}?v=202611071602`;
 }
 const ready = img => img.complete && img.naturalWidth > 0;
 function drawImg(img, x, y, sx, sy, ox, oy, rot = 0) {
@@ -386,9 +393,24 @@ const spd = () => cfg.hazardSpeed;
 function add(o) { hazards.push({ t: 0, vx: 0, vy: 0, r: 0.4, warn: 0, ...o }); }
 
 const PX = H / 1080;
-const HEAD = { cx: 50, cy: 85, size: 97 * PX * 0.85, src: 97 };
+const HEAD = { cx: 45.5, cy: 45 };
 const WING = { rx: 10, ry: 112, len: 131.6 * PX * 0.85, src: 131.6, dir: Math.atan2(112 - 6, 88 - 10) };
 const SPIN_K = 0.85, FLY_SPIN = 7;
+const GNAT_TRACK = { first: 2, every: 3.2, ys: [7.6, 3.4, 6.2, 8.4, 4.6, 2.9, 7.0, 5.4] };
+const GNATS = { bob: 0.14, vx: -1.3, tint: '#6f7f4c', alpha: 0.75, pile: [[0, 0, 2.1, 0], [0.55, 0.38, 2.7, 2.1], [0.5, -0.4, 1.7, 4.2]] };
+let swampImg = null;
+function swampFly() {
+  if (swampImg) return swampImg;
+  const src = art['en1-fly'];
+  if (!ready(src)) return null;
+  const c = document.createElement('canvas'); c.width = src.naturalWidth; c.height = src.naturalHeight; c.complete = true; c.naturalWidth = c.width;
+  const g = c.getContext('2d');
+  g.drawImage(src, 0, 0);
+  g.globalCompositeOperation = 'multiply'; g.fillStyle = GNATS.tint; g.fillRect(0, 0, c.width, c.height);
+  g.globalCompositeOperation = 'destination-in'; g.drawImage(src, 0, 0);
+  return (swampImg = c);
+}
+const gnatPile = y => { for (const [dx, dy, w, ph] of GNATS.pile) add({ kind: 'gnat', x: W + 1.2 + dx, y0: y + dy, y: y + dy, w, ph, vx: GNATS.vx }); };
 const HAND = { rx: 20, ry: 52, off: 0.42, dir: Math.atan2(52 - 2, 25 - 20) };
 const SHOT_DOT = { pitch: W / 68 * 1.04, outline: 'rgba(0,0,0,0.45)', red: '#e8344a', white: '#ffffff' };
 function dots(pts, r, ring = 1.65) {
@@ -396,7 +418,6 @@ function dots(pts, r, ring = 1.65) {
   for (const [x, y] of pts) { ctx.beginPath(); ctx.arc(x, y, r * ring, 0, Math.PI * 2); ctx.fill(); }
   for (const [x, y, c] of pts) { ctx.fillStyle = c; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); }
 }
-const drawShot = (h, c) => dots([[h.x, h.y, c]], h.r * 0.85, 1.4);
 const SHOOTER = { cx: 106, cy: 110, h: 219 * PX, src: 219, frames: ['en1-shoot-1', 'en1-shoot-2', 'en1-shoot-3', 'en1-shoot-4'], ft: 0.14 };
 function drawWing(x, y, rot, flip) {
   const s = WING.len / WING.src;
@@ -407,8 +428,8 @@ function drawHand(x, y, worldDir) {
   drawImg(art['en1-hand'], x + c * HAND.off * SPIN_K, y + n * HAND.off * SPIN_K, PX * SPIN_K, -PX * SPIN_K, HAND.rx, HAND.ry, worldDir - HAND.dir);
 }
 function drawHead(x, y) {
-  const s = HEAD.size / HEAD.src;
-  drawImg(art['en1-head'], x, y, -s, -s, HEAD.cx, HEAD.cy);
+  const s = PX * SPIN_K;
+  drawImg(art['en1-sun'], x, y, -s, -s, HEAD.cx, HEAD.cy);
 }
 const inMiddle = h => h.x > W * 0.25 && h.x < W * 0.75;
 const CHAND = { ax: 102, ay: 0, cy: 171, h: 2.75, srcH: 306, chainW: 12, chainH: 306 };
@@ -497,13 +518,17 @@ const HZ = {
   },
   heal: {
     pickup: true,
-    update(h, dt) { if (h.still) return h.t < HEAL.life; h.x += h.vx * dt; },
-    hit: h => near(h.x, h.y, h.r),
+    update(h, dt) { h.bob = Math.sin(h.t * HEAL.bobW + h.x) * GNATS.bob; if (h.still) return h.t < HEAL.life; h.x += h.vx * dt; },
+    hit: h => near(h.x, h.y + (h.bob || 0), h.r),
     draw(h) {
-      const sz = W / 68, pad = sz * 1.04 / 4 * (OUTLINE_DOT.size - 1);
-      ctx.fillStyle = OUTLINE_DOT.color; DOT_SHAPES.plus(h.x, h.y, sz, 1, pad);
-      ctx.fillStyle = HEAL.color; DOT_SHAPES.plus(h.x, h.y, sz, 1, 0);
+      const sz = BALL.size, pad = sz * 1.04 / 4 * (OUTLINE_DOT.size - 1), y = h.y + (h.bob || 0), m = cfg.mirror ? -1 : 1;
+      for (const [fill, g] of [[OUTLINE_DOT.color, pad], [HEAL.color, 0]]) { ctx.fillStyle = fill; for (const [dx, dy] of HEAL.cluster) DOT_SHAPES.plus(h.x + dx * m * sz, y + dy * sz, sz, 1, g); }
     },
+  },
+  gnat: {
+    decor: true,
+    update(h, dt) { h.x += h.vx * dt; h.y = h.y0 + Math.sin(h.t * h.w + h.ph) * GNATS.bob; },
+    draw(h) { const img = swampFly(); if (!img) return; ctx.globalAlpha = GNATS.alpha; drawImg(img, h.x, h.y, -PX, -PX, 28, 23); ctx.globalAlpha = 1; },
   },
   orb: {
     consume: true,
@@ -550,7 +575,7 @@ const HZ = {
     consume: true,
     update(h, dt) { h.x += h.vx * dt; h.y += h.vy * dt; },
     hit: h => near(h.x, h.y, h.r),
-    draw(h) { drawShot(h, SHOT_DOT.red); },
+    draw(h) { dots([[h.x, h.y, SHOT_DOT.white]], BALL.size / 2, 1.4); },
   },
 };
 
@@ -559,6 +584,7 @@ function updateHazards(dt) {
     const h = hazards[i], def = HZ[h.kind];
     h.t += dt;
     if (def.update(h, dt) === false || h.x < -4 - (h.reach || 0) || h.x > W + 14 || h.y < -3 || h.y > H + 4) { hazards.splice(i, 1); continue; }
+    if (def.decor) continue;
     if (def.pickup) { if (state === 'play' && def.hit(h)) { plane.hp = Math.min(cfg.hearts, plane.hp + 1); hazards.splice(i, 1); } continue; }
     if (state === 'play' && plane.hurt <= 0 && def.hit(h)) {
       hitPlane();
@@ -568,11 +594,13 @@ function updateHazards(dt) {
 }
 
 const VISHAP = { w: 450, cx: 225, cy: 160, px: 150, py: 232, mx: 264, my: 238, jx: 178, jy: 244, open: 0.45 };
-const HEAL = { at: { 0: [5, 6.5], 3: [4.5, 7.6], 5: [5.5, 3.4] }, life: 6, wallEvery: 3, color: '#7bbd6c' };
+const HEAL = { at: { 0: [5, 6.5], 3: [4.5, 7.6], 5: [5.5, 3.4] }, life: 6, wallEvery: 3, bobW: 2.3, color: '#7bbd6c', cluster: [[-0.17, 0.5], [-0.36, -0.37], [0.54, -0.13]] };
 const DRAGON_SEQ = ['beam', 'beam', 'spread', 'sweep', 'ring', 'snake', 'beam', 'beam', 'wall'];
 const PAT_LEN = { wall: 5, snake: 3, spread: 3, sweep: 4.5, ring: 3, beam: 3.6 };
+const BALL = { size: 0.34 };
 const RING_OFF = [0.190599, 0.198584];
-const BEAM = { charge: 1.1, fire: 1.5, width: 1.1 };
+const BEAM = { charge: 1.1, fire: 1.5, width: 0.4, frames: [0.1, 0.15, 0.85, 0.15, 0.15, 0.1], hurtFrom: 0.1, hurtTo: 1.25, ax: 99, ay: 254, len: 1436 };
+const beamFrame = f => { let t = 0; for (let i = 0; i < BEAM.frames.length; i++) { t += BEAM.frames[i]; if (f < t) return i; } return BEAM.frames.length - 1; };
 const dragon = { on: false, leaving: false, x: W + 7, y: 6, t: 0, angle: 0, kick: 0, rot: 0, pat: 0, patT: 0, shotT: 0 };
 const vScale = () => cfg.dragonSize / VISHAP.w;
 const headPivot = () => {
@@ -660,6 +688,8 @@ function updateBeam(d, dt) {
   if (b.t > BEAM.charge + BEAM.fire) { d.beam = null; d.patT = 0.5; return; }
   if (b.t < BEAM.charge) return;
   shake = Math.max(shake, 0.08);
+  const f = b.t - BEAM.charge;
+  if (f < BEAM.hurtFrom || f > BEAM.hurtTo) return;
   const m = mouth(), c = Math.cos(b.a), n = Math.sin(b.a), vx = hitC().x - m.x, vy = hitC().y - m.y;
   if (state === 'play' && vx * c + vy * n > 0 && Math.abs(vx * n - vy * c) < BEAM.width / 2 + cfg.hitbox) hitPlane();
 }
@@ -674,16 +704,16 @@ function drawBeam() {
     dots(pts, P / 4);
     return;
   }
-  const f = b.t - BEAM.charge, grow = Math.min(1, f * 8) * Math.min(1, (BEAM.fire - f) * 6);
-  const rows = Math.max(1, Math.round(BEAM.width * grow / P)), slide = (b.t * 12) % 1, pts = [];
-  for (let r = 0; r < rows; r++) {
-    const o = (r - (rows - 1) / 2) * P, core = Math.abs(o) < P * 0.75;
-    for (let k = 0; (k + slide) * P < L; k++) {
-      const d = (k + slide + (r % 2) * 0.5) * P;
-      pts.push([m.x + c * d - n * o, m.y + n * d + c * o, core ? SHOT_DOT.white : SHOT_DOT.red]);
-    }
-  }
-  dots(pts, P / 2 * 0.95);
+  const i = beamFrame(b.t - BEAM.charge), img = art['beam-' + (i + 1)];
+  if (!ready(img)) return;
+  const sx = toScreenX(m.x), sy = toScreenY(m.y), dir = cfg.mirror ? 1 : -1;
+  const reach = Math.max(BEAM.len, (dir > 0 ? 1920 - sx : sx) + 40) / BEAM.len;
+  const wob = i === 2 ? 1 + Math.sin(b.t * 60) * 0.03 : 1;
+  ctx.save();
+  ctx.setTransform(cv.width / 1920, 0, 0, cv.height / 1080, 0, 0);
+  ctx.translate(sx, sy); ctx.scale(dir * reach, wob);
+  ctx.drawImage(img, -BEAM.ax, -BEAM.ay);
+  ctx.restore();
 }
 function drawDragon() {
   if (!dragon.on) return;
@@ -857,9 +887,12 @@ const SCRIPT = {
     run(() => WAVES.braid(WAVES.mid())), wait(5.5),
     run(() => WAVES.wall(4)), wait(2.6),
     run(() => WAVES.hunter()), wait(4.5),
-    run(() => HZ.shooter.spawn({ y: 4.6, vx: -2.2 })), wait(3.5),
-    run(() => HZ.shooter.spawn({ y: 7.4, vx: -2.2 })), wait(3.5),
-    run(() => HZ.shooter.spawn({ y: 5.8, vx: -2.2 })), wait(4.5),
+    run(() => HZ.shooter.spawn({ y: 4.6, vx: -2.2 })), wait(2.2),
+    run(() => gnatPile(6.8)), wait(2.2),
+    run(() => HZ.shooter.spawn({ y: 7.4, vx: -2.2 })), wait(2.2),
+    run(() => gnatPile(4.0)), wait(2.2),
+    run(() => HZ.shooter.spawn({ y: 5.8, vx: -2.2 })), wait(2.2),
+    run(() => gnatPile(7.2)), wait(4.5),
     run(() => { vine = { x: cfg.mirror ? W - 1470 * H / 1080 : W, swapped: false }; }),
     until(() => false),
   ],
@@ -912,6 +945,10 @@ function updateGame(dt) {
   }
   runT += dt; biomeT += dt;
   updateSpawns(dt);
+  if (BIOMES[bi].key === 'landscape' && !vine) {
+    const g = timers.gn ??= { t: GNAT_TRACK.first, n: 0 };
+    if ((g.t -= dt) <= 0) { gnatPile(GNAT_TRACK.ys[g.n++ % GNAT_TRACK.ys.length]); g.t += GNAT_TRACK.every; }
+  }
   updateVine(dt);
   updateFgDecos(dt);
   updateBgVideo(dt);
@@ -923,7 +960,7 @@ let titleDots = null;
 let titleWindows = [];
 let titleCells = [], titleFine = [];
 const parseKey = k => k.split(',').map(Number);
-fetch('title-dots.json?v=202611070755').then(r => r.json()).then(d => {
+fetch('title-dots.json?v=202611071602').then(r => r.json()).then(d => {
   titleDots = d; titleWindows = findWindows(d);
   titleCells = Object.entries(d.cells).map(([k, v]) => [...parseKey(k), v, k]);
   titleFine = Object.entries(d.fine || {}).map(([k, v]) => [...parseKey(k), v]);
@@ -1036,7 +1073,7 @@ function drawFineDots(pts, s, dot) {
 }
 let controlsDots = null;
 let controlsPts = [];
-fetch('controls-dots.json?v=202611070755').then(r => r.json()).then(d => { controlsDots = d; controlsPts = Object.entries(d.fine).map(([k, v]) => [...parseKey(k), v.c]); }).catch(() => {});
+fetch('controls-dots.json?v=202611071602').then(r => r.json()).then(d => { controlsDots = d; controlsPts = Object.entries(d.fine).map(([k, v]) => [...parseKey(k), v.c]); }).catch(() => {});
 const DOT_FONT = {
   0: ['###', '#.#', '#.#', '#.#', '###'], 1: ['.#.', '##.', '.#.', '.#.', '###'], 2: ['###', '..#', '###', '#..', '###'],
   3: ['###', '..#', '.##', '..#', '###'], 4: ['#.#', '#.#', '###', '..#', '..#'], 5: ['###', '#..', '###', '..#', '###'],
@@ -1049,7 +1086,7 @@ const DOT_FONT = {
   Y: ['#.#', '#.#', '.#.', '.#.', '.#.'], V: ['#.#', '#.#', '#.#', '#.#', '.#.'], D: ['##.', '#.#', '#.#', '#.#', '##.'],
   E: ['###', '#..', '##.', '#..', '###'], F: ['###', '#..', '##.', '#..', '#..'],
   M: ['#...#', '##.##', '#.#.#', '#...#', '#...#'],
-  P: ['##.', '#.#', '##.', '#..', '#..'], G: ['.##', '#..', '#.#', '#.#', '.##'],
+  H: ['#.#', '#.#', '###', '#.#', '#.#'], P: ['##.', '#.#', '##.', '#..', '#..'], G: ['.##', '#..', '#.#', '#.#', '.##'],
 };
 const HINT = { time: 4, flick: 0.15, flicks: 3 };
 function drawPause() {
@@ -1058,14 +1095,21 @@ function drawPause() {
   ctx.setTransform(cv.width / 1920, 0, 0, cv.height / 1080, 0, 0);
   ctx.fillStyle = 'rgba(8,8,12,0.62)'; ctx.fillRect(0, 0, 1920, 1080);
   ctx.fillStyle = 'rgba(8,8,12,0.55)'; ctx.fillRect(18.5 * s, 4.5 * s, 31 * s, 30 * s);
-  const text = (str, y, c) => {
-    let x = Math.round((136 - dotTextWidth(str, 1)) / 2);
+  const text = (str, y, c, x0 = Math.round((136 - dotTextWidth(str, 1)) / 2)) => {
+    let x = x0;
     for (const ch of str) { const g = DOT_FONT[ch]; if (!g) continue; g.forEach((row, j) => [...row].forEach((v, i) => { if (v === '#') pts.push([x + i, y + j, c]); })); x += g[0].length + 1; }
-    return Math.round((136 - dotTextWidth(str, 1)) / 2);
+    return x0;
   };
-  text('PAUSED', 13, '#ffffff');
+  const vol = [], VP = 2.6;
+  text('PAUSED', 12, '#ffffff');
   items.forEach((it, i) => {
-    const y = 25 + i * 7, x0 = text(it, y, i === PAUSE.sel ? '#ffffff' : '#8d8f94');
+    const y = 23 + i * 6, c = i === PAUSE.sel ? '#ffffff' : '#8d8f94';
+    let x0;
+    if (i === PAUSE.train) {
+      const lw = dotTextWidth(it, 1);
+      x0 = text(it, y, c, Math.round((136 - lw - 3 - (TRAIN_VOL.steps - 1) * VP - 2) / 2));
+      for (let k = 0; k < TRAIN_VOL.steps; k++) vol.push([x0 + lw + 4 + k * VP, y + 2, k < TRAIN_VOL.level]);
+    } else x0 = text(it, y, c);
     if (i === PAUSE.sel) for (const [dx, dy] of [[-4, 2], [-3, 1], [-3, 3], [-2, 2]]) pts.push([x0 + dx, y + dy, LED.color]);
   });
   const big = [], r = s * dot / 2, pad = s * dot / 4 * (OUTLINE_DOT.size - 1);
@@ -1076,6 +1120,15 @@ function drawPause() {
   ctx.fillStyle = '#ffffff';
   for (const [x, y] of big) { ctx.beginPath(); ctx.arc((x + 0.5) * s, (y + 0.5) * s, r, 0, Math.PI * 2); ctx.fill(); }
   drawFineDots(pts, s, dot);
+  for (const [fill, rr, hole] of [[OUTLINE_DOT.color, r + pad, r * 0.45 - pad], ['#e8344a', r, r * 0.45]]) {
+    ctx.fillStyle = fill;
+    for (const [fx, fy, on] of vol) {
+      const x = (fx + 0.5) * s / 2, y = (fy + 0.5) * s / 2;
+      ctx.beginPath(); ctx.arc(x, y, rr, 0, Math.PI * 2);
+      if (!on) ctx.arc(x, y, Math.max(0, hole), 0, Math.PI * 2, true);
+      ctx.fill('evenodd');
+    }
+  }
   ctx.restore();
 }
 function hintBlinkOff() {
@@ -1147,9 +1200,10 @@ function frame(now) {
   world();
   if (vineOnScreen()) vineSplit();
   else BG[BIOMES[bi].key](time, drawBackFog);
+  for (const h of hazards) if (h.kind === 'gnat') HZ.gnat.draw(h);
   for (const h of hazards) if (h.kind === 'arch') HZ.arch.draw(h);
   drawDragon();
-  for (const h of hazards) if (h.kind !== 'arch') HZ[h.kind].draw(h);
+  for (const h of hazards) if (h.kind !== 'arch' && h.kind !== 'gnat') HZ[h.kind].draw(h);
   if (!isMenu()) {
     drawWinPanel();
     const hand = drawOperator(time);
