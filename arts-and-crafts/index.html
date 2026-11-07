@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>arts and crafts - karmirarev</title>
   <script>(function(){var t;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='light')document.documentElement.dataset.theme='dark'})()</script>
-  <link rel="stylesheet" href="../gallery.css?v=6">
+  <link rel="stylesheet" href="../gallery.css?v=7">
   <link rel="stylesheet" href="../site.css?v=87">
   <style>
     .model-wrap {
@@ -136,10 +136,13 @@
     .shots {
       align-items: start;
     }
-    .shots img {
+    .shots img, .shots video {
       width: 100%;
       height: auto;
       display: block;
+    }
+    .shots.rea {
+      grid-template-columns: 1fr;
     }
     .shots.byob {
       grid-template-columns: calc((100% - 26px) / 2.3593) 1fr;
@@ -151,10 +154,10 @@
       grid-column: 2;
       grid-row: 1 / span 3;
     }
-    .shots img {
+    .shots img, .shots video {
       cursor: pointer;
     }
-    .shots img:hover {
+    .shots img:hover, .shots video:hover {
       outline: 2px solid var(--green);
     }
     .story {
@@ -256,6 +259,7 @@
 <div class="lightbox" id="lightbox">
   <span class="lightbox-close" onclick="closeLightbox()">x</span>
   <img id="lightbox-img" src="" alt="">
+  <video id="lightbox-video" muted loop playsinline hidden></video>
 </div>
 
 <script>
@@ -265,6 +269,7 @@
       <div class="event">
         <div class="gallery">
           <div class="gallery-item"><img src="./thumbs/gamemainmenu.webp" data-full="./drawings/gamemainmenu.gif" width="560" height="315" loading="lazy" alt="gamemainmenu"></div>
+          <div class="gallery-item"><img src="./thumbs/train-game-tunnel.webp" data-full="./drawings/train-game-tunnel.webp" width="560" height="315" loading="lazy" alt="train-game-tunnel"></div>
         </div>
       </div>
       <div class="event">
@@ -278,6 +283,7 @@
       </div>
       <div class="event">
         <div class="gallery">
+          <div class="gallery-item"><img src="./thumbs/digital-14.webp" data-full="./drawings/digital-14.webp" width="560" height="210" loading="lazy" alt="digital-14"></div>
           <div class="gallery-item"><img src="./thumbs/digital-1.webp" data-full="./drawings/digital-1.webp" width="560" height="747" loading="lazy" alt="digital-1"></div>
           <div class="gallery-item"><img src="./thumbs/digital-2.webp" data-full="./drawings/digital-2.webp" width="560" height="420" loading="lazy" alt="digital-2"></div>
           <div class="gallery-item"><img src="./thumbs/digital-3.webp" data-full="./drawings/digital-3.webp" width="560" height="700" loading="lazy" alt="digital-3"></div>
@@ -349,6 +355,11 @@
     'events-markets-exhibits': `
       <p class="page-title">events-markets-exhibits</p>
       <div class="event">
+        <div class="shots rea">
+          <video class="shot" src="./events-markets-exhibits/traingobrrr.mp4" poster="./thumbs/events/traingobrrr.webp" width="1280" height="764" autoplay muted loop playsinline></video>
+        </div>
+      </div>
+      <div class="event">
         <div class="shots byob">
           <img class="shot" src="./thumbs/events/1.webp" data-full="./events-markets-exhibits/1.gif" width="560" height="315" alt="">
           <img class="shot" src="./thumbs/events/2.webp" data-full="./events-markets-exhibits/2.gif" width="560" height="315" alt="">
@@ -397,6 +408,11 @@
     `,
     'events-markets-exhibits': `
       <div class="story">
+        <p class="when">nov 7, 2026</p>
+        <p class="page-title">rea festival x hosq.co</p>
+        <p>worked on a game along with friends for rea festival's opening night. the goal was to interact with the space, so i thought making a <a href="/projects/other/train-game/">small video game</a> would be the best idea. since there was a huge blank wall with a train prop under it, i decided i could incorporate the train into a video game, and eventually made it about a character who is sitting on the train and controlling her zeppelin to pass through obstacles to join a group of hot air balloons. don't even ask.</p>
+      </div>
+      <div class="story">
         <p class="when">nov 7, 2025</p>
         <p class="page-title">byob at hosq.co</p>
         <p>took part in BYOB (bring your own beamer) organized by hosq.co. looking back at these drawings, i find them too depressing. i remember drawing them right after i moved out, when i was missing our old village house.</p>
@@ -411,6 +427,7 @@
 
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxVideo = document.getElementById('lightbox-video');
 
   const landing = {
     content: [...document.getElementById('content').childNodes],
@@ -478,7 +495,13 @@
     }
     document.querySelectorAll('.gallery-item img, .shot').forEach(img => {
       img.addEventListener('click', () => {
-        lightboxImg.src = img.dataset.full || img.src;
+        const isVideo = img.tagName === 'VIDEO';
+        lightboxImg.hidden = isVideo;
+        lightboxVideo.hidden = !isVideo;
+        if (isVideo) {
+          lightboxVideo.src = img.currentSrc || img.src;
+          lightboxVideo.play();
+        } else lightboxImg.src = img.dataset.full || img.src;
         lightbox.classList.add('active');
       });
     });
@@ -486,6 +509,7 @@
 
   function closeLightbox() {
     lightbox.classList.remove('active');
+    lightboxVideo.pause();
   }
 
   function copyEmail(btn) {
