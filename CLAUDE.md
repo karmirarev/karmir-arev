@@ -454,7 +454,7 @@ Never edit `game/` by hand. When she updates the game, run `python3 tools/train-
 it rebuilds `game/` from her folder (index.html, the art in her `ART` map, `sfx/`, and root
 files and `art/` files like `lvl2-video.mp4` the page names), turns art over 300KB into webp q90 and rewrites `ART` to match
 (36MB down to 12MB), and swaps her `Date.now()` cache busting for the copy time so
-browsers can cache it. In the game M toggles sound and T opens her tweaks panel.
+browsers can cache it. In the game M toggles sound and F goes full screen (her T tweaks panel was removed nov 2026).
 
 ## Cache
 
