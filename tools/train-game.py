@@ -30,6 +30,9 @@ for f in os.listdir(SRC):
 for f in set(re.findall(r"art/([\w.-]+\.\w+)", html)):
     if os.path.isfile(f'{SRC}/art/{f}'):
         shutil.copy(f'{SRC}/art/{f}', f'{DST}/art/')
+for d in os.listdir(f'{SRC}/art'):
+    if os.path.isdir(f'{SRC}/art/{d}') and f'art/{d}/' in html:
+        shutil.copytree(f'{SRC}/art/{d}', f'{DST}/art/{d}')
 if os.path.isdir(f'{SRC}/sfx'):
     shutil.copytree(f'{SRC}/sfx', f'{DST}/sfx')
 

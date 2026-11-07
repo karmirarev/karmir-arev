@@ -22,7 +22,7 @@ const BIOMES = [{ key: 'landscape' }, { key: 'building' }, { key: 'hills' }];
 
 const cfg = {
   planeSpeed: 9, hearts: 10, hurtTime: 1.5, hitbox: 0.18, scroll: 1.5, hazardSpeed: 1,
-  archGap: 2.4, archSpeed: 3.4, bulletSpeed: 5.5, fireRate: 1, dragonSize: 5,
+  archGap: 2.4, archSpeed: 3.4, bulletSpeed: 5.5, fireRate: 1,
   trainX: 0, trainTop: 0.828, trainW: 1, trainH: 0.172, mirror: true, infiniteHealth: false,
   shiftX: 0.02, zoom: 0.92, tilt: -1, keystone: 2,
 };
@@ -57,7 +57,7 @@ resize();
 
 const KEYS = { left: ['ArrowLeft', 'KeyA'], right: ['ArrowRight', 'KeyD'], up: ['ArrowUp', 'KeyW'], down: ['ArrowDown', 'KeyS'] };
 const held = new Set();
-const padDirs = new Set(), PAD = { dead: 0.35 };
+const padDirs = new Set(), PAD = { dead: 0.35, speed: 0.8 };
 const isHeld = dir => KEYS[dir].some(k => held.has(k)) || padDirs.has(dir);
 let padPrev = new Set(), padDirsPrev = new Set();
 function pollPads() {
@@ -152,10 +152,10 @@ function box(x, y, w, h, c) { ctx.fillStyle = c; ctx.fillRect(x - w / 2, y - h /
 function poly(pts, c) { ctx.fillStyle = c; ctx.beginPath(); pts.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.closePath(); ctx.fill(); }
 
 const art = {};
-const ART = { 'lvl1': 'webp', 'lvl1dark': 'webp', 'lvl2-back': 'png', 'lvl2-mid': 'webp', 'lvl2-front': 'webp', 'lvl2-chandelier': 'png', 'lvl2-props': 'png', 'lvl2-floor': 'png', 'lvl2-balloon-a': 'webp', 'lvl2-balloon-b': 'webp', 'lvl2-balloon-c': 'webp', 'en1-sun': 'png', 'beam-1': 'png', 'beam-2': 'png', 'beam-3': 'png', 'beam-4': 'png', 'beam-5': 'png', 'beam-6': 'png', 'en1-wing': 'png', 'en1-hand': 'png', 'en1-shoot-1': 'png', 'en1-shoot-2': 'png', 'en1-shoot-3': 'png', 'en1-shoot-4': 'png', 'en1-fly': 'png', 'girl-head': 'png', 'win-panel': 'png', 'girl-1': 'png', 'girl-2': 'png', 'girl-3': 'png', 'girl-4': 'png', 'girl-5': 'png', 'girl-6': 'png', 'cloud-transition': 'webp', 'lvl3-cloud-strip': 'webp', 'lvl3-map': 'webp', 'vine-transition': 'webp', 'fg-plant': 'webp', 'vishap-red-body': 'png', 'vishap-red-head-top': 'png', 'vishap-red-jaw': 'png', 'column': 'png', 'chandelier': 'png', 'zep-1': 'png', 'zep-2': 'png', 'zep-3': 'png', 'zep-4': 'png', 'chain': 'png' };
+const ART = { 'lvl1': 'webp', 'lvl1dark': 'webp', 'lvl2-back': 'png', 'lvl2-mid': 'webp', 'lvl2-front': 'webp', 'lvl2-chandelier': 'png', 'lvl2-props': 'png', 'lvl2-floor': 'png', 'lvl2-balloon-a': 'webp', 'lvl2-balloon-b': 'webp', 'lvl2-balloon-c': 'webp', 'en1-sun': 'png', 'beam-1': 'png', 'beam-2': 'png', 'beam-3': 'png', 'beam-4': 'png', 'beam-5': 'png', 'beam-6': 'png', 'en1-wing': 'png', 'en1-hand': 'png', 'en1-shoot-1': 'png', 'en1-shoot-2': 'png', 'en1-shoot-3': 'png', 'en1-shoot-4': 'png', 'en1-fly': 'png', 'girl-head': 'png', 'win-panel': 'png', 'girl-1': 'png', 'girl-2': 'png', 'girl-3': 'png', 'girl-4': 'png', 'girl-5': 'png', 'girl-6': 'png', 'cloud-transition': 'webp', 'lvl3-cloud-strip': 'webp', 'lvl3-map': 'webp', 'vine-transition': 'webp', 'fg-plant': 'webp', 'column': 'png', 'chandelier': 'png', 'zep-1': 'png', 'zep-2': 'png', 'zep-3': 'png', 'zep-4': 'png', 'chain': 'png' };
 for (const [name, ext] of Object.entries(ART)) {
   art[name] = new Image();
-  art[name].src = `art/${name}.${ext}?v=202611071602`;
+  art[name].src = `art/${name}.${ext}?v=202611071653`;
 }
 const ready = img => img.complete && img.naturalWidth > 0;
 function drawImg(img, x, y, sx, sy, ox, oy, rot = 0) {
@@ -315,9 +315,10 @@ function updatePlane(dt, time) {
   const forward = cfg.mirror ? 'left' : 'right', back = cfg.mirror ? 'right' : 'left';
   const dx = (isHeld(forward) ? 1 : 0) - (isHeld(back) ? 1 : 0);
   const dy = (isHeld('up') ? 1 : 0) - (isHeld('down') ? 1 : 0);
-  const len = Math.hypot(dx, dy) || 1;
-  p.vx = toward(p.vx, dx / len * cfg.planeSpeed, 45 * dt);
-  p.vy = toward(p.vy, dy / len * cfg.planeSpeed, 45 * dt);
+  const len = Math.hypot(dx, dy) || 1, keys = Object.values(KEYS).flat().some(k => held.has(k));
+  const sp = cfg.planeSpeed * (padDirs.size && !keys ? PAD.speed : 1);
+  p.vx = toward(p.vx, dx / len * sp, 45 * dt);
+  p.vy = toward(p.vy, dy / len * sp, 45 * dt);
   p.x = clamp(p.x + p.vx * dt, 0.8, W - 0.8);
   if (dragon.on && !dragon.leaving) { const wall = dragon.x - DRAGON_GAP; if (p.x > wall) { p.x = wall; p.vx = Math.min(p.vx, 0); } }
   p.y = clamp(p.y + p.vy * dt, floorY() + 0.45, H - 0.45);
@@ -521,7 +522,7 @@ const HZ = {
     update(h, dt) { h.bob = Math.sin(h.t * HEAL.bobW + h.x) * GNATS.bob; if (h.still) return h.t < HEAL.life; h.x += h.vx * dt; },
     hit: h => near(h.x, h.y + (h.bob || 0), h.r),
     draw(h) {
-      const sz = BALL.size, pad = sz * 1.04 / 4 * (OUTLINE_DOT.size - 1), y = h.y + (h.bob || 0), m = cfg.mirror ? -1 : 1;
+      const sz = BALL.cell, pad = sz * BALL.dot / 4 * (OUTLINE_DOT.size - 1), y = h.y + (h.bob || 0), m = cfg.mirror ? -1 : 1;
       for (const [fill, g] of [[OUTLINE_DOT.color, pad], [HEAL.color, 0]]) { ctx.fillStyle = fill; for (const [dx, dy] of HEAL.cluster) DOT_SHAPES.plus(h.x + dx * m * sz, y + dy * sz, sz, 1, g); }
     },
   },
@@ -575,7 +576,7 @@ const HZ = {
     consume: true,
     update(h, dt) { h.x += h.vx * dt; h.y += h.vy * dt; },
     hit: h => near(h.x, h.y, h.r),
-    draw(h) { dots([[h.x, h.y, SHOT_DOT.white]], BALL.size / 2, 1.4); },
+    draw(h) { dots([[h.x, h.y, SHOT_DOT.white]], BALL.cell * BALL.dot / 2, 1 + (OUTLINE_DOT.size - 1) / 2); },
   },
 };
 
@@ -593,32 +594,40 @@ function updateHazards(dt) {
   }
 }
 
-const VISHAP = { w: 450, cx: 225, cy: 160, px: 150, py: 232, mx: 264, my: 238, jx: 178, jy: 244, open: 0.45 };
+const DRAKE = { fps: 24, w: 5.5, mouth: [-0.43, -0.87], back: 0.3, data: null, img: { fly: [], attack: [] }, anchor: [0, 0], anim: 'fly', i: 0, t: 0 };
+fetch('art/dragon/frames.json?v=202611071653').then(r => r.json()).then(d => {
+  DRAKE.data = d;
+  const fm = d.fly.mouth; DRAKE.anchor = [fm.reduce((a, m) => a + m[0], 0) / fm.length, fm.reduce((a, m) => a + m[1], 0) / fm.length];
+  for (const anim of ['fly', 'attack']) for (let i = 0; i < d[anim].n; i++) { const im = new Image(); im.src = `art/dragon/${anim}-${String(i).padStart(2, '0')}.webp`; DRAKE.img[anim].push(im); }
+}).catch(() => {});
+const drakeS = () => DRAKE.w / DRAKE.data.size[0];
+const drakeHomeX = () => DRAKE.data ? W + DRAKE.back - DRAKE.anchor[0] * drakeS() - DRAKE.mouth[0] : W - 2.9;
+function updateDrake(dt, attacking) {
+  if (!DRAKE.data) return;
+  DRAKE.t += dt;
+  while (DRAKE.t >= 1 / DRAKE.fps) {
+    DRAKE.t -= 1 / DRAKE.fps;
+    if (++DRAKE.i >= DRAKE.data[DRAKE.anim].n) { DRAKE.i = 0; DRAKE.anim = attacking ? 'attack' : 'fly'; }
+  }
+}
 const HEAL = { at: { 0: [5, 6.5], 3: [4.5, 7.6], 5: [5.5, 3.4] }, life: 6, wallEvery: 3, bobW: 2.3, color: '#7bbd6c', cluster: [[-0.17, 0.5], [-0.36, -0.37], [0.54, -0.13]] };
 const DRAGON_SEQ = ['beam', 'beam', 'spread', 'sweep', 'ring', 'snake', 'beam', 'beam', 'wall'];
 const PAT_LEN = { wall: 5, snake: 3, spread: 3, sweep: 4.5, ring: 3, beam: 3.6 };
-const BALL = { size: 0.34 };
+const BALL = { cell: W / 68, dot: 1.04 };
 const RING_OFF = [0.190599, 0.198584];
 const BEAM = { charge: 1.1, fire: 1.5, width: 0.4, frames: [0.1, 0.15, 0.85, 0.15, 0.15, 0.1], hurtFrom: 0.1, hurtTo: 1.25, ax: 99, ay: 254, len: 1436 };
 const beamFrame = f => { let t = 0; for (let i = 0; i < BEAM.frames.length; i++) { t += BEAM.frames[i]; if (f < t) return i; } return BEAM.frames.length - 1; };
-const dragon = { on: false, leaving: false, x: W + 7, y: 6, t: 0, angle: 0, kick: 0, rot: 0, pat: 0, patT: 0, shotT: 0 };
-const vScale = () => cfg.dragonSize / VISHAP.w;
-const headPivot = () => {
-  const ox = -vScale() * (VISHAP.px - VISHAP.cx), oy = -vScale() * (VISHAP.py - VISHAP.cy), c = Math.cos(dragon.rot), n = Math.sin(dragon.rot);
-  return { x: dragon.x + ox * c - oy * n, y: dragon.y + ox * n + oy * c };
-};
-const headAng = () => dragon.angle + dragon.rot - dragon.kick + Math.sin(dragon.t * 1.3) * 0.05;
+const dragon = { on: false, leaving: false, x: W + 7, y: 6, t: 0, patT: 0, shotT: 0 };
 function mouth() {
-  const p = headPivot(), s = vScale();
-  const dx = -s * (VISHAP.mx - VISHAP.px), dy = -s * (VISHAP.my - VISHAP.py);
-  const c = Math.cos(headAng()), n = Math.sin(headAng());
-  return { x: p.x + dx * c - dy * n, y: p.y + dx * n + dy * c };
+  const x = dragon.x + DRAKE.mouth[0], y = dragon.y + DRAKE.mouth[1];
+  if (!DRAKE.data) return { x, y };
+  const m = DRAKE.data[DRAKE.anim].mouth[DRAKE.i], s = drakeS();
+  return { x: x - (m[0] - DRAKE.anchor[0]) * s, y: y - (m[1] - DRAKE.anchor[1]) * s };
 }
-function startDragon() { Object.assign(dragon, { wallN: 0, on: true, leaving: false, x: W + 7, y: 6, angle: 0, kick: 0, rot: 0, t: 0, si: -1, kind: null, done: false, ringN: 0, patT: 0, shotT: 0, beam: null, jaw: 0, openT: 0 }); }
+function startDragon() { Object.assign(dragon, { wallN: 0, on: true, leaving: false, x: W + 7, y: 6, t: 0, si: -1, kind: null, done: false, ringN: 0, patT: 0, shotT: 0, beam: null }); Object.assign(DRAKE, { anim: 'fly', i: 0, t: 0 }); }
 function fireball(angle, speed) {
   play('fireballs', 0.6, 0.3);
   const m = mouth();
-  dragon.openT = 0.3;
   add({ kind: 'fire', x: m.x, y: m.y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, r: 0.2 });
 }
 function updateDragon(dt) {
@@ -626,17 +635,11 @@ function updateDragon(dt) {
   if (!d.on) return;
   d.t += dt;
   if (d.leaving) d.beam = null;
+  updateDrake(dt, !!d.beam || (!!d.kind && !d.done && !d.leaving));
   if (d.beam) { updateBeam(d, dt); return; }
-  const tx = d.leaving ? W + 8 : W - 2.9 + Math.sin(d.t * 0.4) * 0.7;
+  const tx = d.leaving ? W + 8 : drakeHomeX() + Math.sin(d.t * 0.4) * 0.7;
   d.x += (tx - d.x) * Math.min(1, dt * (d.leaving ? 1 : 1.4));
   d.y += (6.3 + Math.sin(d.t * 0.55) * 1.6 - d.y) * Math.min(1, dt * 2);
-  d.kick = toward(d.kick, 0, dt * 2.5);
-  d.rot = Math.sin(d.t * 0.8) * 0.07;
-  d.openT -= dt;
-  d.jaw = toward(d.jaw, d.openT > 0 ? 1 : 0, dt * 7);
-  const p = headPivot();
-  const rel = Math.atan2(plane.y - p.y, plane.x - p.x) - Math.PI;
-  d.angle = toward(d.angle, clamp(Math.atan2(Math.sin(rel), Math.cos(rel)), -1.1, 1.1), dt * 2.5);
   if (d.leaving) { if (d.x > W + 6.5) d.on = false; return; }
   if (d.t < 2.5 || state !== 'play') return;
   d.patT -= dt;
@@ -654,23 +657,22 @@ function updateDragon(dt) {
   if (d.shotT > 0 || d.patT < (d.kind === 'sweep' ? 0.05 : 0.4) || !d.kind) return;
   const m = mouth(), speed = cfg.bulletSpeed, rate = cfg.fireRate;
   const toPlane = Math.atan2(plane.y - m.y, plane.x - m.x);
-  const roar = () => { d.kick = 0.22; };
   const kind = d.kind;
   if (kind === 'spread') {
     const n = 5;
     for (let i = 0; i < n; i++) fireball(toPlane + (i - (n - 1) / 2) * 0.22, speed);
-    roar(); d.shotT = 0.85 / rate;
+    d.shotT = 0.85 / rate;
   } else if (kind === 'ring') {
     const off = RING_OFF[d.ringN++ % RING_OFF.length];
     for (let i = 0; i < 11; i++) fireball(Math.PI - 1.3 + off + i * 0.26, speed * 0.85);
-    roar(); d.shotT = 1.1 / rate;
+    d.shotT = 1.1 / rate;
   } else if (kind === 'wall') {
     const v = speed * 0.8, top = H - 0.4, bot = lo() + 0.3, mid = (top + bot) / 2, span = (top - bot) / 2 - 1.3;
     d.wallN = (d.wallN || 0) + 1;
     const gap = mid + Math.sin(d.wallN * 0.9) * span;
     for (let y = bot; y <= top; y += 0.6) if (Math.abs(y - gap) > 1.25) add({ kind: 'fire', x: m.x, y, vx: -v, vy: 0, r: 0.2 });
     if (d.wallN % HEAL.wallEvery === 0) add({ kind: 'heal', x: m.x, y: gap, vx: -v, r: 0.3 });
-    play('fireballs', 0.6, 0.3); roar(); d.openT = 0.3; d.shotT = 0.6 / rate;
+    play('fireballs', 0.6, 0.3); d.shotT = 0.6 / rate;
   } else if (kind === 'sweep') {
     fireball(toPlane + Math.sin(d.t * 2.2) * 0.9, speed * 1.1); d.shotT = 0.075 / rate;
   } else {
@@ -680,10 +682,6 @@ function updateDragon(dt) {
 function updateBeam(d, dt) {
   const b = d.beam;
   b.t += dt;
-  d.jaw = toward(d.jaw, b.t < BEAM.charge + BEAM.fire - 0.1 ? 1 : 0, dt * (b.t < BEAM.charge ? 1.5 : 7));
-  d.rot = Math.sin(d.t * 0.8) * 0.07;
-  d.kick = toward(d.kick, b.t < BEAM.charge ? 0.2 : -0.04, dt * (b.t < BEAM.charge ? 1 : 6));
-  d.angle = toward(d.angle, 0, dt * 3);
   if (b.t < BEAM.charge) d.y += (b.row - mouth().y) * Math.min(1, dt * 4);
   if (b.t > BEAM.charge + BEAM.fire) { d.beam = null; d.patT = 0.5; return; }
   if (b.t < BEAM.charge) return;
@@ -716,19 +714,9 @@ function drawBeam() {
   ctx.restore();
 }
 function drawDragon() {
-  if (!dragon.on) return;
-  const d = dragon, s = vScale(), p = headPivot();
-  drawImg(art['vishap-red-body'], d.x, d.y, -s, -s, VISHAP.cx, VISHAP.cy, d.rot);
-  const hs = s, ha = headAng(), hp = (ix, iy) => {
-    const dx = -hs * (ix - VISHAP.px), dy = -hs * (iy - VISHAP.py), c = Math.cos(ha), n = Math.sin(ha);
-    return [p.x + dx * c - dy * n, p.y + dx * n + dy * c];
-  };
-  const hinge = hp(VISHAP.jx, VISHAP.jy), open = d.jaw * VISHAP.open;
-  const tip = hp(262, 247), jc = Math.cos(open), jn = Math.sin(open);
-  const low = [hinge[0] + (tip[0] - hinge[0]) * jc - (tip[1] - hinge[1]) * jn, hinge[1] + (tip[0] - hinge[0]) * jn + (tip[1] - hinge[1]) * jc];
-  if (d.jaw > 0.02) poly([hinge, tip, low], '#3a0a08');
-  drawImg(art['vishap-red-jaw'], hinge[0], hinge[1], -hs, -hs, VISHAP.jx, VISHAP.jy, ha + open);
-  drawImg(art['vishap-red-head-top'], p.x, p.y, -hs, -hs, VISHAP.px, VISHAP.py, ha);
+  if (!dragon.on || !DRAKE.data) return;
+  const img = DRAKE.img[DRAKE.anim][DRAKE.i], s = drakeS();
+  drawImg(img, dragon.x + DRAKE.mouth[0], dragon.y + DRAKE.mouth[1], -s, -s, DRAKE.anchor[0], DRAKE.anchor[1]);
   drawBeam();
 }
 
@@ -960,7 +948,7 @@ let titleDots = null;
 let titleWindows = [];
 let titleCells = [], titleFine = [];
 const parseKey = k => k.split(',').map(Number);
-fetch('title-dots.json?v=202611071602').then(r => r.json()).then(d => {
+fetch('title-dots.json?v=202611071653').then(r => r.json()).then(d => {
   titleDots = d; titleWindows = findWindows(d);
   titleCells = Object.entries(d.cells).map(([k, v]) => [...parseKey(k), v, k]);
   titleFine = Object.entries(d.fine || {}).map(([k, v]) => [...parseKey(k), v]);
@@ -1073,7 +1061,7 @@ function drawFineDots(pts, s, dot) {
 }
 let controlsDots = null;
 let controlsPts = [];
-fetch('controls-dots.json?v=202611071602').then(r => r.json()).then(d => { controlsDots = d; controlsPts = Object.entries(d.fine).map(([k, v]) => [...parseKey(k), v.c]); }).catch(() => {});
+fetch('controls-dots.json?v=202611071653').then(r => r.json()).then(d => { controlsDots = d; controlsPts = Object.entries(d.fine).map(([k, v]) => [...parseKey(k), v.c]); }).catch(() => {});
 const DOT_FONT = {
   0: ['###', '#.#', '#.#', '#.#', '###'], 1: ['.#.', '##.', '.#.', '.#.', '###'], 2: ['###', '..#', '###', '#..', '###'],
   3: ['###', '..#', '.##', '..#', '###'], 4: ['#.#', '#.#', '###', '..#', '..#'], 5: ['###', '#..', '###', '..#', '###'],
