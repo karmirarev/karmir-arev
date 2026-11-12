@@ -217,6 +217,67 @@
     .zine-arrow.next {
       right: 0;
     }
+    .gallery-item.bundle {
+      display: flex;
+      gap: 4px;
+    }
+    .gallery-item.bundle img {
+      flex: 1;
+      min-width: 0;
+    }
+    .gallery-item.bundle img:hover {
+      outline: none;
+    }
+    .gallery-item.bundle:hover {
+      outline: 2px solid var(--green);
+    }
+    .lightbox-set {
+      display: flex;
+      gap: 10px;
+      max-width: 90%;
+    }
+    .lightbox-set[hidden] {
+      display: none;
+    }
+    .lightbox .lightbox-set img {
+      flex: none;
+      max-width: calc((90vw - 20px) / 3);
+      max-height: 90vh;
+    }
+    .lightbox-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font: inherit;
+      font-size: 16px;
+      line-height: 1;
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border: 1px solid var(--maroon);
+      border-radius: 2px;
+      background: var(--paper);
+      color: var(--maroon);
+      cursor: pointer;
+    }
+    .lightbox-arrow:hover {
+      background: var(--lime);
+    }
+    .lightbox-arrow.prev {
+      left: 20px;
+    }
+    .lightbox-arrow.next {
+      right: 20px;
+    }
+    @media (max-width: 700px) {
+      .lightbox-set {
+        max-width: 100%;
+        overflow-x: auto;
+      }
+      .lightbox .lightbox-set img {
+        max-width: 80vw;
+      }
+    }
   </style>
 </head>
 <body>
@@ -260,6 +321,9 @@
   <span class="lightbox-close" onclick="closeLightbox()">x</span>
   <img id="lightbox-img" src="" alt="">
   <video id="lightbox-video" muted loop playsinline hidden></video>
+  <div class="lightbox-set" id="lightbox-set" hidden></div>
+  <button type="button" class="lightbox-arrow prev" onclick="stepLightbox(-1)" hidden>&lt;</button>
+  <button type="button" class="lightbox-arrow next" onclick="stepLightbox(1)" hidden>&gt;</button>
 </div>
 
 <script>
@@ -283,6 +347,7 @@
       </div>
       <div class="event">
         <div class="gallery">
+          <div class="gallery-item bundle" id="hazel"><img src="./thumbs/digital-15.webp" data-full="./drawings/digital-15.webp" width="560" height="792" loading="lazy" alt="hazel against the panel, page 1"><img src="./thumbs/digital-16.webp" data-full="./drawings/digital-16.webp" width="560" height="792" loading="lazy" alt="hazel against the panel, page 2"><img src="./thumbs/digital-17.webp" data-full="./drawings/digital-17.webp" width="560" height="792" loading="lazy" alt="hazel against the panel, page 3"></div>
           <div class="gallery-item"><img src="./thumbs/digital-14.webp" data-full="./drawings/digital-14.webp" width="560" height="210" loading="lazy" alt="digital-14"></div>
           <div class="gallery-item"><img src="./thumbs/digital-1.webp" data-full="./drawings/digital-1.webp" width="560" height="747" loading="lazy" alt="digital-1"></div>
           <div class="gallery-item"><img src="./thumbs/digital-2.webp" data-full="./drawings/digital-2.webp" width="560" height="420" loading="lazy" alt="digital-2"></div>
@@ -356,6 +421,11 @@
       <p class="page-title">events-markets-exhibits</p>
       <div class="event">
         <div class="shots rea">
+          <img class="shot" src="./thumbs/events/rea-comics.webp" data-full="./events-markets-exhibits/rea-comics.webp" width="560" height="250" alt="">
+        </div>
+      </div>
+      <div class="event">
+        <div class="shots rea">
           <video class="shot" src="./events-markets-exhibits/traingobrrr.mp4" poster="./thumbs/events/traingobrrr.webp" width="1280" height="764" autoplay muted loop playsinline></video>
         </div>
       </div>
@@ -408,6 +478,11 @@
     `,
     'events-markets-exhibits': `
       <div class="story">
+        <p class="when">nov 2026</p>
+        <p class="page-title">rea festival x rea comics</p>
+        <p>update soon. the pages are in <a href="#drawings" onclick="pendingOpen = 'hazel'">drawings</a>.</p>
+      </div>
+      <div class="story">
         <p class="when">nov 7, 2026</p>
         <p class="page-title">rea festival x hosq.co</p>
         <p>worked on a game along with friends for rea festival's opening night. the goal was to interact with the space, so i thought making a <a href="/projects/other/train-game/">small video game</a> would be the best idea. since there was a huge blank wall with a train prop under it, i decided i could incorporate the train into a video game, and eventually made it about a character who is sitting on the train and controlling her zeppelin to pass through obstacles to join a group of hot air balloons. don't even ask.</p>
@@ -428,6 +503,9 @@
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
   const lightboxVideo = document.getElementById('lightbox-video');
+  const lightboxSet = document.getElementById('lightbox-set');
+  const lightboxArrows = document.querySelectorAll('.lightbox-arrow');
+  let lightboxItems = [], lightboxAt = -1, pendingOpen = null;
 
   const landing = {
     content: [...document.getElementById('content').childNodes],
@@ -441,10 +519,14 @@
   }
 
   function showFromHash() {
+    closeLightbox();
     var key = location.hash.slice(1);
     if (key === 'digital-mixed-media') key = 'drawings';
     if (sections[key]) show(key);
     else showLanding();
+    const el = pendingOpen && document.getElementById(pendingOpen);
+    pendingOpen = null;
+    if (el) openLightbox(el);
   }
   window.addEventListener('hashchange', showFromHash);
   showFromHash();
@@ -493,18 +575,35 @@
       js.src = 'https://cdn.jsdelivr.net/npm/@google/model-viewer@4.1.0/dist/model-viewer.min.js';
       document.head.appendChild(js);
     }
-    document.querySelectorAll('.gallery-item img, .shot').forEach(img => {
-      img.addEventListener('click', () => {
-        const isVideo = img.tagName === 'VIDEO';
-        lightboxImg.hidden = isVideo;
-        lightboxVideo.hidden = !isVideo;
-        if (isVideo) {
-          lightboxVideo.src = img.currentSrc || img.src;
-          lightboxVideo.play();
-        } else lightboxImg.src = img.dataset.full || img.src;
-        lightbox.classList.add('active');
-      });
+    const items = [...document.querySelectorAll('#content .gallery-item')].map(g => g.classList.contains('bundle') ? g : g.firstElementChild);
+    items.concat([...document.querySelectorAll('#content .shot')]).forEach(el => {
+      el.addEventListener('click', () => openLightbox(el));
     });
+    lightboxItems = section === 'drawings' ? items : [];
+    lightboxArrows.forEach(a => { a.hidden = !lightboxItems.length; });
+  }
+
+  function openLightbox(el) {
+    const isVideo = el.tagName === 'VIDEO';
+    const isSet = el.classList.contains('bundle');
+    lightboxImg.hidden = isVideo || isSet;
+    lightboxVideo.hidden = !isVideo;
+    lightboxSet.hidden = !isSet;
+    if (isSet) {
+      lightboxSet.replaceChildren(...[...el.querySelectorAll('img')].map(i => Object.assign(new Image(), { src: i.dataset.full, alt: i.alt })));
+      lightboxSet.scrollLeft = 0;
+    } else if (isVideo) {
+      lightboxVideo.src = el.currentSrc || el.src;
+      lightboxVideo.play();
+    } else lightboxImg.src = el.dataset.full || el.src;
+    lightboxAt = lightboxItems.indexOf(el);
+    lightbox.classList.add('active');
+  }
+
+  function stepLightbox(d) {
+    const n = lightboxItems.length;
+    if (!n || !lightbox.classList.contains('active')) return;
+    openLightbox(lightboxItems[(lightboxAt + d + n) % n]);
   }
 
   function closeLightbox() {
@@ -526,6 +625,8 @@
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') stepLightbox(-1);
+    if (e.key === 'ArrowRight') stepLightbox(1);
   });
 </script>
 
