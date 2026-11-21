@@ -186,6 +186,18 @@
     .story p {
       line-height: 1.6;
     }
+    .story .award {
+      display: block;
+      width: 80%;
+      height: auto;
+      margin: 18px auto 10px;
+      transform: rotate(-4deg);
+      box-shadow: 4px 4px 0 var(--lilac);
+      cursor: pointer;
+    }
+    .story .award:hover {
+      outline: 2px solid var(--green);
+    }
     .zine-fold {
       max-width: 720px;
       margin: 0 auto;
@@ -481,6 +493,7 @@
         <p class="when">nov 2026</p>
         <p class="page-title">rea festival x rea comics</p>
         <p>took part in the 2026 rea festival marani comics competition with other amazing artists and got third place! the pages are in <a href="#drawings" onclick="pendingOpen = 'hazel'">drawings</a>.</p>
+        <img class="shot award" src="./thumbs/events/rea-comics-award.webp" data-full="./events-markets-exhibits/rea-comics-award.webp" width="560" height="401" alt="comics award card for hazel against the panel">
       </div>
       <div class="story">
         <p class="when">nov 7, 2026</p>
@@ -576,7 +589,7 @@
       document.head.appendChild(js);
     }
     const items = [...document.querySelectorAll('#content .gallery-item')].map(g => g.classList.contains('bundle') ? g : g.firstElementChild);
-    items.concat([...document.querySelectorAll('#content .shot')]).forEach(el => {
+    items.concat([...document.querySelectorAll('#content .shot, #wing .shot')]).forEach(el => {
       el.addEventListener('click', () => openLightbox(el));
     });
     lightboxItems = section === 'drawings' ? items : [];
