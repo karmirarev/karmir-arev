@@ -3,10 +3,8 @@
     { label: 'home', href: '/', color: 'green', strong: true },
     { label: 'projects', href: '/projects/', color: 'lilac', children: [
       { label: 'games', href: '/projects/#games', children: [
-        { label: 'sandsong', href: '/projects/#sandsong' },
         { label: 'kami hovani', href: '/projects/#kami-hovani' },
         { label: 'pingala', href: '/projects/#pingala' },
-        { label: 'khali', href: '/projects/#khali' },
         { label: 'bebe heist', href: '/projects/#bebe-heist' },
         { label: 'disco market', href: '/projects/#disco-market' }
       ]},
