@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>projects - karmirarev</title>
-  <script>(function(){var t;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='light')document.documentElement.dataset.theme='dark'})()</script>
+  <script>(function(){var t;try{t=localStorage.getItem('theme')}catch(e){}if(t==='dark')document.documentElement.dataset.theme='dark'})()</script>
   <link rel="stylesheet" href="../gallery.css?v=7">
   <link rel="stylesheet" href="../site.css?v=87">
   <style>
@@ -298,6 +298,190 @@
     .shots img:hover {
       outline: 2px solid var(--green);
     }
+    .work {
+      margin: 24px 0 0;
+      padding-top: 20px;
+      border-top: 1px dashed var(--orange);
+    }
+    .work .did {
+      margin-bottom: 1em;
+    }
+    .work .detail-head {
+      margin-bottom: 12px;
+    }
+    .work .detail-head .page-title {
+      font-size: 18px;
+    }
+    .clips {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .clips video {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--maroon);
+      border-radius: 6px;
+    }
+    .clip-soon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 16 / 9;
+      margin: 0;
+      border: 1px dashed var(--maroon);
+      border-radius: 6px;
+      font-size: 13px;
+    }
+    .map-intro {
+      margin-top: 24px;
+    }
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      max-width: 520px;
+      margin-top: 16px;
+    }
+    .compare figure {
+      margin: 0;
+      min-width: 0;
+    }
+    .compare figcaption {
+      margin-bottom: 6px;
+    }
+    .compare video {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--maroon);
+      border-radius: 6px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 1px 10px;
+      border: 1px solid var(--maroon);
+      border-radius: 12px;
+      background: var(--paper);
+      font-size: 13px;
+      line-height: 1.5;
+      text-decoration: none;
+    }
+    a.pill:hover {
+      background: var(--lime);
+      text-decoration: none;
+    }
+    .sub-map {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      margin-top: 20px;
+    }
+    .sub {
+      position: sticky;
+      top: 20px;
+      flex: 0 0 min(250px, 42%);
+    }
+    .sub img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .sub svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+    .sub polyline {
+      fill: none;
+      stroke: var(--orange);
+      stroke-width: 11;
+      stroke-dasharray: 26 18;
+    }
+    .pin {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: none;
+      width: 18px;
+      height: 18px;
+      box-sizing: border-box;
+      border: 1px solid var(--maroon);
+      border-radius: 50%;
+      background: var(--maroon);
+      color: var(--paper);
+      font-size: 10px;
+      font-weight: bold;
+      line-height: 1;
+    }
+    .sub .pin {
+      position: absolute;
+      transform: translate(-50%, -50%);
+    }
+    .pin.reveal,
+    .pin.on,
+    li.on .pin {
+      background: var(--green);
+      color: #1b1b1b;
+    }
+    .pin.end {
+      background: var(--paper);
+      color: var(--maroon);
+    }
+    .beats {
+      flex: 1;
+      min-width: 0;
+      font-size: 13px;
+    }
+    .beats .act {
+      margin: 18px 0 6px;
+      color: var(--maroon);
+      font-weight: bold;
+    }
+    .beats .act:first-child {
+      margin-top: 0;
+    }
+    .beats .act span {
+      color: var(--ink);
+      font-weight: normal;
+    }
+    .beats ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .beats li {
+      display: flex;
+      gap: 8px;
+      padding: 3px 4px;
+      border-radius: 6px;
+      line-height: 1.5;
+    }
+    .beats li .pin {
+      margin-top: 1px;
+    }
+    .beats li.on {
+      background: var(--lime);
+    }
+    .beats b {
+      color: var(--maroon);
+    }
+    @media (max-width: 700px) {
+      .sub-map {
+        flex-direction: column;
+      }
+      .sub {
+        position: relative;
+        top: 0;
+        flex: none;
+        width: min(200px, 60%);
+        margin: 0 auto;
+      }
+    }
     .facts {
       margin: 12px 0 24px;
     }
@@ -345,6 +529,100 @@
 
 <script>
   const GAMES = [
+    {
+      key: 'rockbite',
+      name: 'rockbite games',
+      tag: 'studio',
+      blurb: 'level design and story work on live games at my day job.',
+      about: [],
+      work: [
+        {
+          name: 'stake killer',
+          tag: 'first-person shooter',
+          text: ['designing new levels for a whole new location in this live first-person shooter. not out yet, more soon.'],
+          links: { store: 'https://play.google.com/store/apps/details?id=com.rockbite.stakekiller' }
+        },
+        {
+          name: 'cubic quest',
+          tag: 'voxel adventure',
+          text: ['reworked the first four islands of this live voxel adventure game so they read clearly and feel good to explore:'],
+          did: [
+            'reshaped the ground and widened the roads so routes are easy to follow',
+            'rebuilt the props at the right scale and placed them with care',
+            'gave each region its own landmarks so players always know where they are'
+          ],
+          links: { store: 'https://play.google.com/store/apps/details?id=com.rockbite.cubicquest' }
+        },
+        {
+          name: 'root rush',
+          tag: 'farming runner',
+          text: ['worked on several levels and the base camp of this live farming runner game:'],
+          did: [
+            'tuned each level so players can find their way easily under time pressure, while the route still feels like a challenge',
+            'placed the base camp stations in the order players use them, so the camp follows their natural progression',
+            'added a nursery to the base camp',
+            'added lots of decorations and props to make the camp feel warm, lived-in and more underground (see below)'
+          ],
+          links: { store: 'https://play.google.com/store/apps/details?id=com.rockbite.rootrush' },
+          compare: {
+            before: './rockbite/root-rush-base-camp-before.mp4',
+            after: './rockbite/root-rush-base-camp-after.mp4',
+            width: 390,
+            height: 844
+          }
+        },
+        {
+          name: 'repop',
+          tag: 'idle city builder',
+          text: ['wrote the story for a submarine event in this live post-apocalyptic idle city builder and built it into the space itself:'],
+          did: [
+            'every item you find is a real piece of the world\'s history',
+            'the clues are timed so the mystery unfolds one room at a time',
+            'the opening hooks the player while giving almost nothing away, and the story builds to a shocking twist at the end',
+            'glowing footprints lead players through the rooms, so they never get lost and never lose the thread of the story'
+          ],
+          links: { store: 'https://play.google.com/store/apps/details?id=com.rockbite.arcworld' },
+          doc: { name: 'narrative design doc', file: './rockbite/repop-submarine-narrative-design.pdf' },
+          map: {
+            img: './rockbite/repop-submarine.webp',
+            width: 760,
+            height: 2316,
+            alt: 'the submarine from above',
+            intro: 'a peek inside the doc. read all of it here:',
+            reveal: 16,
+            acts: [
+              { name: 'act i: boarding', note: 'salvage, and something wrong', beats: [
+                [1, 40.45, 88.87, 'broken hull', 'cut the breaker, take service access. the crew is here for salvage.'],
+                [2, 20.6, 74.46, 'infirmary', 'a teddy bear behind the curtain, with m.v. stitched on it.'],
+                [3, 27.28, 80.72, 'command room', 'an old recorder: "i\'m still aboard... i\'ll be waiting."'],
+                [4, 50.95, 78.77, 'command terminal', 'a log signed c. print the safe code.']
+              ]},
+              { name: 'act ii: grown here', note: 'the crew, the lab, the photo', beats: [
+                [5, 88.44, 71.25, 'lab', 'close the valve. the green haze looks like the mist. "day 46. still growing."'],
+                [6, 78.53, 70.29, 'lab', 'the gas was meant to keep the specimen asleep.'],
+                [7, 16.54, 62.9, 'galley', 'sweets nobody got to finish.'],
+                [8, 76.41, 67.27, 'frozen pantry', 'a celebration cake, never eaten.'],
+                [9, 30.26, 51.76, 'crew quarters', 'a younger overseer in the crew photo.']
+              ]},
+              { name: 'act iii: the a17 trail', note: 'following the cargo', beats: [
+                [10, 69.38, 43.38, 'cargo hold', 'restricted access and the spare pump handle.'],
+                [11, 86.71, 55.43, 'dive bay', 'drain the pit. the diver\'s bag holds the a17 tag.'],
+                [12, 27.83, 46.21, 'torpedo bay', 'a dna capsule marked a17, hidden in a torpedo tube.'],
+                [13, 53.38, 63.81, 'captain\'s quarters', 'the safe opens. a plan to a hidden archive.'],
+                [14, 42.48, 29.88, 'reactor', 'quiet on purpose, before the climb.'],
+                [15, 54.27, 23.92, 'engines', 'a hideout behind the jammed fan. jules verne joins.']
+              ]},
+              { name: 'act iv: release approved', note: 'the reveal and the hook', beats: [
+                [16, 55.26, 56.97, 'hidden archive', 'the a17 label: "release approved: c." was i... the captain?'],
+                [17, null, null, 'ending', 'four pictures, then hattori hanzo and the trophy.']
+              ]}
+            ]
+          }
+        }
+      ],
+      facts: { studio: 'rockbite games', location: 'yerevan', role: 'level designer, gameplay developer', years: 'apr 2026 - present' },
+      tools: []
+    },
     {
       key: 'kami-hovani',
       name: 'kami hovani',
@@ -519,6 +797,75 @@
   }
 
 
+  function compare(c) {
+    return `
+        <div class="compare">${['before', 'after'].map(k => `
+          <figure>
+            <figcaption>${k}:</figcaption>
+            <video src="${c[k]}" width="${c.width}" height="${c.height}" autoplay muted loop playsinline></video>
+          </figure>`).join('')}
+        </div>`;
+  }
+
+  function docPill(d, cls) {
+    return d.file
+      ? `<a class="${cls}" href="${d.file}" download>${d.name}</a>`
+      : `<span class="${cls}">${d.name} -</span>`;
+  }
+
+  function subMap(m, doc) {
+    const beats = m.acts.flatMap(a => a.beats);
+    const pins = beats.filter(b => b[1] !== null);
+    const pin = b => `pin${b[0] === m.reveal ? ' reveal' : ''}${b[1] === null ? ' end' : ''}`;
+    return `
+        <p class="map-intro">${m.intro} ${doc ? docPill(doc, 'pill') : ''}</p>
+        <div class="sub-map">
+          <div class="sub">
+            <img src="${m.img}" width="${m.width}" height="${m.height}" alt="${m.alt}" loading="lazy">
+            <svg viewBox="0 0 ${m.width} ${m.height}"><polyline points="${pins.map(b => b[1] * m.width / 100 + ',' + b[2] * m.height / 100).join(' ')}"/></svg>
+            ${pins.map(b => `<span class="${pin(b)}" data-beat="${b[0]}" style="left: ${b[1]}%; top: ${b[2]}%">${b[0]}</span>`).join('')}
+          </div>
+          <div class="beats">${m.acts.map(a => `
+            <p class="act">${a.name} <span>${a.note}</span></p>
+            <ul>${a.beats.map(b => `<li data-beat="${b[0]}"><span class="${pin(b)}">${b[0]}</span><span><b>${b[3]}.</b> ${b[4]}</span></li>`).join('')}</ul>`).join('')}
+          </div>
+        </div>`;
+  }
+
+  function studioPage(g) {
+    const games = g.work.map(w => {
+      const links = Object.keys(LINK_NAMES).filter(k => w.links[k]).map((k, i) =>
+        `<a class="${i ? '' : 'main'}" href="${w.links[k]}" target="_blank" rel="noopener">${LINK_NAMES[k]}</a>`
+      ).join('') + (w.doc && !w.map ? docPill(w.doc, '') : '');
+      const clips = !w.clips ? '' : w.clips.length
+        ? w.clips.map(src => `<video src="${src}" autoplay muted loop playsinline></video>`).join('')
+        : '<p class="clip-soon">clips soon</p>';
+      return `
+      <div class="block work">
+        <div class="detail-head">
+          <p class="page-title">${w.name}</p>
+          <span class="tag">${w.tag}</span>
+        </div>
+        ${links ? `<div class="get">${links}</div>` : ''}
+        ${w.text.map(t => `<p>${t}</p>`).join('')}
+        ${w.did ? `<ul class="did">${w.did.map(t => `<li>${t}</li>`).join('')}</ul>` : ''}
+        ${clips ? `<div class="clips">${clips}</div>` : ''}
+        ${w.compare ? compare(w.compare) : ''}
+        ${w.map ? subMap(w.map, w.doc) : ''}
+      </div>`;
+    }).join('');
+    return `
+      <p class="back"><a href="#games">&lt; all games</a></p>
+      <div class="detail-head">
+        <p class="page-title">${g.name}</p>
+        <span class="tag">${g.tag}</span>
+      </div>
+      ${g.about.map(t => `<p>${t}</p>`).join('')}
+      ${games}
+    `;
+  }
+
+
   function gameWing(g) {
     const rows = Object.keys(g.facts).map(k =>
       `<div><dt>${k}</dt><dd>${g.facts[k] || '-'}</dd></div>`
@@ -536,8 +883,11 @@
     games: `
       <p class="page-title">games</p>
       <div class="games">
+        <p class="page-title group-title">studio work</p>
+        <div class="games-grid">${GAMES.filter(g => g.work).map(gameCard).join('')}
+        </div>
         <p class="page-title group-title">personal projects</p>
-        <div class="games-grid">${GAMES.filter(g => !g.jam).map(gameCard).join('')}
+        <div class="games-grid">${GAMES.filter(g => !g.jam && !g.work).map(gameCard).join('')}
         </div>
         <p class="page-title group-title">game jams</p>
         <div class="games-grid">${GAMES.filter(g => g.jam).map(gameCard).join('')}
@@ -579,7 +929,7 @@
   wings.other = wings.games;
 
   GAMES.forEach(g => {
-    sections[g.key] = gamePage(g);
+    sections[g.key] = g.work ? studioPage(g) : gamePage(g);
     wings[g.key] = gameWing(g);
   });
 
@@ -667,7 +1017,12 @@
         lightbox.classList.add('active');
       });
     });
-    document.querySelectorAll('.hero video').forEach(v => v.play().catch(() => {}));
+    document.querySelectorAll('.hero video, .clips video, .compare video').forEach(v => v.play().catch(() => {}));
+    document.querySelectorAll('[data-beat]').forEach(el => {
+      const same = () => document.querySelectorAll(`[data-beat="${el.dataset.beat}"]`);
+      el.addEventListener('mouseenter', () => same().forEach(x => x.classList.add('on')));
+      el.addEventListener('mouseleave', () => same().forEach(x => x.classList.remove('on')));
+    });
     document.querySelectorAll('a.game').forEach(card => {
       const v = card.querySelector('video.cover-pic');
       if (!v) return;
@@ -689,8 +1044,8 @@
   }
 </script>
 
-<script src="/nav.js?v=79"></script>
-<script src="/toys.js?v=32"></script>
+<script src="/nav.js?v=81"></script>
+<script src="/toys.js?v=33"></script>
 <script>if (window.startToys) window.startToys();</script>
 </body>
 </html>

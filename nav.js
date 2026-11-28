@@ -3,6 +3,7 @@
     { label: 'home', href: '/', color: 'green', strong: true },
     { label: 'projects', href: '/projects/', color: 'lilac', children: [
       { label: 'games', href: '/projects/#games', children: [
+        { label: 'rockbite games', href: '/projects/#rockbite' },
         { label: 'kami hovani', href: '/projects/#kami-hovani' },
         { label: 'pingala', href: '/projects/#pingala' },
         { label: 'bebe heist', href: '/projects/#bebe-heist' },
@@ -278,7 +279,7 @@
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a[href]');
     if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    if (a.target && a.target !== '_self') return;
+    if ((a.target && a.target !== '_self') || a.hasAttribute('download')) return;
     var url = new URL(a.href, location.href);
     if (url.origin !== location.origin) return;
     if (url.pathname === location.pathname && url.search === location.search && url.hash) return;

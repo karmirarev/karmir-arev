@@ -104,6 +104,7 @@
   var PLUM2 = hex('#9a5a66');
   var DARK_PAPER = hex('#221d1f'), DARK_PLUM = hex('#d6a6b1');
   var TOYS = {
+    rockbite:      { step: LTL, seed: SEED_NOISE, mode: 0, size: [160, 90], sps: 1, every: 2, life: 2500, ink: PLUM, ink2: PLUM2, u: { u_rad: 5, u_smin: 34, u_smax: 58, u_bmin: 34, u_bmax: 45, u_fill: 0.5, u_discs: 6 } },
     'kami-hovani': { step: GS, seed: SEED_GS, sprinkle: SPRINKLE_GS, mode: 4, size: [192, 108], sps: 8, every: 1, poke: 200, ink: PLUM, ink2: PLUM2, u: { u_F: 0.018, u_k: 0.051 } },
     'bebe-heist':  { step: GS, seed: SEED_GS, sprinkle: SPRINKLE_GS, mode: 4, size: [192, 108], sps: 10, every: 1, poke: 300, ink: PLUM, ink2: PLUM2, u: { u_F: 0.062, u_k: 0.0609 } },
     'disco-market': { step: GEN, seed: SEED_NOISE, mode: 0, size: [160, 90], sps: 1, every: 3, life: 2400, ink: PLUM, ink2: PLUM2, u: { u_birth: 4, u_surv: 0, u_states: 3, u_fill: 0.25 } },

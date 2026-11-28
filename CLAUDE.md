@@ -34,7 +34,7 @@ https://xn--y9aamws5a2fcbv.xn--y9a3aq). Static files, no build step. Pushing to
     the essay quote connector lines stay deep wine.
   - Organisms (`toys.js`): `PLUM` is `#52222b`, `PLUM2` `#9a5a66`.
   - Text is `#1b1b1b` (`--ink`). Links are ink with a thin purple underline. Never bright blue.
-- Dark mode (sep 2026), the default (marita loved it): `:root[data-theme="dark"]` in
+- Dark mode (sep 2026; it was the default until nov 2026, now light is): `:root[data-theme="dark"]` in
   `site.css` swaps the variables (paper `#221d1f`, ink `#e2dfd3`, `--maroon` becomes pink
   silk `#d6a6b1`, hover `#3d3538`, lilac `#4a4562`, dots `#2c6470`); green and orange
   stay. So new colours must be variables, never hard-coded (text on the green pill stays
@@ -42,8 +42,8 @@ https://xn--y9aamws5a2fcbv.xn--y9a3aq). Static files, no build step. Pushing to
   is cut inward and holds a sun and a moon in squares, the current one filled green.
   `nav.js` wraps `#wing` in `.wing-wrap` so the notch survives `show()` replacing the
   wing; pages without a left box (credits) get it on the menu instead (it was on the
-  menu first, but it got in the guy's way). Light only when `localStorage` `theme` is
-  `light`; a one-line script in every page's `<head>` sets it before the page draws, so
+  menu first, but it got in the guy's way). Dark only when `localStorage` `theme` is
+  `dark` (the visitor picked the moon); a one-line script in every page's `<head>` sets it before the page draws, so
   there is no flash. `toys.js` draws the creatures on the dark paper in pink when dark.
 - Boxes (left wing, menu, portfolio cards, game cards): 1px purple border,
   `border-radius: 14px`, the lilac shadow, solid paper background so dots do not show through.
@@ -190,6 +190,28 @@ to copy.
 3. Add `{ label, href: '/projects/#KEY' }` to the `games` children in `nav.js`, in the
    order the grid shows them: personal projects first, then game jams.
 4. Bump `toys.js?v=N` in `projects/index.html` and `nav.js?v=N` in all pages.
+
+Studio work (nov 2026): the games grid has three groups, "studio work" first (hiring
+leads look there first), then personal projects, then game jams. A `GAMES` entry with a
+`work` list is studio work: one card per studio (`rockbite`, creature `TOYS.rockbite`,
+LTL), and `studioPage()` draws one page with a block per game (`{ name, tag, text,
+did, links, clips }`) between dashed orange lines. Order: stake killer, cubic quest,
+root rush, repop. The text is resume style (no leading "i"): one lead line ending in a
+colon, then a `did` list in the square-bullet `.did` style. `clips` are short muted looping mp4s in
+`projects/rockbite/`, autoplaying in a grid; an empty list shows a "clips soon" box.
+`links.store` is the green google play button. `doc: { name, file }` adds a download pill
+after it (`download` attribute, which `nav.js` leaves alone); with no `file` yet it shows
+as a plain "name -" pill.
+Root rush has `compare` instead of clips (`compare()`): the base camp before and after
+videos side by side, right under the list (its last point ends in "(see below)") (390px wide portrait mp4s, labelled above).
+Repop has `map` instead of clips (`subMap()`): the see-through submarine
+(`rockbite/repop-submarine.webp`, cut from page 3 of her narrative design doc) sticky on
+the left, a dashed orange route through numbered pins on it, and the 17 story beats by
+act on the right. Above it, one plain sentence (`map.intro`) ends with the doc pill
+(`docPill()`), which then leaves the top link row. Pin spots are percent of the picture, read from the doc. Hovering a pin
+or a beat lights both. Beat 16 (the reveal) is green, 17 (the ending) has no pin. The
+route line uses plain user-unit widths: `vector-effect: non-scaling-stroke` did not draw.
+Only show work that is already live.
 
 Unity web builds play inside the game page instead of a new tab: give the entry
 `embed: { build: './games/NAME/Build/FILEPREFIX', width, height }`. The page then loads the game
