@@ -235,7 +235,7 @@ black, and marita and felix at different heights.
 The portfolio cards (gif, name, email with copy button, bio, find me on, resume) live in
 `wings.games` in `projects/index.html`. The "other" section and the projects landing page show the same left box
 (`wings.other = wings.games`, and the landing wing is filled with it on load), so the
-projects landing has no creature any more. The resume is `projects/marita-movsisyan-cv.pdf` (new versions get a new file name, the host caches for hours).
+projects landing has no creature any more. The resume is `projects/marita-movsisyan-cv.pdf`; bump `?v=N` on its link when it changes (the host caches for hours).
 The arts-and-crafts landing has its own version in its `#wing` html (oct 2026): the same
 gif, name and email, her art bio instead of the work one, "find me on" instagram, no
 resume. Subsections there swap it for their own wing. The card styles (`.card`, `.copy`)
